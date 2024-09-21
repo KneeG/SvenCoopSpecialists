@@ -14,7 +14,7 @@ Hopefully their functionality is also implemented as well.
 6. [Quick useful links](#quickusefullinks)
 
 Problems:
-- Currently struggling with porting existing to display on the hud
+- Currently struggling with weapon sprites and them not displaying properly on the hud
 
 <a name="progresslegend"></a>
 ## 1. Progress Legend
