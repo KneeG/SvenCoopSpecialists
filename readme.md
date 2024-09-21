@@ -13,6 +13,9 @@ Hopefully their functionality is also implemented as well.
 5. [Miscellaneous entity list](#miscellaneousentitylist)
 6. [Quick useful links](#quickusefullinks)
 
+Problems:
+- Currently struggling with porting existing to display on the hud
+
 <a name="progresslegend"></a>
 ## 1. Progress Legend
 | Item                  | Description                                                   |
@@ -30,7 +33,7 @@ Hopefully their functionality is also implemented as well.
 | 1  | weapon_ts_kungfu                 | Functionally complete | Refactor this mess of code    |
 | 2  | weapon_ts_katana                 | Functionally complete | Add throwable blades          |
 | 3  | weapon_ts_seal_knife             | Functionally complete | Add throwable blades          |
-| 4  | weapon_ts_combat_knife           | Not started           | To do                         |
+| 4  | weapon_ts_combat_knife           | Functionally complete | To do                         |
 | 5  | weapon_ts_glock17                | Not started           | To do                         |
 | 6  | weapon_ts_glock20                | Not started           | To do                         |
 | 7  | weapon_ts_fiveseven              | Not started           | To do                         |
