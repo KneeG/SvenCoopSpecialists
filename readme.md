@@ -13,9 +13,6 @@ Hopefully their functionality is also implemented as well.
 5. [Miscellaneous entity list](#miscellaneousentitylist)
 6. [Quick useful links](#quickusefullinks)
 
-Problems:
-- Currently struggling with weapon sprites and them not displaying properly on the hud
-
 <a name="progresslegend"></a>
 ## 1. Progress Legend
 | Item                  | Description                                                   |
@@ -34,7 +31,7 @@ Problems:
 | 2  | weapon_ts_katana                 | Functionally complete | Add throwable blades          |
 | 3  | weapon_ts_seal_knife             | Functionally complete | Add throwable blades          |
 | 4  | weapon_ts_combat_knife           | Functionally complete | To do                         |
-| 5  | weapon_ts_glock17                | Not started           | To do                         |
+| 5  | weapon_ts_glock18                | Functionally complete | Add suppressor                |
 | 6  | weapon_ts_glock20                | Not started           | To do                         |
 | 7  | weapon_ts_fiveseven              | Not started           | To do                         |
 | 8  | weapon_ts_fiveseven_akimbo       | Not started           | To do                         |
