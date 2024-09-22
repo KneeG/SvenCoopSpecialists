@@ -48,7 +48,7 @@ Hopefully their functionality is also implemented as well.
 | 19 | weapon_ts_mp5k                   | Not started           | To do                         |
 | 20 | weapon_ts_ump45                  | Not started           | To do                         |
 | 21 | weapon_ts_mp7                    | Not started           | To do                         |
-| 22 | weapon_ts_tmp                    | Not started           | To do                         |
+| 22 | weapon_ts_tmp                    | Functionally complete | Figure out ammo types         |
 | 23 | weapon_ts_mac10                  | Not started           | To do                         |
 | 24 | weapon_ts_skorpion               | Not started           | To do                         |
 | 25 | weapon_ts_skorpion_akimbo        | Not started           | To do                         |
