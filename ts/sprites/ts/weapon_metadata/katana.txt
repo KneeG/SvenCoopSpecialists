@@ -1,3 +1,0 @@
-2
-weapon			640 ts/katana		0	0	128	48
-weapon_s		640 ts/katana		0	0	128	48
