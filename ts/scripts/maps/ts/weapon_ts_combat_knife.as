@@ -39,7 +39,8 @@ namespace TS_CombatKnife
     const string            strMODEL_V          = TheSpecialists::strMODEL_PATH + "melee/v_" + strNAME + ".mdl" ;
     const string            strMODEL_W          = TheSpecialists::strMODEL_PATH + "melee/w_" + strNAME + ".mdl" ;
 
-    const string            strSPRITE_FILE      = TheSpecialists::strSPRITE_METADATA_PATH + strNAME + ".txt"    ;
+    const string            strSPRITE_FILE      = TheSpecialists::strSPRITE_TS_PATH      + strNAME      + ".spr";
+    const string            strSPRITE_TEXT_FILE = TheSpecialists::strSPRITE_METADATA_PATH+ strCLASSNAME + ".txt";
 
     const string            strSOUND_PATH       = TheSpecialists::strSOUND_PATH + "knife/"                      ;
     
@@ -62,13 +63,13 @@ namespace TS_CombatKnife
         Animations::SLASH3
     };
     
-    const float             fHOLSTER_TIME           = CrowbarBase::fDEFAULT_HOSTER_TIME                         ;
+    const float             fHOLSTER_TIME           = TheSpecialists::fDEFAULT_HOSTER_TIME                         ;
     const float             fNEXT_THINK             = 1.0                                                       ;
     const float             fPRIMARY_ATTACK_DELAY   = 0.4                                                       ;
     
-    const float             fSWING_DISTANCE         = CrowbarBase::fSWING_DISTANCE                              ;
+    const float             fSWING_DISTANCE         = TheSpecialists::fSWING_DISTANCE                              ;
     
-    const IGNORE_MONSTERS   eIGNORE_RULE            = CrowbarBase::eIGNORE_RULE                                 ;
+    const IGNORE_MONSTERS   eIGNORE_RULE            = TheSpecialists::eIGNORE_RULE                                 ;
     
     const int               iDAMAGE    = 25                                                                     ;
     
@@ -102,7 +103,7 @@ namespace TS_CombatKnife
             g_EntityFuncs.SetModel(self, self.GetW_Model(strMODEL_W));
             
             // Set the clip size
-            self.m_iClip = CrowbarBase::iMAX_CLIP;
+            self.m_iClip = TheSpecialists::iWEAPON__MELEE__MAX_CLIP;
             
             // Set the weapon damage
             self.m_flCustomDmg = m_iDamage;
@@ -127,6 +128,8 @@ namespace TS_CombatKnife
             g_Game.PrecacheModel        (strMODEL_P);
             g_Game.PrecacheModel        (strMODEL_V);
             g_Game.PrecacheModel        (strMODEL_W);
+            
+            g_Game.PrecacheModel        (TheSpecialists::strSPRITE_ROOT + strSPRITE_FILE);
 
             g_SoundSystem.PrecacheSound (strSOUND_PATH       );
             g_SoundSystem.PrecacheSound (strSOUND_HIT1       );
@@ -134,6 +137,7 @@ namespace TS_CombatKnife
             g_SoundSystem.PrecacheSound (strSOUND_MISS1      );
             
             g_Game.PrecacheGeneric      (TheSpecialists::strSPRITE_ROOT + strSPRITE_FILE);
+            g_Game.PrecacheGeneric      (TheSpecialists::strSPRITE_ROOT + strSPRITE_TEXT_FILE);
         } // End of Precache()
 
         //////////////////////////////////////////////////////////////////////////////
@@ -147,12 +151,12 @@ namespace TS_CombatKnife
         //////////////////////////////////////////////////////////////////////////////
         bool GetItemInfo(ItemInfo& out info)
         {
-            info.iMaxAmmo1		= CrowbarBase::iMAX_AMMO_1                      ;
-            info.iMaxAmmo2		= CrowbarBase::iMAX_AMMO_2                      ;
-            info.iMaxClip		= CrowbarBase::iMAX_CLIP                        ;
-            info.iSlot			= TheSpecialists::WEAPON__SLOT__MELEE           ;
-            info.iPosition		= TheSpecialists::WEAPON__POSITION__COMBAT_KNIFE;
-            info.iWeight		= CrowbarBase::iDEFAULT_WEIGHT                  ;
+            info.iMaxAmmo1		= TheSpecialists::iWEAPON__AMMO1__COMBAT_KNIFE      ;
+            info.iMaxAmmo2		= TheSpecialists::iWEAPON__AMMO2__COMBAT_KNIFE      ;
+            info.iMaxClip		= TheSpecialists::iWEAPON__MELEE__MAX_CLIP          ;
+            info.iSlot			= TheSpecialists::iWEAPON__SLOT__MELEE              ;
+            info.iPosition		= TheSpecialists::iWEAPON__POSITION__COMBAT_KNIFE   ;
+            info.iWeight		= TheSpecialists::iDEFAULT_WEIGHT                   ;
             
             return true;
         } // End of GetItemInfo()
@@ -413,7 +417,7 @@ namespace TS_CombatKnife
                 // Keep track of the current TraceResult
                 m_trHit = tr;
 
-                m_pPlayer.m_iWeaponVolume = int(flVolumeInWorld * CrowbarBase::fDEFAULT_SOUND_DISTANCE);
+                m_pPlayer.m_iWeaponVolume = int(flVolumeInWorld * TheSpecialists::fDEFAULT_SOUND_DISTANCE);
                 
             } // End of else (of if (tr.flFraction >= 1.0))
             
@@ -448,7 +452,8 @@ namespace TS_CombatKnife
                 // This must be called after TraceAttack()
                 g_WeaponFuncs.ApplyMultiDamage(m_pPlayer.pev, m_pPlayer.pev);
                 
-                g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "ApplyDamageToEntity: pEntity !is null=" + (pEntity !is null) + "\n");
+                // Debug printing
+                // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "ApplyDamageToEntity: pEntity !is null=" + (pEntity !is null) + "\n");
             }
             else
             {
@@ -456,7 +461,8 @@ namespace TS_CombatKnife
                 iReturn = RETURN_ERROR_NULL_POINTER;
             }
             
-            g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "ApplyDamageToEntity: iReturn=" + iReturn + "\n");
+            // Debug printing
+            // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "ApplyDamageToEntity: iReturn=" + iReturn + "\n");
             
             return iReturn;
             
@@ -509,8 +515,8 @@ namespace TS_CombatKnife
             int iRandomIndex = Math.RandomLong(iLowerRange, iUpperRange);
             
             // Debug printing
-            int iArrayLength = arrList.length();
-            g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "PlayRandomSoundFromList: iRandomIndex '" + iRandomIndex + "' of length '" + iArrayLength + "'\n");
+            // int iArrayLength = arrList.length();
+            // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "PlayRandomSoundFromList: iRandomIndex '" + iRandomIndex + "' of length '" + iArrayLength + "'\n");
             
             // Acquire the randomly selected sound
             string strSound = arrList[iRandomIndex];
@@ -532,8 +538,8 @@ namespace TS_CombatKnife
         void PlaySoundDynamicWithVariablePitch(string strSoundPath)
         {
             // Getting library defaults and so I can reference them with a shorter variable name
-            int iDefaultPitch          = CrowbarBase::iDEFAULT_PITCH;
-            int iDefaultPitchVariation = CrowbarBase::iDEFAULT_PITCH_VARIATION;
+            int iDefaultPitch          = TheSpecialists::iDEFAULT_PITCH;
+            int iDefaultPitchVariation = TheSpecialists::iDEFAULT_PITCH_VARIATION;
             
             // Generate a random pitch
             // Move the default pitch back half the pitch variation so it's evenly spread out +/- iDefaultPitch
@@ -544,7 +550,8 @@ namespace TS_CombatKnife
             //      So the average is still around 100
             int iPitch = (iDefaultPitch - (iDefaultPitchVariation / 2)) + Math.RandomLong(0, iDefaultPitchVariation);
             
-            g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "PlaySoundDynamicWithVariablePitch: strSoundPath=" + strSoundPath + "\n");
+            // Debug printing
+            // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "PlaySoundDynamicWithVariablePitch: strSoundPath=" + strSoundPath + "\n");
             
             PlaySoundDynamic(strSoundPath, iPitch);
         } // End of PlaySoundDynamicWithVariablePitch()
@@ -564,10 +571,10 @@ namespace TS_CombatKnife
             g_SoundSystem.EmitSoundDyn
             (
                 m_pPlayer.edict()                   , // edict_t@ entity
-                CrowbarBase::scDEFAULT_CHANNEL      , // SOUND_CHANNEL channel
+                TheSpecialists::scDEFAULT_CHANNEL      , // SOUND_CHANNEL channel
                 strSoundPath                        , // const string& in szSample
-                CrowbarBase::fDEFAULT_VOLUME        , // float flVolume
-                CrowbarBase::fDEFAULT_ATTENUATION   , // float flAttenuation
+                TheSpecialists::fDEFAULT_VOLUME        , // float flVolume
+                TheSpecialists::fDEFAULT_ATTENUATION   , // float flAttenuation
                 0                                   , // int iFlags = 0
                 iPitch                                // int iPitch = PITCH_NORM
                                                       // int target_ent_unreliable = 0
@@ -576,14 +583,9 @@ namespace TS_CombatKnife
         
     } // End of class weapon_ts_combat_knife
 
-    string Get_TS_CombatKnifeName()
+    void Register_Weapon()
     {
-        return strCLASSNAME;
-    }
-
-    void Register_TS_CombatKnife()
-    {
-        g_CustomEntityFuncs.RegisterCustomEntity(strNAMESPACE + strCLASSNAME, Get_TS_CombatKnifeName());
-        g_ItemRegistry.RegisterWeapon(Get_TS_CombatKnifeName(), Get_TS_CombatKnifeName());
+        g_CustomEntityFuncs.RegisterCustomEntity(strNAMESPACE + strCLASSNAME, strCLASSNAME);
+        g_ItemRegistry.RegisterWeapon(strCLASSNAME, TheSpecialists::strSPRITE_METADATA_PATH);
     }
 } // End of namespace TS_CombatKnife
