@@ -8,6 +8,7 @@
 #include "weapon_ts_katana"
 #include "weapon_ts_seal_knife"
 #include "weapon_ts_combat_knife"
+#include "weapon_ts_glock18"
 
 void TS_LoadWeapons()
 {
@@ -15,4 +16,5 @@ void TS_LoadWeapons()
     TS_Katana::Register_Weapon();
     TS_SealKnife::Register_Weapon();
     TS_CombatKnife::Register_Weapon();
+    TS_Glock18::Register_Weapon();
 }

@@ -30,29 +30,29 @@ namespace TS_CombatKnife
     const int               RETURN_ERROR_NULL_POINTER   = -1;
     
     // Meta data
-    const string            strNAME             = "combat_knife"                                                ;
-    const string            strNAMESPACE        = "TS_CombatKnife::"                                            ;
-    const string            strCLASSNAME        = "weapon_ts_" + strNAME                                        ;
+    const string            strNAME                 = "combat_knife"                                                ;
+    const string            strNAMESPACE            = "TS_CombatKnife::"                                            ;
+    const string            strCLASSNAME            = "weapon_ts_" + strNAME                                        ;
 
     // Asset paths
-    const string            strMODEL_P          = TheSpecialists::strMODEL_PATH + "melee/p_" + strNAME + ".mdl" ;
-    const string            strMODEL_V          = TheSpecialists::strMODEL_PATH + "melee/v_" + strNAME + ".mdl" ;
-    const string            strMODEL_W          = TheSpecialists::strMODEL_PATH + "melee/w_" + strNAME + ".mdl" ;
+    const string            strMODEL_P              = TheSpecialists::strMODEL_PATH + "melee/p_" + strNAME + ".mdl" ;
+    const string            strMODEL_V              = TheSpecialists::strMODEL_PATH + "melee/v_" + strNAME + ".mdl" ;
+    const string            strMODEL_W              = TheSpecialists::strMODEL_PATH + "melee/w_" + strNAME + ".mdl" ;
 
-    const string            strSPRITE_FILE      = TheSpecialists::strSPRITE_TS_PATH      + strNAME      + ".spr";
-    const string            strSPRITE_TEXT_FILE = TheSpecialists::strSPRITE_METADATA_PATH+ strCLASSNAME + ".txt";
+    const string            strSPRITE_FILE          = TheSpecialists::strSPRITE_TS_PATH      + strNAME      + ".spr";
+    const string            strSPRITE_TEXT_FILE     = TheSpecialists::strSPRITE_METADATA_PATH+ strCLASSNAME + ".txt";
 
-    const string            strSOUND_PATH       = TheSpecialists::strSOUND_PATH + "knife/"                      ;
+    const string            strSOUND_PATH           = TheSpecialists::strSOUND_PATH + "knife/"                      ;
     
-    const string            strSOUND_HIT1       = strSOUND_PATH + "knife_hit.wav"                               ;
-    const array<string>     arrSoundHitList     = {
+    const string            strSOUND_HIT1           = strSOUND_PATH + "knife_hit.wav"                               ;
+    const array<string>     arrSoundHitList         = {
         strSOUND_HIT1
     };
     
-    const string            strSOUND_HIT_BODY1  = strSOUND_PATH + "knife_hitbody.wav"                           ;
+    const string            strSOUND_HIT_BODY1      = strSOUND_PATH + "knife_hitbody.wav"                           ;
     
-    const string            strSOUND_MISS1      = strSOUND_PATH + "knife_miss.wav"                              ;
-    const array<string>     arrSoundMissList    = {
+    const string            strSOUND_MISS1          = strSOUND_PATH + "knife_miss.wav"                              ;
+    const array<string>     arrSoundMissList        = {
         strSOUND_MISS1
     };
     
@@ -63,15 +63,12 @@ namespace TS_CombatKnife
         Animations::SLASH3
     };
     
-    const float             fHOLSTER_TIME           = TheSpecialists::fDEFAULT_HOSTER_TIME                         ;
-    const float             fNEXT_THINK             = 1.0                                                       ;
-    const float             fPRIMARY_ATTACK_DELAY   = 0.4                                                       ;
-    
-    const float             fSWING_DISTANCE         = TheSpecialists::fSWING_DISTANCE                              ;
-    
-    const IGNORE_MONSTERS   eIGNORE_RULE            = TheSpecialists::eIGNORE_RULE                                 ;
-    
-    const int               iDAMAGE    = 25                                                                     ;
+    const float             fHOLSTER_TIME           = TheSpecialists::fDEFAULT_HOSTER_TIME                          ;
+    const float             fNEXT_THINK             = TheSpecialists::fDEFAULT_NEXT_THINK                           ;
+    const float             fPRIMARY_ATTACK_DELAY   = TheSpecialists::fWEAPON__COMBAT_KNIFE__ATTACK_DELAY           ;
+    const float             fSWING_DISTANCE         = TheSpecialists::fSWING_DISTANCE                               ;
+    const IGNORE_MONSTERS   eIGNORE_RULE            = TheSpecialists::eIGNORE_RULE                                  ;
+    const int               iDAMAGE                 = TheSpecialists::iWEAPON__COMBAT_KNIFE__DAMAGE                 ;
     
     /////////////////////////////////////
     // Combat_knife class

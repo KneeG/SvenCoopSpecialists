@@ -65,15 +65,12 @@ namespace TS_Katana
         Animations::SLASH3
     };
     
-    const float             fHOLSTER_TIME           = TheSpecialists::fDEFAULT_HOSTER_TIME                 ;
-    const float             fNEXT_THINK             = 1.0                                               ;
-    const float             fPRIMARY_ATTACK_DELAY   = 1.0                                               ;
-    
-    const float             fSWING_DISTANCE         = TheSpecialists::fSWING_DISTANCE                      ;
-    
-    const IGNORE_MONSTERS   eIGNORE_RULE            = TheSpecialists::eIGNORE_RULE                         ;
-    
-    const int               iDAMAGE                 = 55                                                ;
+    const float             fHOLSTER_TIME           = TheSpecialists::fDEFAULT_HOSTER_TIME                      ;
+    const float             fNEXT_THINK             = TheSpecialists::fDEFAULT_NEXT_THINK                       ;
+    const float             fPRIMARY_ATTACK_DELAY   = TheSpecialists::fWEAPON__KATANA__ATTACK_DELAY             ;
+    const float             fSWING_DISTANCE         = TheSpecialists::fSWING_DISTANCE                           ;
+    const IGNORE_MONSTERS   eIGNORE_RULE            = TheSpecialists::eIGNORE_RULE                              ;
+    const int               iDAMAGE                 = TheSpecialists::iWEAPON__KATANA__DAMAGE                   ;
     
     /////////////////////////////////////
     // Katana class
