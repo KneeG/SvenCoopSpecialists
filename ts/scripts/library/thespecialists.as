@@ -73,6 +73,14 @@ namespace TheSpecialists
     const string strPISTOL__SOUND__FIRE_SILENCED= "fire_silenced.wav"                           ; // Name of the gun fire silenced  file
     const string strPISTOL__SOUND__SLIDEBACK    = "slideback.wav"                               ; // Name of the slide pull file
     const string strPISTOL__SOUND__EMPTY        = "pistol_empty.wav"                            ; // Name of the dry fire pistol sound
+
+    // Submachine gun asset paths
+    const string strSMG__SOUND__CLIPIN          = "clipin.wav"                                  ; // Name of the magazine insert file
+    const string strSMG__SOUND__CLIPOUT         = "clipout.wav"                                 ; // Name of the magazine eject file
+    const string strSMG__SOUND__FIRE            = "fire.wav"                                    ; // Name of the gun fire file
+    const string strSMG__SOUND__FIRE_SILENCED   = "fire_silenced.wav"                           ; // Name of the gun fire silenced  file
+    const string strSMG__SOUND__SLIDEBACK       = "slideback.wav"                               ; // Name of the slide pull file
+    const string strSMG__SOUND__EMPTY           = "pistol_empty.wav"                            ; // Name of the dry fire pistol sound
     
     const int iSPRITE__WEAPONS__WIDTH           = 128                                           ; // [pixels] Width of the weapon sprites
     const int iSPRITE__WEAPONS__HEIGHT          = 48                                            ; // [pixels] Height of the weapon sprites
@@ -91,25 +99,28 @@ namespace TheSpecialists
     // Starting at a number above 0 since there are other default half-life weapons at those positions
     
     // Melee weapons
-    const int iWEAPON__POSITION__KUNGFU             = 5                                         ;
-    const int iWEAPON__POSITION__SEAL_KNIFE         = 6                                         ;
-    const int iWEAPON__POSITION__COMBAT_KNIFE       = 7                                         ;
-    const int iWEAPON__POSITION__KATANA             = 8                                         ;
+    const int iWEAPON__POSITION__KUNGFU             = 5 ;
+    const int iWEAPON__POSITION__SEAL_KNIFE         = 6 ;
+    const int iWEAPON__POSITION__COMBAT_KNIFE       = 7 ;
+    const int iWEAPON__POSITION__KATANA             = 8 ;
     
     // Pistols
-    const int iWEAPON__POSITION__GLOCK18            = 5                                         ;
-    const int iWEAPON__POSITION__GLOCK22            = 6                                         ;
-    const int iWEAPON__POSITION__FIVESEVEN          = 7                                         ;
-    const int iWEAPON__POSITION__BERETTA            = 8                                         ;
-    const int iWEAPON__POSITION__SOCOM              = 9                                         ;
-    const int iWEAPON__POSITION__RUGER              = 10                                        ;
-    const int iWEAPON__POSITION__DEAGLE             = 11                                        ;
-    const int iWEAPON__POSITION__RAGING_BULL        = 12                                        ;
-    const int iWEAPON__POSITION__CONTENDER          = 13                                        ;
-    const int iWEAPON__POSITION__GOLD_COLTS         = 14                                        ;
-    const int iWEAPON__POSITION__AKIMBO_FIVESEVEN   = 15                                        ;
-    const int iWEAPON__POSITION__AKIMBO_BERETTA     = 16                                        ;
-    const int iWEAPON__POSITION__AKIMBO_SOCOM       = 17                                        ;
+    const int iWEAPON__POSITION__GLOCK18            = 5 ;
+    const int iWEAPON__POSITION__GLOCK22            = 6 ;
+    const int iWEAPON__POSITION__FIVESEVEN          = 7 ;
+    const int iWEAPON__POSITION__BERETTA            = 8 ;
+    const int iWEAPON__POSITION__SOCOM              = 9 ;
+    const int iWEAPON__POSITION__RUGER              = 10;
+    const int iWEAPON__POSITION__DEAGLE             = 11;
+    const int iWEAPON__POSITION__RAGING_BULL        = 12;
+    const int iWEAPON__POSITION__CONTENDER          = 13;
+    const int iWEAPON__POSITION__GOLD_COLTS         = 14;
+    const int iWEAPON__POSITION__AKIMBO_FIVESEVEN   = 15;
+    const int iWEAPON__POSITION__AKIMBO_BERETTA     = 16;
+    const int iWEAPON__POSITION__AKIMBO_SOCOM       = 17;
+    
+    // Submachine guns
+    const int iWEAPON__POSITION__TMP                = 5 ;
     
     // Rifles/Shotguns
     
@@ -158,6 +169,9 @@ namespace TheSpecialists
     const int   iWEAPON__GLOCK18__DAMAGE            = 18            ;
     const float fWEAPON__GLOCK18__ATTACK_DELAY      = (60.0 / 900.0); // Time in seconds between swings
     
+    // Submachine guns behavior
+    const int   iWEAPON__TMP__DAMAGE                = 14            ;
+    const float fWEAPON__TMP__ATTACK_DELAY          = (60.0 / 1100.0); // Time in seconds between swings
     
     
     ///////////////////////////////
@@ -177,6 +191,12 @@ namespace TheSpecialists
     const int       iWEAPON__CLIP__GLOCK18          = 18                            ;
     const int       iWEAPON__AMMO1__GLOCK18         = iWEAPON__CLIP__GLOCK18 * 8    ;
     const int       iWEAPON__AMMO2__GLOCK18         = -1                            ;
+    
+    // Submachine guns
+    const string    strWEAPON__SMG__AMMO_TYPE   = "9mm"                         ;
+    const int       iWEAPON__CLIP__TMP          = 20                            ;
+    const int       iWEAPON__AMMO1__TMP         = iWEAPON__CLIP__GLOCK18 * 8    ;
+    const int       iWEAPON__AMMO2__TMP         = -1                            ;
     
     // Rifles/Shotguns
     
