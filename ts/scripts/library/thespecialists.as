@@ -166,10 +166,10 @@ namespace TheSpecialists
     const float fWEAPON__COMBAT_KNIFE__ATTACK_DELAY = (60 / 150)    ; // Time in seconds between swings
     
     // Pistols behavior
-    const int   iWEAPON__GLOCK18__DAMAGE            = 18            ;
+    const int   iWEAPON__GLOCK18__DAMAGE            = 15            ;
     const float fWEAPON__GLOCK18__ATTACK_DELAY      = (60.0 / 900.0); // Time in seconds between swings
     
-    const int   iWEAPON__GLOCK22__DAMAGE            = 18            ;
+    const int   iWEAPON__GLOCK22__DAMAGE            = 23            ;
     const float fWEAPON__GLOCK22__ATTACK_DELAY      = (60.0 / 500.0); // Time in seconds between swings
     
     // Submachine guns behavior
