@@ -1,10 +1,8 @@
-//////////////////////////////////////////////////////////////////////////////
-// File         : weapon_ts_tmp.as                                      //
-// Author       : Knee                                                      //
-// Description  : TMP from The Specialists Mod 3.0                     //
-//////////////////////////////////////////////////////////////////////////////
-
-#include "../../library/weapons/crowbar"
+//////////////////////////////////////////////////////
+// File         : weapon_ts_tmp.as                  //
+// Author       : Knee                              //
+// Description  : TMP from The Specialists Mod 3.0  //
+//////////////////////////////////////////////////////
 #include "../../library/thespecialists"
 
 /////////////////////////////////////
@@ -238,8 +236,7 @@ namespace TS_TMP
         //////////////////////////////////////////////////////////////////////////////////////////////
         void Holster(int skiplocal)
         {
-            // Melee weapons don't need to reload so commenting this out
-            // self.m_fInReload = false;// cancel any reload in progress.
+            self.m_fInReload = false;// cancel any reload in progress.
 
             // Set the cooldown timer for the next attack
             m_pPlayer.m_flNextAttack = g_WeaponFuncs.WeaponTimeBase() + fHOLSTER_TIME;

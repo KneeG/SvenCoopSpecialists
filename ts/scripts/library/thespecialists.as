@@ -169,6 +169,9 @@ namespace TheSpecialists
     const int   iWEAPON__GLOCK18__DAMAGE            = 18            ;
     const float fWEAPON__GLOCK18__ATTACK_DELAY      = (60.0 / 900.0); // Time in seconds between swings
     
+    const int   iWEAPON__GLOCK22__DAMAGE            = 18            ;
+    const float fWEAPON__GLOCK22__ATTACK_DELAY      = (60.0 / 500.0); // Time in seconds between swings
+    
     // Submachine guns behavior
     const int   iWEAPON__TMP__DAMAGE                = 14            ;
     const float fWEAPON__TMP__ATTACK_DELAY          = (60.0 / 1100.0); // Time in seconds between swings
@@ -188,15 +191,20 @@ namespace TheSpecialists
     
     // Pistols
     const string    strWEAPON__PISTOL__AMMO_TYPE    = "9mm"                         ;
+    
     const int       iWEAPON__CLIP__GLOCK18          = 18                            ;
     const int       iWEAPON__AMMO1__GLOCK18         = iWEAPON__CLIP__GLOCK18 * 8    ;
     const int       iWEAPON__AMMO2__GLOCK18         = -1                            ;
     
+    const int       iWEAPON__CLIP__GLOCK22          = 15                            ;
+    const int       iWEAPON__AMMO1__GLOCK22         = iWEAPON__CLIP__GLOCK18 * 9    ;
+    const int       iWEAPON__AMMO2__GLOCK22         = -1                            ;
+    
     // Submachine guns
-    const string    strWEAPON__SMG__AMMO_TYPE   = "9mm"                         ;
-    const int       iWEAPON__CLIP__TMP          = 20                            ;
-    const int       iWEAPON__AMMO1__TMP         = iWEAPON__CLIP__GLOCK18 * 8    ;
-    const int       iWEAPON__AMMO2__TMP         = -1                            ;
+    const string    strWEAPON__SMG__AMMO_TYPE       = "9mm"                         ;
+    const int       iWEAPON__CLIP__TMP              = 20                            ;
+    const int       iWEAPON__AMMO1__TMP             = iWEAPON__CLIP__GLOCK18 * 8    ;
+    const int       iWEAPON__AMMO2__TMP             = -1                            ;
     
     // Rifles/Shotguns
     

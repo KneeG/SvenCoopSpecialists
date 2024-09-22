@@ -1,16 +1,16 @@
 //////////////////////////////////////////////////////////
-// File         : weapon_ts_glock18.as                  //
+// File         : weapon_ts_glock22.as                  //
 // Author       : Knee                                  //
-// Description  : Glock 18 from The Specialists Mod 3.0 //
+// Description  : Glock 22 from The Specialists Mod 3.0 //
 //////////////////////////////////////////////////////////
 #include "../../library/thespecialists"
 
 /////////////////////////////////////
-// TS_Glock18 namespace
-namespace TS_Glock18
+// TS_Glock22 namespace
+namespace TS_Glock22
 {
     /////////////////////////////////////
-    // Glock18 animation enumeration
+    // Glock22 animation enumeration
     namespace Animations
     {
         const int IDLE1         = 0;
@@ -26,9 +26,9 @@ namespace TS_Glock18
     const int               RETURN_ERROR_NULL_POINTER   = -1;
     
     // Meta data
-    const string            strNAME                 = "glock18"             ;
-    const string            strNAMESPACE            = "TS_Glock18::"        ;
-    const string            strCLASSNAME            = "weapon_ts_glock18"   ;
+    const string            strNAME                 = "glock22"             ;
+    const string            strNAMESPACE            = "TS_Glock22::"        ;
+    const string            strCLASSNAME            = "weapon_ts_glock22"   ;
 
     // Asset paths
     const string            strMODEL_P              = TheSpecialists::strMODEL_PATH + "pistols/" + strNAME + "/p_" + strNAME + ".mdl";
@@ -53,23 +53,23 @@ namespace TS_Glock18
     
     const float             fHOLSTER_TIME           = TheSpecialists::fDEFAULT_HOSTER_TIME          ;
     const float             fNEXT_THINK             = TheSpecialists::fDEFAULT_NEXT_THINK           ;
-    const float             fPRIMARY_ATTACK_DELAY   = TheSpecialists::fWEAPON__GLOCK18__ATTACK_DELAY;
+    const float             fPRIMARY_ATTACK_DELAY   = TheSpecialists::fWEAPON__GLOCK22__ATTACK_DELAY;
     const float             fSWING_DISTANCE         = TheSpecialists::fSWING_DISTANCE               ;
     const IGNORE_MONSTERS   eIGNORE_RULE            = TheSpecialists::eIGNORE_RULE                  ;
-    const int               iDAMAGE                 = TheSpecialists::iWEAPON__GLOCK18__DAMAGE      ;
+    const int               iDAMAGE                 = TheSpecialists::iWEAPON__GLOCK22__DAMAGE      ;
     
     /////////////////////////////////////
-    // Glock18 class
-    class weapon_ts_glock18 : ScriptBasePlayerWeaponEntity
+    // Glock22 class
+    class weapon_ts_glock22 : ScriptBasePlayerWeaponEntity
     {
         private CBasePlayer@ m_pPlayer      ; // Player reference pointer
         private int m_iDamage               ; // Weapon damage
         private int m_bSilenced             ; // Silenced flag
         
-        TraceResult m_trHit                 ; // Keeps track of what is hit when the glock18 is swung
+        TraceResult m_trHit                 ; // Keeps track of what is hit when the glock22 is swung
         
         //////////////////////////////////////////
-        // TS_Glock18::Spawn                    //
+        // TS_Glock22::Spawn                    //
         // Function:                            //
         //      Spawn function for the weapon   //
         // Parameters:                          //
@@ -87,7 +87,7 @@ namespace TS_Glock18
             g_EntityFuncs.SetModel(self, self.GetW_Model(strMODEL_W));
             
             // Set the clip size
-            self.m_iClip = TheSpecialists::iWEAPON__CLIP__GLOCK18;
+            self.m_iClip = TheSpecialists::iWEAPON__CLIP__GLOCK22;
             
             // Set the weapon damage
             self.m_flCustomDmg = m_iDamage;
@@ -97,7 +97,7 @@ namespace TS_Glock18
         } // End of Spawn()
 
         //////////////////////////////////////////////////
-        // TS_Glock18::Precache                         //
+        // TS_Glock22::Precache                         //
         // Function:                                    //
         //      Prechacing function for weapon assets   //
         // Parameters:                                  //
@@ -126,7 +126,7 @@ namespace TS_Glock18
         } // End of Precache()
 
         //////////////////////////////////////////////////////////////////////////////
-        // TS_Glock18::GetItemInfo                                                  //
+        // TS_Glock22::GetItemInfo                                                  //
         // Function:                                                                //
         //      Sets the weapon metadata                                            //
         // Parameters:                                                              //
@@ -136,18 +136,18 @@ namespace TS_Glock18
         //////////////////////////////////////////////////////////////////////////////
         bool GetItemInfo(ItemInfo& out info)
         {
-            info.iMaxClip		= TheSpecialists::iWEAPON__CLIP__GLOCK18        ;
-            info.iMaxAmmo1		= TheSpecialists::iWEAPON__AMMO1__GLOCK18       ;
-            info.iMaxAmmo2		= TheSpecialists::iWEAPON__AMMO2__GLOCK18       ;
+            info.iMaxClip		= TheSpecialists::iWEAPON__CLIP__GLOCK22        ;
+            info.iMaxAmmo1		= TheSpecialists::iWEAPON__AMMO1__GLOCK22       ;
+            info.iMaxAmmo2		= TheSpecialists::iWEAPON__AMMO2__GLOCK22       ;
             info.iSlot			= TheSpecialists::iWEAPON__SLOT__PISTOL         ;
-            info.iPosition		= TheSpecialists::iWEAPON__POSITION__GLOCK18    ;
+            info.iPosition		= TheSpecialists::iWEAPON__POSITION__GLOCK22    ;
             info.iWeight		= TheSpecialists::iDEFAULT_WEIGHT               ;
             
             return true;
         } // End of GetItemInfo()
         
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_Glock18::AddToPlayer                                                                  //
+        // TS_Glock22::AddToPlayer                                                                  //
         // Function:                                                                                //
         //      Adds the weapon to the player if they exist                                         //
         //      If the player exists, save a reference to the player                                //
@@ -167,7 +167,7 @@ namespace TS_Glock18
                 @m_pPlayer = pPlayer;
                 
                 // Debug printing
-            g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "Glock 18 m_iPrimaryAmmoType: " + self.m_iPrimaryAmmoType + "\n");
+            g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "Glock 22 m_iPrimaryAmmoType: " + self.m_iPrimaryAmmoType + "\n");
                 
                 NetworkMessage message
                 (
@@ -189,7 +189,7 @@ namespace TS_Glock18
         } // End of AddToPlayer()
 
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_Glock18::Deploy                                                                       //
+        // TS_Glock22::Deploy                                                                       //
         // Function:                                                                                //
         //      Adds the weapon to the player if they exist                                         //
         //      If the player exists, save a reference to the player                                //
@@ -210,7 +210,7 @@ namespace TS_Glock18
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_Glock18::Holster                                                                      //
+        // TS_Glock22::Holster                                                                      //
         // Function:                                                                                //
         //      Hides the weapon from the player                                                    //
         // Parameters:                                                                              //
@@ -228,12 +228,12 @@ namespace TS_Glock18
             // Hide the player model by making the viewmodel path empty
             m_pPlayer.pev.viewmodel = "";
             
-            // Tell the looping function to stop calling any of our glock18 functions
+            // Tell the looping function to stop calling any of our glock22 functions
             SetThink(null);
         } // End of Holster()
         
         //////////////////////////////////////////////////
-        // TS_Glock18::PrimaryAttack                    //
+        // TS_Glock22::PrimaryAttack                    //
         // Function:                                    //
         //      Performs the weapon's primary attack    //
         // Parameters:                                  //
@@ -243,13 +243,17 @@ namespace TS_Glock18
         //////////////////////////////////////////////////
         void PrimaryAttack()
         {
-            Shoot();
+            // Determine if the player hasn't already started pressing the fire button
+            if ((m_pPlayer.m_afButtonPressed & IN_ATTACK) != 0)
+            {
+                Shoot();
+            }
             
             self.m_flNextPrimaryAttack = g_Engine.time + fPRIMARY_ATTACK_DELAY;
         } // End of PrimaryAttack()
 
         //////////////////////////////
-        // TS_Glock18::Shoot        //
+        // TS_Glock22::Shoot        //
         // Function:                //
         //      Gun fire handling   //
         // Parameters:              //
@@ -349,7 +353,7 @@ namespace TS_Glock18
         } // End of Shoot()
         
         //////////////////////////////////////////////////
-        // TS_Glock18::ApplyBulletDecal                 //
+        // TS_Glock22::ApplyBulletDecal                 //
         // Function:                                    //
         //      Handles bullet hole decal generation    //
         // Parameters:                                  //
@@ -399,7 +403,7 @@ namespace TS_Glock18
         } // End of ApplyBulletDecal()
 
         //////////////////////////
-        // TS_Glock18::Reload   //
+        // TS_Glock22::Reload   //
         // Function:            //
         //      Reload handler  //
         // Parameters:          //
@@ -410,20 +414,20 @@ namespace TS_Glock18
         void Reload()
         {
             // Determine if the gun does not need to reload
-            if (    (self.m_iClip == TheSpecialists::iWEAPON__CLIP__GLOCK18)
+            if (    (self.m_iClip == TheSpecialists::iWEAPON__CLIP__GLOCK22)
                  || (m_pPlayer.m_rgAmmo(self.m_iPrimaryAmmoType) <= 0)    )
             {
                 return;
             }
         
-            self.DefaultReload(TheSpecialists::iWEAPON__CLIP__GLOCK18, Animations::RELOAD1, 1.5, 0);
+            self.DefaultReload(TheSpecialists::iWEAPON__CLIP__GLOCK22, Animations::RELOAD1, 1.5, 0);
 
             // Set 3rd person reloading animation -Sniper
             BaseClass.Reload();
         } // End of Reload()
 
         //////////////////////////////////////
-        // TS_Glock18::PlayEmptySound       //
+        // TS_Glock22::PlayEmptySound       //
         // Function:                        //
         //      Plays the dry fire sound    //
         // Parameters:                      //
@@ -437,7 +441,7 @@ namespace TS_Glock18
         } // End of PlayEmptySound()
         
         //////////////////////////////////////////////////////////////////////////////////////
-        // TS_Glock18::PlaySoundDynamicWithVariablePitch                                    //
+        // TS_Glock22::PlaySoundDynamicWithVariablePitch                                    //
         // Function:                                                                        //
         //      Interface with PlaySoundDynamic, includes variable pitch for audial flavor  //
         // Parameters:                                                                      //
@@ -467,7 +471,7 @@ namespace TS_Glock18
         } // End of PlaySoundDynamicWithVariablePitch()
         
         //////////////////////////////////////////////////////////////////////////
-        // TS_Glock18::PlaySoundDynamic                                         //
+        // TS_Glock22::PlaySoundDynamic                                         //
         // Function:                                                            //
         //      Interface with g_SoundSystem.EmitSoundDyn                       //
         // Parameters:                                                          //
@@ -491,7 +495,7 @@ namespace TS_Glock18
             );
         } // End of PlaySoundDynamic()
         
-    } // End of class weapon_ts_glock18
+    } // End of class weapon_ts_glock22
 
     void Register_Weapon()
     {
@@ -503,4 +507,4 @@ namespace TS_Glock18
             TheSpecialists::strWEAPON__PISTOL__AMMO_TYPE  // string - ammo type
         );
     }
-} // End of namespace TS_Glock18
+} // End of namespace TS_Glock22

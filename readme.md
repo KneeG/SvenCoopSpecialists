@@ -32,7 +32,7 @@ Hopefully their functionality is also implemented as well.
 | 3  | weapon_ts_seal_knife             | Functionally complete | Add throwable blades          |
 | 4  | weapon_ts_combat_knife           | Functionally complete | To do                         |
 | 5  | weapon_ts_glock18                | Functionally complete | Add suppressor                |
-| 6  | weapon_ts_glock20                | Not started           | To do                         |
+| 6  | weapon_ts_glock22                | Functionally complete | Add suppressor                |
 | 7  | weapon_ts_fiveseven              | Not started           | To do                         |
 | 8  | weapon_ts_fiveseven_akimbo       | Not started           | To do                         |
 | 9  | weapon_ts_beretta                | Not started           | To do                         |
