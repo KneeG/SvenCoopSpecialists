@@ -107,6 +107,7 @@ namespace TS_CombatKnife
 
             // Initialize gravity on the weapon
             self.FallInit();
+            
         } // End of Spawn()
 
         //////////////////////////////////////////////////
@@ -148,8 +149,8 @@ namespace TS_CombatKnife
         //////////////////////////////////////////////////////////////////////////////
         bool GetItemInfo(ItemInfo& out info)
         {
-            info.iMaxAmmo1		= TheSpecialists::iWEAPON__AMMO1__COMBAT_KNIFE      ;
-            info.iMaxAmmo2		= TheSpecialists::iWEAPON__AMMO2__COMBAT_KNIFE      ;
+            info.iMaxAmmo1		= TheSpecialists::iWEAPON__COMBAT_KNIFE__AMMO1      ;
+            info.iMaxAmmo2		= TheSpecialists::iWEAPON__COMBAT_KNIFE__AMMO2      ;
             info.iMaxClip		= TheSpecialists::iWEAPON__MELEE__MAX_CLIP          ;
             info.iSlot			= TheSpecialists::iWEAPON__SLOT__MELEE              ;
             info.iPosition		= TheSpecialists::iWEAPON__POSITION__COMBAT_KNIFE   ;
@@ -215,7 +216,7 @@ namespace TS_CombatKnife
         void Holster(int skiplocal)
         {
             // Melee weapons don't need to reload so commenting this out
-            // self.m_fInReload = false;// cancel any reload in progress.
+            // self.m_fInReload = false;
 
             // Set the cooldown timer for the next attack
             m_pPlayer.m_flNextAttack = g_WeaponFuncs.WeaponTimeBase() + fHOLSTER_TIME;
@@ -386,7 +387,7 @@ namespace TS_CombatKnife
                          && (pEntity.BloodColor()   != DONT_BLEED       )    )
                     {
                         // Play the 'hit body' sound
-                        PlaySoundDynamicWithVariablePitch(strSOUND_HIT_BODY1);
+                        TheSpecialists::CommonFunctions::PlaySoundDynamicWithVariablePitch(m_pPlayer, strSOUND_HIT_BODY1);
 
                     } // End of if (Hit Object can Bleed)
                         
@@ -399,7 +400,7 @@ namespace TS_CombatKnife
                 if (bHitWorld)
                 {
                     // Get the appropriate sound
-                    g_SoundSystem.PlayHitSound(tr, vecSrc, vecSrc + ( vecEnd - vecSrc ) * 2, BULLET_PLAYER_CROWBAR);
+                    g_SoundSystem.PlayHitSound(tr, vecSrc, vecSrc + (vecEnd - vecSrc) * 2, BULLET_PLAYER_CROWBAR);
 
                     // Debug printing
                     // g_EngineFuncs.ClientPrintf(m_pPlayer, print_center, "Hit wall");
@@ -519,64 +520,9 @@ namespace TS_CombatKnife
             string strSound = arrList[iRandomIndex];
             
             // Play the randomly selected sound
-            PlaySoundDynamicWithVariablePitch(strSound);
+            TheSpecialists::CommonFunctions::PlaySoundDynamicWithVariablePitch(m_pPlayer, strSound);
             
         } // End of PlayRandomSoundFromList()
-        
-        //////////////////////////////////////////////////////////////////////////////////////
-        // TS_CombatKnife::PlaySoundDynamicWithVariablePitch                                //
-        // Function:                                                                        //
-        //      Interface with PlaySoundDynamic, includes variable pitch for audial flavor  //
-        // Parameters:                                                                      //
-        //      string  strSoundPath    = [IN] Path of the sound to be played               //
-        // Return value:                                                                    //
-        //      None                                                                        //
-        //////////////////////////////////////////////////////////////////////////////////////
-        void PlaySoundDynamicWithVariablePitch(string strSoundPath)
-        {
-            // Getting library defaults and so I can reference them with a shorter variable name
-            int iDefaultPitch          = TheSpecialists::iDEFAULT_PITCH;
-            int iDefaultPitchVariation = TheSpecialists::iDEFAULT_PITCH_VARIATION;
-            
-            // Generate a random pitch
-            // Move the default pitch back half the pitch variation so it's evenly spread out +/- iDefaultPitch
-            // For example, if default pitch is 100, and pitch variation is 10
-            //      Pitch before variation applied      = 95 = 100 - (10 / 2)
-            //      Pitch after variation is applied    = 95 = 100 - (10 / 2) + RandomNumberBetween(0, 10)
-            //      Range of values that can be generated [105, 95]
-            //      So the average is still around 100
-            int iPitch = (iDefaultPitch - (iDefaultPitchVariation / 2)) + Math.RandomLong(0, iDefaultPitchVariation);
-            
-            // Debug printing
-            // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "PlaySoundDynamicWithVariablePitch: strSoundPath=" + strSoundPath + "\n");
-            
-            PlaySoundDynamic(strSoundPath, iPitch);
-        } // End of PlaySoundDynamicWithVariablePitch()
-        
-        //////////////////////////////////////////////////////////////////////////
-        // TS_CombatKnife::PlaySoundDynamic                                     //
-        // Function:                                                            //
-        //      Interface with g_SoundSystem.EmitSoundDyn                       //
-        // Parameters:                                                          //
-        //      string  strSoundPath    = [IN] Path of the sound to be played   //
-        //      int     iPitch          = [IN] Pitch of the sound               //
-        // Return value:                                                        //
-        //      None                                                            //
-        //////////////////////////////////////////////////////////////////////////
-        void PlaySoundDynamic(string strSoundPath, int iPitch)
-        {
-            g_SoundSystem.EmitSoundDyn
-            (
-                m_pPlayer.edict()                   , // edict_t@ entity
-                TheSpecialists::scDEFAULT_CHANNEL      , // SOUND_CHANNEL channel
-                strSoundPath                        , // const string& in szSample
-                TheSpecialists::fDEFAULT_VOLUME        , // float flVolume
-                TheSpecialists::fDEFAULT_ATTENUATION   , // float flAttenuation
-                0                                   , // int iFlags = 0
-                iPitch                                // int iPitch = PITCH_NORM
-                                                      // int target_ent_unreliable = 0
-            );
-        } // End of PlaySoundDynamic()
         
     } // End of class weapon_ts_combat_knife
 

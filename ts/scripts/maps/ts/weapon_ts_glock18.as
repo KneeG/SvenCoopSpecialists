@@ -57,6 +57,7 @@ namespace TS_Glock18
     const float             fSWING_DISTANCE         = TheSpecialists::fSWING_DISTANCE               ;
     const IGNORE_MONSTERS   eIGNORE_RULE            = TheSpecialists::eIGNORE_RULE                  ;
     const int               iDAMAGE                 = TheSpecialists::iWEAPON__GLOCK18__DAMAGE      ;
+    const Vector            vecSPREAD               = TheSpecialists::vecWEAPON__GLOCK18__SPREAD    ;
     
     /////////////////////////////////////
     // Glock18 class
@@ -87,7 +88,7 @@ namespace TS_Glock18
             g_EntityFuncs.SetModel(self, self.GetW_Model(strMODEL_W));
             
             // Set the clip size
-            self.m_iClip = TheSpecialists::iWEAPON__CLIP__GLOCK18;
+            self.m_iClip = TheSpecialists::iWEAPON__GLOCK18__CLIP;
             
             // Set the weapon damage
             self.m_flCustomDmg = m_iDamage;
@@ -136,9 +137,9 @@ namespace TS_Glock18
         //////////////////////////////////////////////////////////////////////////////
         bool GetItemInfo(ItemInfo& out info)
         {
-            info.iMaxClip		= TheSpecialists::iWEAPON__CLIP__GLOCK18        ;
-            info.iMaxAmmo1		= TheSpecialists::iWEAPON__AMMO1__GLOCK18       ;
-            info.iMaxAmmo2		= TheSpecialists::iWEAPON__AMMO2__GLOCK18       ;
+            info.iMaxClip		= TheSpecialists::iWEAPON__GLOCK18__CLIP        ;
+            info.iMaxAmmo1		= TheSpecialists::iWEAPON__GLOCK18__AMMO1       ;
+            info.iMaxAmmo2		= TheSpecialists::iWEAPON__GLOCK18__AMMO2       ;
             info.iSlot			= TheSpecialists::iWEAPON__SLOT__PISTOL         ;
             info.iPosition		= TheSpecialists::iWEAPON__POSITION__GLOCK18    ;
             info.iWeight		= TheSpecialists::iDEFAULT_WEIGHT               ;
@@ -167,7 +168,7 @@ namespace TS_Glock18
                 @m_pPlayer = pPlayer;
                 
                 // Debug printing
-            g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "Glock 18 m_iPrimaryAmmoType: " + self.m_iPrimaryAmmoType + "\n");
+                // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "Glock 18 m_iPrimaryAmmoType: " + self.m_iPrimaryAmmoType + "\n");
                 
                 NetworkMessage message
                 (
@@ -220,7 +221,8 @@ namespace TS_Glock18
         //////////////////////////////////////////////////////////////////////////////////////////////
         void Holster(int skiplocal)
         {
-            self.m_fInReload = false;// cancel any reload in progress.
+            // Cancel any reload in progress
+            self.m_fInReload = false;
 
             // Set the cooldown timer for the next attack
             m_pPlayer.m_flNextAttack = g_WeaponFuncs.WeaponTimeBase() + fHOLSTER_TIME;
@@ -266,7 +268,7 @@ namespace TS_Glock18
             int iPrimaryAmmo = m_pPlayer.m_rgAmmo(self.m_iPrimaryAmmoType);
             
             // Determine if the player is above water
-            if (m_pPlayer.pev.waterlevel != WATERLEVEL_HEAD)
+            if (TheSpecialists::CommonFunctions::IsAboveWater(m_pPlayer.pev.waterlevel))
             {
                 // Determine if the weapon has bullets left in the magazine
                 if (self.m_iClip > 0)
@@ -291,7 +293,7 @@ namespace TS_Glock18
                     m_pPlayer.m_iWeaponFlash    = NORMAL_GUN_FLASH;
 
                     // Play the fire sound
-                    PlaySoundDynamicWithVariablePitch(strSOUND_FIRE);
+                    TheSpecialists::CommonFunctions::PlaySoundDynamicWithVariablePitch(m_pPlayer, strSOUND_FIRE);
                     
                     Vector vecSrc	 = m_pPlayer.GetGunPosition();
                     Vector vecAiming = m_pPlayer.GetAutoaimVector(AUTOAIM_5DEGREES);
@@ -303,7 +305,7 @@ namespace TS_Glock18
                         1                                       , // ULONG cShots           - Number of bullets fired, anything more than 1 is useful for shotguns
                         vecSrc                                  , // Vector vecSrc          - Vector where the shot is originating from, but it's a vector so I don't know why this information isn't already stored in a single vector
                         vecAiming                               , // Vector vecDirShooting  - Vector where the shot is going to go towards
-                        VECTOR_CONE_6DEGREES                    , // Vector vecSpread       - Vector detailing how large the cone of randomness the bullets will randomly spread out
+                        vecSPREAD                               , // Vector vecSpread       - Vector detailing how large the cone of randomness the bullets will randomly spread out
                         TheSpecialists::fMAXIMUM_FIRE_DISTANCE  , // float flDistance       - Maximum distance the bullet will scan for a hit
                         BULLET_PLAYER_MP5                       , // int iBulletType        - Bullet type, not sure what this means
                         2                                       , // int iTracerFreq = 4    - How frequently there will be bullet tracers, not sure what the scale is
@@ -313,12 +315,16 @@ namespace TS_Glock18
                     // Decrement the magazine by one
                     self.m_iClip--;
                     
-                    // Determine if the magazine is empty, and there is no ammo left in reserve
-                    if (    (0 == self.m_iClip)
-                         && (0 == iPrimaryAmmo)    )
+                    // Determine if the magazine is empty
+                    if (0 == self.m_iClip)
                     {
-                        // Indicate to the user that the weapon is completely empty
-                        m_pPlayer.SetSuitUpdate("!HEV_AMO0", false, 0);
+                        // Indicate to the user that the magazine is empty
+                        self.SendWeaponAnim
+                        (
+                            Animations::SHOOTEMPTY1 , // Animation index
+                            0                       , // skiplocal (Don't know what this means)
+                            0                         // body (probably model related 'body')
+                        );
                     }
                     
                     // View punch as a way to simulate recoil
@@ -326,14 +332,14 @@ namespace TS_Glock18
                     //      Move the players cursor instead of applying a visual transformation
                     m_pPlayer.pev.punchangle.x = Math.RandomLong(-2, 2);
                     
-                    ApplyBulletDecal(vecSrc, vecAiming);
+                    TheSpecialists::CommonFunctions::ApplyBulletDecal(m_pPlayer, vecSrc, vecAiming);
                     
                 } // End of if (self.m_iClip > 0)
                 else
                 {
                     // The weapon magazine is empty
                     
-                    self.PlayEmptySound();
+                    TheSpecialists::CommonFunctions::PlayEmptySound(m_pPlayer, strSOUND_EMPTY);
                     
                 } // End of else (of if (self.m_iClip > 0))
                 
@@ -342,61 +348,11 @@ namespace TS_Glock18
             {
                 // The player is under water
                 
-                self.PlayEmptySound();
+                TheSpecialists::CommonFunctions::PlayEmptySound(m_pPlayer, strSOUND_EMPTY);
                 
             } // End of else (of if (m_pPlayer.pev.waterlevel != WATERLEVEL_HEAD))
 
         } // End of Shoot()
-        
-        //////////////////////////////////////////////////
-        // TS_Glock18::ApplyBulletDecal                 //
-        // Function:                                    //
-        //      Handles bullet hole decal generation    //
-        // Parameters:                                  //
-        //      None                                    //
-        // Return value:                                //
-        //      None                                    //
-        //////////////////////////////////////////////////
-        void ApplyBulletDecal(Vector vecSrc, Vector vecAiming)
-        {
-            // Decal tracing variables
-            TraceResult tr;
-            float x;
-            float y;
-            
-            g_Utility.GetCircularGaussianSpread(x, y);
-                    
-            Vector vecDir = vecAiming 
-                            + x * VECTOR_CONE_6DEGREES.x * g_Engine.v_right 
-                            + y * VECTOR_CONE_6DEGREES.y * g_Engine.v_up;
-            Vector vecEnd	= vecSrc + vecDir * TheSpecialists::fMAXIMUM_FIRE_DISTANCE;
-
-
-            // Determine if the player hit something
-            g_Utility.TraceLine(vecSrc, vecEnd, dont_ignore_monsters, m_pPlayer.edict(), tr);
-            if (tr.flFraction < 1.0)
-            {
-                // The trace is valid
-                
-                // Determine if what was hit is a valid object
-                if (tr.pHit !is null)
-                {
-                    // There is a valid entity hit
-                    CBaseEntity@ pHit = g_EntityFuncs.Instance(tr.pHit);
-                    
-                    // Determine if the object hit is NOT an entity class type or is the map mesh
-                    if (pHit is null || pHit.IsBSPModel())
-                    {
-                        // A wall or non-entity object was hit, so apply a bullet hole decal
-                        g_WeaponFuncs.DecalGunshot(tr, BULLET_PLAYER_MP5);
-                        
-                    } // End of if (pHit is null || pHit.IsBSPModel())
-                        
-                } // End of if (tr.pHit !is null)
-                    
-            } // End of if (tr.flFraction < 1.0)
-                
-        } // End of ApplyBulletDecal()
 
         //////////////////////////
         // TS_Glock18::Reload   //
@@ -410,86 +366,18 @@ namespace TS_Glock18
         void Reload()
         {
             // Determine if the gun does not need to reload
-            if (    (self.m_iClip == TheSpecialists::iWEAPON__CLIP__GLOCK18)
+            if (    (self.m_iClip == TheSpecialists::iWEAPON__GLOCK18__CLIP)
                  || (m_pPlayer.m_rgAmmo(self.m_iPrimaryAmmoType) <= 0)    )
             {
                 return;
             }
         
-            self.DefaultReload(TheSpecialists::iWEAPON__CLIP__GLOCK18, Animations::RELOAD1, 1.5, 0);
+            self.DefaultReload(TheSpecialists::iWEAPON__GLOCK18__CLIP, Animations::RELOAD1, 1.5, 0);
 
             // Set 3rd person reloading animation -Sniper
             BaseClass.Reload();
         } // End of Reload()
-
-        //////////////////////////////////////
-        // TS_Glock18::PlayEmptySound       //
-        // Function:                        //
-        //      Plays the dry fire sound    //
-        // Parameters:                      //
-        //      None                        //
-        // Return value:                    //
-        //      None                        //
-        //////////////////////////////////////
-        void PlayEmptySound()
-        {
-            PlaySoundDynamicWithVariablePitch(strSOUND_EMPTY);
-        } // End of PlayEmptySound()
         
-        //////////////////////////////////////////////////////////////////////////////////////
-        // TS_Glock18::PlaySoundDynamicWithVariablePitch                                    //
-        // Function:                                                                        //
-        //      Interface with PlaySoundDynamic, includes variable pitch for audial flavor  //
-        // Parameters:                                                                      //
-        //      string  strSoundPath    = [IN] Path of the sound to be played               //
-        // Return value:                                                                    //
-        //      None                                                                        //
-        //////////////////////////////////////////////////////////////////////////////////////
-        void PlaySoundDynamicWithVariablePitch(string strSoundPath)
-        {
-            // Getting library defaults and so I can reference them with a shorter variable name
-            int iDefaultPitch          = TheSpecialists::iDEFAULT_PITCH;
-            int iDefaultPitchVariation = TheSpecialists::iDEFAULT_PITCH_VARIATION;
-            
-            // Generate a random pitch
-            // Move the default pitch back half the pitch variation so it's evenly spread out +/- iDefaultPitch
-            // For example, if default pitch is 100, and pitch variation is 10
-            //      Pitch before variation applied      = 95 = 100 - (10 / 2)
-            //      Pitch after variation is applied    = 95 = 100 - (10 / 2) + RandomNumberBetween(0, 10)
-            //      Range of values that can be generated [105, 95]
-            //      So the average is still around 100
-            int iPitch = (iDefaultPitch - (iDefaultPitchVariation / 2)) + Math.RandomLong(0, iDefaultPitchVariation);
-            
-            // Debug printing
-            // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "PlaySoundDynamicWithVariablePitch: strSoundPath=" + strSoundPath + "\n");
-            
-            PlaySoundDynamic(strSoundPath, iPitch);
-        } // End of PlaySoundDynamicWithVariablePitch()
-        
-        //////////////////////////////////////////////////////////////////////////
-        // TS_Glock18::PlaySoundDynamic                                         //
-        // Function:                                                            //
-        //      Interface with g_SoundSystem.EmitSoundDyn                       //
-        // Parameters:                                                          //
-        //      string  strSoundPath    = [IN] Path of the sound to be played   //
-        //      int     iPitch          = [IN] Pitch of the sound               //
-        // Return value:                                                        //
-        //      None                                                            //
-        //////////////////////////////////////////////////////////////////////////
-        void PlaySoundDynamic(string strSoundPath, int iPitch)
-        {
-            g_SoundSystem.EmitSoundDyn
-            (
-                m_pPlayer.edict()                       , // edict_t@ entity
-                TheSpecialists::scDEFAULT_CHANNEL       , // SOUND_CHANNEL channel
-                strSoundPath                            , // const string& in szSample
-                TheSpecialists::fDEFAULT_VOLUME         , // float flVolume
-                TheSpecialists::fDEFAULT_ATTENUATION    , // float flAttenuation
-                0                                       , // int iFlags = 0
-                iPitch                                    // int iPitch = PITCH_NORM
-                                                          // int target_ent_unreliable = 0
-            );
-        } // End of PlaySoundDynamic()
         
     } // End of class weapon_ts_glock18
 

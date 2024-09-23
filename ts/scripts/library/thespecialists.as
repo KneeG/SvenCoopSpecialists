@@ -130,20 +130,31 @@ namespace TheSpecialists
     
     ///////////////////////////////
     // Weapon behavior
-    const int           iDEFAULT_PITCH_VARIATION    = 15            ; // Default pitch variation (in hertz)
-    const float         iDEFAULT_PITCH              = 100           ; // Default pitch
-    const float         fDEFAULT_SOUND_DISTANCE     = 512           ; // Default limit the sound will be transmitted
-    const float         fDEFAULT_VOLUME             = 1.0           ; // Default volume (in percentage)
-    const SOUND_CHANNEL scDEFAULT_CHANNEL           = CHAN_WEAPON   ; // Default sound channel
-    const float         fDEFAULT_ATTENUATION        = ATTN_NORM     ; // Default attenuation, or sound dropoff
-    const int           iMONSTER_GUN_VOLUME         = 384           ; // Default gun fire volume, I can only assume this distance in its implementation
-    const float         fGUN_SOUND_DURATION         = 0.3           ; // How long the gun sound persists (in seconds)
-    const float         fSWING_DISTANCE             = 32.0          ; // Number of units the melee weapon can hit
-    const float         fDEFAULT_HOSTER_TIME        = 0.5           ; // Time in seconds it will take for the crowbar to be holstered
-    const int           iDEFAULT_WEIGHT             = 1             ; // Not certain what the weight does for a weapon, but it is defined in other weapon scripts
-    const float         fDEFAULT_NEXT_THINK         = 1.0           ; // Time in seconds between weapon think function calls
-    const float         fDEFAULT_FIRE_ON_EMPTY_DELAY= 0.25          ; // Time in seconds between trigger pulls while the gun is empty
-    const float         fMAXIMUM_FIRE_DISTANCE      = 8192.0        ; // Maximum distance a bullet will do damage to targets
+    
+    ///////////////////////////////
+    // Fire modes
+    namespace FireMode
+    {
+        const int iSEMI_AUTOMATIC   = 0;
+        const int iBURST_FIRE       = 1;
+        const int iAUTOMATIC        = 2;
+    } // End of namespace FireMode
+    
+    const int           iDEFAULT_FIRE_MODE          = FireMode::iSEMI_AUTOMATIC ; // Default fire mode of a weapon
+    const int           iDEFAULT_PITCH_VARIATION    = 15                        ; // Default pitch variation (in hertz)
+    const float         iDEFAULT_PITCH              = 100                       ; // Default pitch
+    const float         fDEFAULT_SOUND_DISTANCE     = 512                       ; // Default limit the sound will be transmitted
+    const float         fDEFAULT_VOLUME             = 1.0                       ; // Default volume (in percentage)
+    const SOUND_CHANNEL scDEFAULT_CHANNEL           = CHAN_WEAPON               ; // Default sound channel
+    const float         fDEFAULT_ATTENUATION        = ATTN_NORM                 ; // Default attenuation, or sound dropoff
+    const int           iMONSTER_GUN_VOLUME         = 384                       ; // Default gun fire volume, I can only assume this is distance in its implementation
+    const float         fGUN_SOUND_DURATION         = 0.3                       ; // How long the gun sound persists (in seconds)
+    const float         fSWING_DISTANCE             = 48.0                      ; // Number of units the melee weapon can hit
+    const float         fDEFAULT_HOSTER_TIME        = 0.5                       ; // Time in seconds it will take for the crowbar to be holstered
+    const int           iDEFAULT_WEIGHT             = 1                         ; // Not certain what the weight does for a weapon, but it is defined in other weapon scripts
+    const float         fDEFAULT_NEXT_THINK         = 1.0                       ; // Time in seconds between weapon think function calls
+    const float         fDEFAULT_FIRE_ON_EMPTY_DELAY= 0.25                      ; // Time in seconds between trigger pulls while the gun is empty
+    const float         fMAXIMUM_FIRE_DISTANCE      = 8192.0                    ; // Maximum distance a bullet will do damage to targets
     
     // Weapon traceline rules
     // IGNORE_MONSTERS enum     Purpose
@@ -156,55 +167,72 @@ namespace TheSpecialists
     // Attack Delay Seconds = (60 seconds / Rounds Per Minute)
     
     // Melee behavior
-    const int   iWEAPON__KATANA__DAMAGE             = 55            ;
-    const float fWEAPON__KATANA__ATTACK_DELAY       = (60 / 60)     ; // Time in seconds between swings
+    // A melee weapon will not have a clip size (might go back on this to implement blocking which uses the reload button)
+    const int iWEAPON__MELEE__MAX_CLIP              = 0;
     
-    const int   iWEAPON__SEAL_KNIFE__DAMAGE         = 20            ;
-    const float fWEAPON__SEAL_KNIFE__ATTACK_DELAY   = (60 / 240)    ; // Time in seconds between swings
+    const int   iWEAPON__KATANA__AMMO1              = -1                            ;
+    const int   iWEAPON__KATANA__AMMO2              = 1                             ;
+    const int   iWEAPON__KATANA__DAMAGE             = 55                            ;
+    const float fWEAPON__KATANA__ATTACK_DELAY       = (60 / 60.0)                     ; // Time in seconds between swings
     
-    const int   iWEAPON__COMBAT_KNIFE__DAMAGE       = 25            ;
-    const float fWEAPON__COMBAT_KNIFE__ATTACK_DELAY = (60 / 150)    ; // Time in seconds between swings
+    const int   iWEAPON__SEAL_KNIFE__AMMO1          = -1                            ;
+    const int   iWEAPON__SEAL_KNIFE__AMMO2          = 10                            ;
+    const int   iWEAPON__SEAL_KNIFE__DAMAGE         = 20                            ;
+    const float fWEAPON__SEAL_KNIFE__ATTACK_DELAY   = (60 / 240.0)                    ; // Time in seconds between swings
+    
+    const int   iWEAPON__COMBAT_KNIFE__AMMO1        = -1                            ;
+    const int   iWEAPON__COMBAT_KNIFE__AMMO2        = 5                             ;
+    const int   iWEAPON__COMBAT_KNIFE__DAMAGE       = 25                            ;
+    const float fWEAPON__COMBAT_KNIFE__ATTACK_DELAY = (60 / 150.0)                    ; // Time in seconds between swings
     
     // Pistols behavior
-    const int   iWEAPON__GLOCK18__DAMAGE            = 15            ;
-    const float fWEAPON__GLOCK18__ATTACK_DELAY      = (60.0 / 900.0); // Time in seconds between swings
+    const int       iWEAPON__GLOCK18__CLIP              = 18                            ;
+    const int       iWEAPON__GLOCK18__AMMO1             = iWEAPON__PISTOL__AMMO1__MAX   ;
+    const int       iWEAPON__GLOCK18__AMMO2             = -1                            ;
+    const Vector    vecWEAPON__GLOCK18__SPREAD          = VECTOR_CONE_4DEGREES          ; // Accuracy of the weapon
+    const int       iWEAPON__GLOCK18__FIRE_MODE         = FireMode::iAUTOMATIC          ;
+    const int       iWEAPON__GLOCK18__DAMAGE            = 15                            ;
+    const float     fWEAPON__GLOCK18__ATTACK_DELAY      = (60.0 / 900.0)                ; // Time in seconds between swings
     
-    const int   iWEAPON__GLOCK22__DAMAGE            = 23            ;
-    const float fWEAPON__GLOCK22__ATTACK_DELAY      = (60.0 / 500.0); // Time in seconds between swings
+    const int       iWEAPON__GLOCK22__CLIP              = 15                            ;
+    const int       iWEAPON__GLOCK22__AMMO1             = iWEAPON__PISTOL__AMMO1__MAX   ;
+    const int       iWEAPON__GLOCK22__AMMO2             = -1                            ;
+    const Vector    vecWEAPON__GLOCK22__SPREAD          = VECTOR_CONE_4DEGREES          ; // Accuracy of the weapon
+    const int       iWEAPON__GLOCK22__FIRE_MODE         = FireMode::iSEMI_AUTOMATIC     ;
+    const int       iWEAPON__GLOCK22__DAMAGE            = 23                            ;
+    const float     fWEAPON__GLOCK22__ATTACK_DELAY      = (60.0 / 500.0)                ; // Time in seconds between swings
+    
+    const int       iWEAPON__FIVESEVEN__CLIP            = 20                            ;
+    const int       iWEAPON__FIVESEVEN__AMMO1           = iWEAPON__PISTOL__AMMO1__MAX   ;
+    const int       iWEAPON__FIVESEVEN__AMMO2           = -1                            ;
+    const Vector    vecWEAPON__FIVESEVEN__SPREAD        = VECTOR_CONE_2DEGREES          ; // Accuracy of the weapon
+    const int       iWEAPON__FIVESEVEN__FIRE_MODE       = FireMode::iSEMI_AUTOMATIC     ;
+    const int       iWEAPON__FIVESEVEN__DAMAGE          = 18                            ;
+    const float     fWEAPON__FIVESEVEN__ATTACK_DELAY    = (60.0 / 500.0)                ; // Time in seconds between swings
     
     // Submachine guns behavior
-    const int   iWEAPON__TMP__DAMAGE                = 14            ;
-    const float fWEAPON__TMP__ATTACK_DELAY          = (60.0 / 1100.0); // Time in seconds between swings
+    const int       iWEAPON__TMP__CLIP                  = 20                            ;
+    const int       iWEAPON__TMP__AMMO1                 = iWEAPON__SMG__AMMO1__MAX      ;
+    const int       iWEAPON__TMP__AMMO2                 = -1                            ;
+    const Vector    vecWEAPON__TMP__SPREAD              = VECTOR_CONE_4DEGREES          ; // Accuracy of the weapon
+    const int       iWEAPON__TMP__FIRE_MODE             = FireMode::iAUTOMATIC          ;
+    const int       iWEAPON__TMP__DAMAGE                = 14                            ;
+    const float     fWEAPON__TMP__ATTACK_DELAY          = (60.0 / 1100.0)               ; // Time in seconds between swings
     
     
     ///////////////////////////////
     // Ammunitions
     
     // Melee weapons    
-    const int iWEAPON__MELEE__MAX_CLIP              = WEAPON_NOCLIP ; // A melee weapon will not have a clip size
-    const int iWEAPON__AMMO1__KATANA                = -1            ;
-    const int iWEAPON__AMMO1__SEAL_KNIFE            = -1            ;
-    const int iWEAPON__AMMO1__COMBAT_KNIFE          = -1            ;
-    const int iWEAPON__AMMO2__KATANA                = 1             ;
-    const int iWEAPON__AMMO2__SEAL_KNIFE            = 10            ;
-    const int iWEAPON__AMMO2__COMBAT_KNIFE          = 5             ;
+    
     
     // Pistols
-    const string    strWEAPON__PISTOL__AMMO_TYPE    = "9mm"                         ;
-    
-    const int       iWEAPON__CLIP__GLOCK18          = 18                            ;
-    const int       iWEAPON__AMMO1__GLOCK18         = iWEAPON__CLIP__GLOCK18 * 8    ;
-    const int       iWEAPON__AMMO2__GLOCK18         = -1                            ;
-    
-    const int       iWEAPON__CLIP__GLOCK22          = 15                            ;
-    const int       iWEAPON__AMMO1__GLOCK22         = iWEAPON__CLIP__GLOCK18 * 9    ;
-    const int       iWEAPON__AMMO2__GLOCK22         = -1                            ;
+    const string    strWEAPON__PISTOL__AMMO_TYPE    = "9mm";
+    const int       iWEAPON__PISTOL__AMMO1__MAX     = 250;
     
     // Submachine guns
-    const string    strWEAPON__SMG__AMMO_TYPE       = "9mm"                         ;
-    const int       iWEAPON__CLIP__TMP              = 20                            ;
-    const int       iWEAPON__AMMO1__TMP             = iWEAPON__CLIP__GLOCK18 * 8    ;
-    const int       iWEAPON__AMMO2__TMP             = -1                            ;
+    const string    strWEAPON__SMG__AMMO_TYPE       = "9mm";
+    const int       iWEAPON__SMG__AMMO1__MAX        = 250;
     
     // Rifles/Shotguns
     
@@ -248,6 +276,158 @@ namespace TheSpecialists
             if (a <= b) return (c >= a && c <= b);
             else        return (c >= a || c <= b);
         } // End of MovingBackwards()
+        
+        //////////////////////////////////////////////////////
+        // TheSpecialists::CommonFunctions::IsAboveWater    //
+        // Function:                                        //
+        //      Determines if a player is above water       //
+        // Parameters:                                      //
+        //      int iWaterLevel                             //
+        // Return value:                                    //
+        //      bool                                        //
+        //////////////////////////////////////////////////////
+        bool IsAboveWater(int iWaterLevel)
+        {
+            return iWaterLevel != WATERLEVEL_HEAD;
+        } // End of IsAboveWater()
+        
+        //////////////////////////////////////////////////////////////////
+        // TheSpecialists::CommonFunctions::AttackButtonPressed         //
+        // Function:                                                    //
+        //      Determines if a player is pressing the attack button    //
+        // Parameters:                                                  //
+        //      int iButtonPressed - Bit field                          //
+        // Return value:                                                //
+        //      bool                                                    //
+        //////////////////////////////////////////////////////////////////
+        bool AttackButtonPressed(int iButtonPressed)
+        {
+            return ((iButtonPressed & IN_ATTACK) != 0);
+        } // End of AttackButtonPressed()
+        
+        //////////////////////////////////////////////////////////////////////////////////
+        // TheSpecialists::CommonFunctions::ApplyBulletDecal                            //
+        // Function:                                                                    //
+        //      Generic weapon shooting handling function                               //
+        // Parameters:                                                                  //
+        //      CBasePlayer@    pPlayer     = [BOTH] Player who fired the weapon        //
+        //      Vector          vecSrc      = [IN  ] Where the player was firing from   //    
+        //      Vector          vecAiming   = [IN  ] Where the player was aiming at     //
+        // Return value:                                                                //
+        //      None                                                                    //
+        //////////////////////////////////////////////////////////////////////////////////
+        void ApplyBulletDecal(CBasePlayer@ pPlayer, Vector vecSrc, Vector vecAiming)
+        {
+            // Decal tracing variables
+            TraceResult tr;
+            float x;
+            float y;
+            
+            g_Utility.GetCircularGaussianSpread(x, y);
+                    
+            Vector vecDir = vecAiming 
+                            + x * VECTOR_CONE_6DEGREES.x * g_Engine.v_right 
+                            + y * VECTOR_CONE_6DEGREES.y * g_Engine.v_up;
+            Vector vecEnd	= vecSrc + vecDir * TheSpecialists::fMAXIMUM_FIRE_DISTANCE;
+
+
+            // Determine if the player hit something
+            g_Utility.TraceLine(vecSrc, vecEnd, dont_ignore_monsters, pPlayer.edict(), tr);
+            if (tr.flFraction < 1.0)
+            {
+                // The trace is valid
+                
+                // Determine if what was hit is a valid object
+                if (tr.pHit !is null)
+                {
+                    // There is a valid entity hit
+                    CBaseEntity@ pHit = g_EntityFuncs.Instance(tr.pHit);
+                    
+                    // Determine if the object hit is NOT an entity class type or is the map mesh
+                    if (pHit is null || pHit.IsBSPModel())
+                    {
+                        // A wall or non-entity object was hit, so apply a bullet hole decal
+                        g_WeaponFuncs.DecalGunshot(tr, BULLET_PLAYER_MP5);
+                        
+                    } // End of if (pHit is null || pHit.IsBSPModel())
+                        
+                } // End of if (tr.pHit !is null)
+                    
+            } // End of if (tr.flFraction < 1.0)
+                
+        } // End of ApplyBulletDecal()
+        
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // TheSpecialists::CommonFunctions::PlayEmptySound                                                          //
+        // Function:                                                                                                //
+        //      Plays the dry fire sound                                                                            //
+        // Parameters:                                                                                              //
+        //      CBasePlayer@    pPlayer         = [BOTH] The player whose location the sound will be played from    //
+        //      string          strSoundPath    = [IN  ] Path of the sound file to play                             //
+        // Return value:                                                                                            //
+        //      None                                                                                                //
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        void PlayEmptySound(CBasePlayer@ pPlayer, string strSoundPath)
+        {
+            PlaySoundDynamicWithVariablePitch(pPlayer, strSoundPath);
+        } // End of PlayEmptySound()
+        
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // TheSpecialists::CommonFunctions::PlaySoundDynamicWithVariablePitch                                       //
+        // Function:                                                                                                //
+        //      Interface with PlaySoundDynamic, includes variable pitch for audial flavor                          //
+        // Parameters:                                                                                              //
+        //      CBasePlayer@    pPlayer         = [BOTH] The player whose location the sound will be played from    //
+        //      string          strSoundPath    = [IN] Path of the sound to be played                               //
+        // Return value:                                                                                            //
+        //      None                                                                                                //
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        void PlaySoundDynamicWithVariablePitch(CBasePlayer@ pPlayer, string strSoundPath)
+        {
+            // Getting library defaults and so I can reference them with a shorter variable name
+            int iDefaultPitch          = TheSpecialists::iDEFAULT_PITCH;
+            int iDefaultPitchVariation = TheSpecialists::iDEFAULT_PITCH_VARIATION;
+            
+            // Generate a random pitch
+            // Move the default pitch back half the pitch variation so it's evenly spread out +/- iDefaultPitch
+            // For example, if default pitch is 100, and pitch variation is 10
+            //      Pitch before variation applied      = 95 = 100 - (10 / 2)
+            //      Pitch after variation is applied    = 95 = 100 - (10 / 2) + RandomNumberBetween(0, 10)
+            //      Range of values that can be generated [105, 95]
+            //      So the average is still around 100
+            int iPitch = (iDefaultPitch - (iDefaultPitchVariation / 2)) + Math.RandomLong(0, iDefaultPitchVariation);
+            
+            // Debug printing
+            // g_EngineFuncs.ClientPrintf(pPlayer, print_console, "PlaySoundDynamicWithVariablePitch: strSoundPath=" + strSoundPath + "\n");
+            
+            PlaySoundDynamic(pPlayer, strSoundPath, iPitch);
+        } // End of PlaySoundDynamicWithVariablePitch()
+        
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // TheSpecialists::CommonFunctions::PlaySoundDynamic                                                        //
+        // Function:                                                                                                //
+        //      Interface with g_SoundSystem.EmitSoundDyn                                                           //
+        // Parameters:                                                                                              //
+        //      CBasePlayer@    pPlayer         = [BOTH] The player whose location the sound will be played from    //
+        //      string          strSoundPath    = [IN  ] Path of the sound to be played                             //
+        //      int             iPitch          = [IN  ] Pitch of the sound                                         //
+        // Return value:                                                                                            //
+        //      None                                                                                                //
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        void PlaySoundDynamic(CBasePlayer@ pPlayer, string strSoundPath, int iPitch)
+        {
+            g_SoundSystem.EmitSoundDyn
+            (
+                pPlayer.edict()                         , // edict_t@ entity
+                TheSpecialists::scDEFAULT_CHANNEL       , // SOUND_CHANNEL channel
+                strSoundPath                            , // const string& in szSample
+                TheSpecialists::fDEFAULT_VOLUME         , // float flVolume
+                TheSpecialists::fDEFAULT_ATTENUATION    , // float flAttenuation
+                0                                       , // int iFlags = 0
+                iPitch                                    // int iPitch = PITCH_NORM
+                                                          // int target_ent_unreliable = 0
+            );
+        } // End of PlaySoundDynamic()
         
         //////////////////////////////////////////////////////////////////////
         // TheSpecialists::CommonFunctions::PickRandomElementFromListInt    //
