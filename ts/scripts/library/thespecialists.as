@@ -33,7 +33,7 @@
             Row 1 = Header row, the number here indicates how many rows of data follow after this one
             
             +-------+-----------+---------------+-------------------+-----------+-----------+-----------+-----------+
-            | Row # | Text      | Display mask  | Sprite path       | x start   | y start   | x end     | y end     |
+            | Row # | Text      | Display mask  | Sprite path       | x start   | y start   | width     | height    |
             +-------+-----------+---------------+-------------------+-----------+-----------+-----------+-----------+
             |   2   | weapon    |  640          | ts/combat_knife   | 0         | 0         | 128       | 48        | The image shown when the weapon is displayed on your weapon selection hud
             |   3   | weapon_s  |  640          | ts/combat_knife   | 0         | 0         | 128       | 48        | The image shown when the weapon is selected on your weapon selection hud
