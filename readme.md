@@ -13,6 +13,14 @@ Hopefully their functionality is also implemented as well.
 5. [Miscellaneous entity list](#miscellaneousentitylist)
 6. [Quick useful links](#quickusefullinks)
 
+#### Current problems
+- Crosshair sprite is missing and or incomplete
+- Don't know how to move the player's view to simulate recoil
+  all I know how to do currently is use punchangle, but the player's view will return o the center of the screen which is not the desired behavior
+- Making proper use of the melee weapons' block function, deflect bullets? Is that even possible?
+- Need to add a "useitems" command to toggle laser sight and flashlight
+- Need to figure out how to add weapon attachments
+
 <a name="progresslegend"></a>
 ## 1. Progress Legend
 | Item                  | Description                                                   |
