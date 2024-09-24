@@ -70,6 +70,13 @@ namespace TS_Fiveseven
         private float   m_flAnimationCooldown   ; // Animation cooldown timer, helps prevent the weapon from going to idle animations while the weapon is being tilted
         private bool    m_bRecoilActive         ; // Flag enabling recoil
         private float   m_fInterpolator         ; // Interpolation variable
+        
+        private float   m_fInaccuracyFactor     ; // Negatively affects weapon spread
+        private float   m_fInaccuracyDelta      ; // How much inaccuracy
+        private float   m_fInaccuracyDecay      ; // How much inaccuracy decreases over time
+        
+        Vector          m_vecAccuracy           ; // Current accuracy of the weapon
+        
         TraceResult     m_trHit                 ; // Keeps track of what is hit when the fiveseven is swung
         
         //////////////////////////////////////////
@@ -92,6 +99,13 @@ namespace TS_Fiveseven
             
             // Initialize interpolation variable
             m_fInterpolator = 0.0;
+            
+            m_fInaccuracyFactor = 1.0                                               ; // Scale factor added to weapon spread cone, negatively affects weapon spread
+            m_fInaccuracyDelta  = TheSpecialists::fWEAPON__PISTOL__INACCURACY_DELTA ; // How much inaccuracy increases per shot
+            m_fInaccuracyDecay  = TheSpecialists::fWEAPON__PISTOL__INACCURACY_DECAY ; // How much inaccuracy decreases over time
+            
+            // Initialize accuracy
+            m_vecAccuracy = vecSPREAD;
             
             // Set the world model
             g_EntityFuncs.SetModel(self, self.GetW_Model(strMODEL_W));
@@ -260,6 +274,9 @@ namespace TS_Fiveseven
                 Shoot();
             }
             
+            // Apply decay, if the player is holding the fire button, the weapon won't idle, and thus the spread won't decay
+            m_fInaccuracyFactor = TheSpecialists::CommonFunctions::SpreadDecay(m_fInaccuracyFactor, m_fInaccuracyDecay);
+            
             self.m_flNextPrimaryAttack  = g_Engine.time + fPRIMARY_ATTACK_DELAY;
             m_flAnimationCooldown       = g_Engine.time + 1.0;
         } // End of PrimaryAttack()
@@ -282,7 +299,7 @@ namespace TS_Fiveseven
             int iPrimaryAmmo = m_pPlayer.m_rgAmmo(self.m_iPrimaryAmmoType);
             
             // Determine if the player is above water
-            if (m_pPlayer.pev.waterlevel != WATERLEVEL_HEAD)
+            if (TheSpecialists::CommonFunctions::IsAboveWater(m_pPlayer.pev.waterlevel))
             {
                 // Determine if the weapon has bullets left in the magazine
                 if (self.m_iClip > 0)
@@ -311,6 +328,7 @@ namespace TS_Fiveseven
                     
                     Vector vecSrc	 = m_pPlayer.GetGunPosition();
                     Vector vecAiming = m_pPlayer.GetAutoaimVector(AUTOAIM_5DEGREES);
+                    m_vecAccuracy    = vecSPREAD * m_fInaccuracyFactor;
                     
                     // Fire bullets from the player
                     // https://github.com/ValveSoftware/halflife/blob/e5815c34e2772a247a6843b67eab7c3395bdba66/dlls/cbase.h#L255
@@ -319,12 +337,18 @@ namespace TS_Fiveseven
                         1                                       , // ULONG cShots           - Number of bullets fired, anything more than 1 is useful for shotguns
                         vecSrc                                  , // Vector vecSrc          - Vector where the shot is originating from, but it's a vector so I don't know why this information isn't already stored in a single vector
                         vecAiming                               , // Vector vecDirShooting  - Vector where the shot is going to go towards
-                        vecSPREAD                               , // Vector vecSpread       - Vector detailing how large the cone of randomness the bullets will randomly spread out
+                        m_vecAccuracy                           , // Vector vecSpread       - Vector detailing how large the cone of randomness the bullets will randomly spread out
                         TheSpecialists::fMAXIMUM_FIRE_DISTANCE  , // float flDistance       - Maximum distance the bullet will scan for a hit
                         BULLET_PLAYER_MP5                       , // int iBulletType        - Bullet type, not sure what this means
                         2                                       , // int iTracerFreq = 4    - How frequently there will be bullet tracers, not sure what the scale is
                         iDAMAGE                                   // int iDamage = 0        - How much damage the bullet will do
                     );
+                    
+                    // Increase weapon spread
+                    m_fInaccuracyFactor = TheSpecialists::CommonFunctions::SpreadIncrease(m_fInaccuracyFactor, m_fInaccuracyDelta, TheSpecialists::fWEAPON__PISTOL__MAX_INACCURACY);
+                    
+                    // Debug printing
+                    // g_EngineFuncs.ClientPrintf(m_pPlayer, print_center, "Fiveseven Accuracy Factor: " + m_fInaccuracyFactor + "\n");
                     
                     // Decrement the magazine by one
                     self.m_iClip--;
@@ -341,15 +365,8 @@ namespace TS_Fiveseven
                         );
                     }
                     
-                    // View punch as a way to simulate recoil
-                    // TODO:
-                    //      Move the players cursor instead of applying a visual transformation
-                    
-                    // Set the recoil flag to true
-                    m_bRecoilActive = true;
-                    m_fInterpolator = fINTERPOLATION_START;
-                    
-                    TheSpecialists::CommonFunctions::ApplyBulletDecal(m_pPlayer, vecSrc, vecAiming);
+                    TheSpecialists::CommonFunctions::WeaponRecoil(m_pPlayer);
+                    TheSpecialists::CommonFunctions::ApplyBulletDecal(m_pPlayer, vecSrc, vecAiming, m_vecAccuracy);
                     
                 } // End of if (self.m_iClip > 0)
                 else
@@ -392,48 +409,31 @@ namespace TS_Fiveseven
             self.DefaultReload(TheSpecialists::iWEAPON__FIVESEVEN__CLIP, Animations::RELOAD1, 1.5, 0);
             
             // Allow the reload animation to play through before idling
-            m_flAnimationCooldown = g_Engine.time + 1.0;
+            m_flAnimationCooldown = g_Engine.time + 2.5;
             
             // Set 3rd person reloading animation -Sniper
             BaseClass.Reload();
         } // End of Reload()
         
-        //////////////////////////
-        // TS_TMP::WeaponIdle   //
-        // Function:            //
-        //      Reload handler  //
-        // Parameters:          //
-        //      None            //
-        // Return value:        //
-        //      None            //
-        //////////////////////////
+        //////////////////////////////
+        // TS_Fiveseven::WeaponIdle //
+        // Function:                //
+        //      Weapon idle handler //
+        // Parameters:              //
+        //      None                //
+        // Return value:            //
+        //      None                //
+        //////////////////////////////
         void WeaponIdle()
         {
-            int iAnimationIndex = 0;
-            float fInterpolation_result = 0.0;
+            // Decrease the weapon spread while it is not being fired
+            m_fInaccuracyFactor = TheSpecialists::CommonFunctions::SpreadDecay(m_fInaccuracyFactor, m_fInaccuracyDecay);
             
-            if (m_bRecoilActive)
+            // Failed attempt at recoil that doesn't involve view punching
+            /*if (m_bRecoilActive)
             {
-                // Get the interpolated value
-                fInterpolation_result = sin(m_fInterpolator + 0.5);
-                
-                // Decrease the interpolation delta
-                m_fInterpolator += 0.2;
-                
-                // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "1 fiveseven: player pev angles (x,y)=(" + m_pPlayer.pev.v_angle.x + ", " + m_pPlayer.pev.v_angle.y + ")\n");
-                // m_pPlayer.pev.v_angle.x += 50.0;
-                m_pPlayer.pev.avelocity = Vector(0.0, -fInterpolation_result, 0.0);
-                g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "sin(m_fInterpolator - pi/2)=" + fInterpolation_result + "\n");
-                
-                // Set the fixangle to 2 (or velocity based angle)
-                m_pPlayer.pev.fixangle = 2;
-                
-                // Determine if the interpolative delta has reached 0
-                if (fInterpolation_result < 0.0)
-                {
-                    m_bRecoilActive = false;
-                }
-            }
+                m_bRecoilActive = TheSpecialists::CommonFunctions::WeaponRecoil(m_pPlayer, m_fInterpolator);
+            }*/
             
             // Determine if the tilting animation has finished
             if (m_flAnimationCooldown < g_Engine.time)

@@ -63,11 +63,18 @@ namespace TS_Glock18
     // Glock18 class
     class weapon_ts_glock18 : ScriptBasePlayerWeaponEntity
     {
-        private CBasePlayer@ m_pPlayer      ; // Player reference pointer
-        private int m_iDamage               ; // Weapon damage
-        private int m_bSilenced             ; // Silenced flag
+        private CBasePlayer@ m_pPlayer          ; // Player reference pointer
+        private int     m_iDamage               ; // Weapon damage
+        private int     m_bSilenced             ; // Silenced flag
+        private float   m_flAnimationCooldown   ; // Animation cooldown timer, helps prevent the weapon from going to idle animations while the weapon is being tilted
+
+        private float   m_fInaccuracyFactor     ; // Negatively affects weapon spread
+        private float   m_fInaccuracyDelta      ; // How much inaccuracy
+        private float   m_fInaccuracyDecay      ; // How much inaccuracy decreases over time
         
-        TraceResult m_trHit                 ; // Keeps track of what is hit when the glock18 is swung
+        Vector          m_vecAccuracy           ; // Current accuracy of the weapon
+        
+        TraceResult     m_trHit                 ; // Keeps track of what is hit when the glock18 is swung
         
         //////////////////////////////////////////
         // TS_Glock18::Spawn                    //
@@ -83,6 +90,13 @@ namespace TS_Glock18
             self.Precache();
             
             m_iDamage = iDAMAGE;
+            
+            m_fInaccuracyFactor = 1.0                                               ; // Scale factor added to weapon spread cone, negatively affects weapon spread
+            m_fInaccuracyDelta  = TheSpecialists::fWEAPON__PISTOL__INACCURACY_DELTA ; // How much inaccuracy increases per shot
+            m_fInaccuracyDecay  = TheSpecialists::fWEAPON__PISTOL__INACCURACY_DECAY ; // How much inaccuracy decreases over time
+            
+            // Initialize accuracy
+            m_vecAccuracy = vecSPREAD;
             
             // Set the world model
             g_EntityFuncs.SetModel(self, self.GetW_Model(strMODEL_W));
@@ -245,9 +259,14 @@ namespace TS_Glock18
         //////////////////////////////////////////////////
         void PrimaryAttack()
         {
+            // Fully automatic SMG so no need to check for any button presses
             Shoot();
             
-            self.m_flNextPrimaryAttack = g_Engine.time + fPRIMARY_ATTACK_DELAY;
+            // Apply decay, if the player is holding the fire button, the weapon won't idle, and thus the spread won't decay
+            m_fInaccuracyFactor = TheSpecialists::CommonFunctions::SpreadDecay(m_fInaccuracyFactor, m_fInaccuracyDecay);
+            
+            self.m_flNextPrimaryAttack  = g_Engine.time + fPRIMARY_ATTACK_DELAY;
+            m_flAnimationCooldown       = g_Engine.time + 1.0;
         } // End of PrimaryAttack()
 
         //////////////////////////////
@@ -297,6 +316,7 @@ namespace TS_Glock18
                     
                     Vector vecSrc	 = m_pPlayer.GetGunPosition();
                     Vector vecAiming = m_pPlayer.GetAutoaimVector(AUTOAIM_5DEGREES);
+                    m_vecAccuracy    = vecSPREAD * m_fInaccuracyFactor;
                     
                     // Fire bullets from the player
                     // https://github.com/ValveSoftware/halflife/blob/e5815c34e2772a247a6843b67eab7c3395bdba66/dlls/cbase.h#L255
@@ -305,7 +325,7 @@ namespace TS_Glock18
                         1                                       , // ULONG cShots           - Number of bullets fired, anything more than 1 is useful for shotguns
                         vecSrc                                  , // Vector vecSrc          - Vector where the shot is originating from, but it's a vector so I don't know why this information isn't already stored in a single vector
                         vecAiming                               , // Vector vecDirShooting  - Vector where the shot is going to go towards
-                        vecSPREAD                               , // Vector vecSpread       - Vector detailing how large the cone of randomness the bullets will randomly spread out
+                        m_vecAccuracy                           , // Vector vecSpread       - Vector detailing how large the cone of randomness the bullets will randomly spread out
                         TheSpecialists::fMAXIMUM_FIRE_DISTANCE  , // float flDistance       - Maximum distance the bullet will scan for a hit
                         BULLET_PLAYER_MP5                       , // int iBulletType        - Bullet type, not sure what this means
                         2                                       , // int iTracerFreq = 4    - How frequently there will be bullet tracers, not sure what the scale is
@@ -326,13 +346,9 @@ namespace TS_Glock18
                             0                         // body (probably model related 'body')
                         );
                     }
-                    
-                    // View punch as a way to simulate recoil
-                    // TODO:
-                    //      Move the players cursor instead of applying a visual transformation
-                    m_pPlayer.pev.punchangle.x = Math.RandomLong(-2, 2);
-                    
-                    TheSpecialists::CommonFunctions::ApplyBulletDecal(m_pPlayer, vecSrc, vecAiming);
+
+                    TheSpecialists::CommonFunctions::WeaponRecoil(m_pPlayer);
+                    TheSpecialists::CommonFunctions::ApplyBulletDecal(m_pPlayer, vecSrc, vecAiming, m_vecAccuracy);
                     
                 } // End of if (self.m_iClip > 0)
                 else
@@ -374,10 +390,37 @@ namespace TS_Glock18
         
             self.DefaultReload(TheSpecialists::iWEAPON__GLOCK18__CLIP, Animations::RELOAD1, 1.5, 0);
 
+            // Prevent the weapon idle animation from overriding the reload animation
+            m_flAnimationCooldown = g_Engine.time + 2.5;
+
             // Set 3rd person reloading animation -Sniper
             BaseClass.Reload();
+            
         } // End of Reload()
         
+        //////////////////////////////
+        // TS_Glock18::WeaponIdle   //
+        // Function:                //
+        //      Weapon idle handler //
+        // Parameters:              //
+        //      None                //
+        // Return value:            //
+        //      None                //
+        //////////////////////////////
+        void WeaponIdle()
+        {
+            int iAnimationIndex = 0;
+            
+            // Decrease the weapon spread while it is not being fired
+            m_fInaccuracyFactor = TheSpecialists::CommonFunctions::SpreadDecay(m_fInaccuracyFactor, m_fInaccuracyDecay);
+            
+            // Determine if the tilting animation has finished
+            if (m_flAnimationCooldown < g_Engine.time)
+            {
+                self.SendWeaponAnim(iAnimationIndex);
+            } // End of if (m_flAnimationCooldown < g_Engine.time)
+            
+        } // End of WeaponIdle()
         
     } // End of class weapon_ts_glock18
 

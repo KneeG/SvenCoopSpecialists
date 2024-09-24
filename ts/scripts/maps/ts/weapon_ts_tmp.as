@@ -73,14 +73,20 @@ namespace TS_TMP
     // TMP class
     class weapon_ts_tmp : ScriptBasePlayerWeaponEntity
     {
-        private CBasePlayer@ m_pPlayer      ; // Player reference pointer
-        private int m_iDamage               ; // Weapon damage
-        private bool m_bSilenced            ; // Silenced flag
-        private bool m_bSideways            ; // Sideways flag
-        private bool m_bTilting             ; // Tilting flag, helps prevent the weapon from going to idle animations while the weapon is being tilted
-        private float m_flAnimationCooldown ; // Animation cooldown timer, helps prevent the weapon from going to idle animations while the weapon is being tilted
+        private CBasePlayer@ m_pPlayer          ; // Player reference pointer
+        private int     m_iDamage               ; // Weapon damage
+        private bool    m_bSilenced             ; // Silenced flag
+        private bool    m_bSideways             ; // Sideways flag
+        private bool    m_bTilting              ; // Tilting flag, helps prevent the weapon from going to idle animations while the weapon is being tilted
+        private float   m_flAnimationCooldown   ; // Animation cooldown timer, helps prevent the weapon from going to idle animations while the weapon is being tilted
         
-        TraceResult m_trHit                 ; // Keeps track of what is hit when the tmp is swung
+        private float   m_fInaccuracyFactor     ; // Negatively affects weapon spread
+        private float   m_fInaccuracyDelta      ; // How much inaccuracy
+        private float   m_fInaccuracyDecay      ; // How much inaccuracy decreases over time
+        
+        Vector          m_vecAccuracy           ; // Current accuracy of the weapon
+        
+        TraceResult     m_trHit                 ; // Keeps track of what is hit when the tmp is swung
         
         //////////////////////////////////////////
         // TS_TMP::Spawn                        //
@@ -99,6 +105,13 @@ namespace TS_TMP
             
             // Start the weapon facing upright
             m_bSideways = false;
+            
+            m_fInaccuracyFactor = 1.0                                               ; // Scale factor added to weapon spread cone, negatively affects weapon spread
+            m_fInaccuracyDelta  = TheSpecialists::fWEAPON__PISTOL__INACCURACY_DELTA ; // How much inaccuracy increases per shot
+            m_fInaccuracyDecay  = TheSpecialists::fWEAPON__PISTOL__INACCURACY_DECAY ; // How much inaccuracy decreases over time
+            
+            // Initialize accuracy
+            m_vecAccuracy = vecSPREAD;
             
             // Set the world model
             g_EntityFuncs.SetModel(self, self.GetW_Model(strMODEL_W));
@@ -184,7 +197,7 @@ namespace TS_TMP
                 @m_pPlayer = pPlayer;
                 
                 // Debug printing
-                g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "TMP m_iPrimaryAmmoType: " + self.m_iPrimaryAmmoType + "\n");
+                // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "TMP m_iPrimaryAmmoType: " + self.m_iPrimaryAmmoType + "\n");
                 
                 NetworkMessage message
                 (
@@ -260,7 +273,11 @@ namespace TS_TMP
         //////////////////////////////////////////////////
         void PrimaryAttack()
         {
+            // Fully automatic SMG so no need to check for any button presses
             Shoot();
+            
+            // Apply decay, if the player is holding the fire button, the weapon won't idle, and thus the spread won't decay
+            m_fInaccuracyFactor = TheSpecialists::CommonFunctions::SpreadDecay(m_fInaccuracyFactor, m_fInaccuracyDecay);
             
             self.m_flNextPrimaryAttack  = g_Engine.time + fPRIMARY_ATTACK_DELAY;
             m_flAnimationCooldown       = g_Engine.time + 1.0;
@@ -358,6 +375,7 @@ namespace TS_TMP
                     
                     Vector vecSrc	 = m_pPlayer.GetGunPosition();
                     Vector vecAiming = m_pPlayer.GetAutoaimVector(AUTOAIM_5DEGREES);
+                    m_vecAccuracy    = vecSPREAD * m_fInaccuracyFactor;
                     
                     // Fire bullets from the player
                     // https://github.com/ValveSoftware/halflife/blob/e5815c34e2772a247a6843b67eab7c3395bdba66/dlls/cbase.h#L255
@@ -366,7 +384,7 @@ namespace TS_TMP
                         1                                       , // ULONG cShots           - Number of bullets fired, anything more than 1 is useful for shotguns
                         vecSrc                                  , // Vector vecSrc          - Vector where the shot is originating from, but it's a vector so I don't know why this information isn't already stored in a single vector
                         vecAiming                               , // Vector vecDirShooting  - Vector where the shot is going to go towards
-                        vecSPREAD                               , // Vector vecSpread       - Vector detailing how large the cone of randomness the bullets will randomly spread out
+                        m_vecAccuracy                           , // Vector vecSpread       - Vector detailing how large the cone of randomness the bullets will randomly spread out
                         TheSpecialists::fMAXIMUM_FIRE_DISTANCE  , // float flDistance       - Maximum distance the bullet will scan for a hit
                         BULLET_PLAYER_MP5                       , // int iBulletType        - Bullet type, not sure what this means
                         2                                       , // int iTracerFreq = 4    - How frequently there will be bullet tracers, not sure what the scale is
@@ -376,20 +394,10 @@ namespace TS_TMP
                     // Decrement the magazine by one
                     self.m_iClip--;
                     
-                    // Determine if the magazine is empty, and there is no ammo left in reserve
-                    if (    (0 == self.m_iClip)
-                         && (0 == iPrimaryAmmo)    )
-                    {
-                        // Indicate to the user that the weapon is completely empty
-                        m_pPlayer.SetSuitUpdate("!HEV_AMO0", false, 0);
-                    }
+                    // No empty weapon animation so not checking for 0 clip
                     
-                    // View punch as a way to simulate recoil
-                    // TODO:
-                    //      Move the players cursor instead of applying a visual transformation
-                    m_pPlayer.pev.punchangle.x = Math.RandomLong(-2, 2);
-                    
-                    TheSpecialists::CommonFunctions::ApplyBulletDecal(m_pPlayer, vecSrc, vecAiming);
+                    TheSpecialists::CommonFunctions::WeaponRecoil(m_pPlayer);
+                    TheSpecialists::CommonFunctions::ApplyBulletDecal(m_pPlayer, vecSrc, vecAiming, m_vecAccuracy);
                     
                 } // End of if (self.m_iClip > 0)
                 else
@@ -459,6 +467,9 @@ namespace TS_TMP
         {
             int iAnimationIndex = 0;
             
+            // Decrease the weapon spread while it is not being fired
+            m_fInaccuracyFactor = TheSpecialists::CommonFunctions::SpreadDecay(m_fInaccuracyFactor, m_fInaccuracyDecay);
+            
             // Determine if the tilting animation has finished
             if (m_flAnimationCooldown < g_Engine.time)
             {            
@@ -472,7 +483,7 @@ namespace TS_TMP
                 }
                 
                 self.SendWeaponAnim(iAnimationIndex);
-            } // End of if (m_flTiltTimer < g_Engine.time)
+            } // End of if (m_flAnimationCooldown < g_Engine.time)
             
         } // End of WeaponIdle()
         

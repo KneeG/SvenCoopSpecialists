@@ -170,26 +170,30 @@ namespace TheSpecialists
     // A melee weapon will not have a clip size (might go back on this to implement blocking which uses the reload button)
     const int iWEAPON__MELEE__MAX_CLIP              = 0;
     
-    const int   iWEAPON__KATANA__AMMO1              = -1                            ;
-    const int   iWEAPON__KATANA__AMMO2              = 1                             ;
-    const int   iWEAPON__KATANA__DAMAGE             = 55                            ;
-    const float fWEAPON__KATANA__ATTACK_DELAY       = (60 / 60.0)                     ; // Time in seconds between swings
+    const int   iWEAPON__KATANA__AMMO1                  = -1                            ;
+    const int   iWEAPON__KATANA__AMMO2                  = 1                             ;
+    const int   iWEAPON__KATANA__DAMAGE                 = 55                            ;
+    const float fWEAPON__KATANA__ATTACK_DELAY           = (60 / 60.0)                   ; // Time in seconds between swings
     
-    const int   iWEAPON__SEAL_KNIFE__AMMO1          = -1                            ;
-    const int   iWEAPON__SEAL_KNIFE__AMMO2          = 10                            ;
-    const int   iWEAPON__SEAL_KNIFE__DAMAGE         = 20                            ;
-    const float fWEAPON__SEAL_KNIFE__ATTACK_DELAY   = (60 / 240.0)                    ; // Time in seconds between swings
+    const int   iWEAPON__SEAL_KNIFE__AMMO1              = -1                            ;
+    const int   iWEAPON__SEAL_KNIFE__AMMO2              = 10                            ;
+    const int   iWEAPON__SEAL_KNIFE__DAMAGE             = 20                            ;
+    const float fWEAPON__SEAL_KNIFE__ATTACK_DELAY       = (60 / 240.0)                  ; // Time in seconds between swings
     
-    const int   iWEAPON__COMBAT_KNIFE__AMMO1        = -1                            ;
-    const int   iWEAPON__COMBAT_KNIFE__AMMO2        = 5                             ;
-    const int   iWEAPON__COMBAT_KNIFE__DAMAGE       = 25                            ;
-    const float fWEAPON__COMBAT_KNIFE__ATTACK_DELAY = (60 / 150.0)                    ; // Time in seconds between swings
+    const int   iWEAPON__COMBAT_KNIFE__AMMO1            = -1                            ;
+    const int   iWEAPON__COMBAT_KNIFE__AMMO2            = 5                             ;
+    const int   iWEAPON__COMBAT_KNIFE__DAMAGE           = 25                            ;
+    const float fWEAPON__COMBAT_KNIFE__ATTACK_DELAY     = (60 / 150.0)                  ; // Time in seconds between swings
     
     // Pistols behavior
+    const float     fWEAPON__PISTOL__MAX_INACCURACY     = 10.0                          ;
+    const float     fWEAPON__PISTOL__INACCURACY_DELTA   = 1.0                           ;
+    const float     fWEAPON__PISTOL__INACCURACY_DECAY   = 0.06                          ;
+    
     const int       iWEAPON__GLOCK18__CLIP              = 18                            ;
     const int       iWEAPON__GLOCK18__AMMO1             = iWEAPON__PISTOL__AMMO1__MAX   ;
     const int       iWEAPON__GLOCK18__AMMO2             = -1                            ;
-    const Vector    vecWEAPON__GLOCK18__SPREAD          = VECTOR_CONE_4DEGREES          ; // Accuracy of the weapon
+    const Vector    vecWEAPON__GLOCK18__SPREAD          = VECTOR_CONE_2DEGREES          ; // Accuracy of the weapon
     const int       iWEAPON__GLOCK18__FIRE_MODE         = FireMode::iAUTOMATIC          ;
     const int       iWEAPON__GLOCK18__DAMAGE            = 15                            ;
     const float     fWEAPON__GLOCK18__ATTACK_DELAY      = (60.0 / 900.0)                ; // Time in seconds between swings
@@ -197,7 +201,7 @@ namespace TheSpecialists
     const int       iWEAPON__GLOCK22__CLIP              = 15                            ;
     const int       iWEAPON__GLOCK22__AMMO1             = iWEAPON__PISTOL__AMMO1__MAX   ;
     const int       iWEAPON__GLOCK22__AMMO2             = -1                            ;
-    const Vector    vecWEAPON__GLOCK22__SPREAD          = VECTOR_CONE_4DEGREES          ; // Accuracy of the weapon
+    const Vector    vecWEAPON__GLOCK22__SPREAD          = VECTOR_CONE_1DEGREES          ; // Accuracy of the weapon
     const int       iWEAPON__GLOCK22__FIRE_MODE         = FireMode::iSEMI_AUTOMATIC     ;
     const int       iWEAPON__GLOCK22__DAMAGE            = 23                            ;
     const float     fWEAPON__GLOCK22__ATTACK_DELAY      = (60.0 / 500.0)                ; // Time in seconds between swings
@@ -205,7 +209,7 @@ namespace TheSpecialists
     const int       iWEAPON__FIVESEVEN__CLIP            = 20                            ;
     const int       iWEAPON__FIVESEVEN__AMMO1           = iWEAPON__PISTOL__AMMO1__MAX   ;
     const int       iWEAPON__FIVESEVEN__AMMO2           = -1                            ;
-    const Vector    vecWEAPON__FIVESEVEN__SPREAD        = VECTOR_CONE_2DEGREES          ; // Accuracy of the weapon
+    const Vector    vecWEAPON__FIVESEVEN__SPREAD        = VECTOR_CONE_1DEGREES          ; // Accuracy of the weapon
     const int       iWEAPON__FIVESEVEN__FIRE_MODE       = FireMode::iSEMI_AUTOMATIC     ;
     const int       iWEAPON__FIVESEVEN__DAMAGE          = 18                            ;
     const float     fWEAPON__FIVESEVEN__ATTACK_DELAY    = (60.0 / 500.0)                ; // Time in seconds between swings
@@ -305,6 +309,115 @@ namespace TheSpecialists
             return ((iButtonPressed & IN_ATTACK) != 0);
         } // End of AttackButtonPressed()
         
+        //////////////////////////////////////////////////////////////////////////////////////
+        // TheSpecialists::CommonFunctions::SpreadDecay                                     //
+        // Function:                                                                        //
+        //      Handles weapon spread                                                       //
+        // Parameters:                                                                      //
+        //      float &fInaccuracyFactor    = [OUT] Spread scalar to apply decay            //
+        //      float fInaccuracyDelta      = [IN ] How much inaccuracy to apply
+        //      float fInaccuracyMaximum    = [IN ] Maximum value fInaccuracyFactor can be  //
+        // Return value:                                                                    //
+        //      float                                                                       //
+        //////////////////////////////////////////////////////////////////////////////////////
+        float SpreadIncrease(float fInaccuracyFactor, float fInaccuracyDelta, float fInaccuracyMaximum)
+        {
+            // Add some inaccuracy to the spread
+            fInaccuracyFactor += fInaccuracyDelta;
+            
+            // Determine if the maximum inaccuracy factor has been reached
+            if (fInaccuracyFactor > fInaccuracyMaximum)
+            {
+                fInaccuracyFactor = fInaccuracyMaximum;
+            }
+            
+            return fInaccuracyFactor;
+        } // End of SpreadDecay()
+        
+        //////////////////////////////////////////////////////////////////////////////
+        // TheSpecialists::CommonFunctions::SpreadDecay                             //
+        // Function:                                                                //
+        //      Handles weapon spread decay                                         //
+        // Parameters:                                                              //
+        //      float &fInaccuracyFactor    = [OUT] Spread scalar to apply decay    //
+        //      float fInaccuracyDecay      = [IN ] Interpolation decay value       //
+        // Return value:                                                            //
+        //      float                                                               //
+        //////////////////////////////////////////////////////////////////////////////
+        float SpreadDecay(float fInaccuracyFactor, float fInaccuracyDecay)
+        {
+            // Decrease the spread inaccuracy
+            fInaccuracyFactor -= fInaccuracyDecay;
+            
+            // Determine if the minimum inaccuracy factor has been reached
+            if (fInaccuracyFactor < 1.0)
+            {
+                fInaccuracyFactor = 1.0;
+            }
+            
+            return fInaccuracyFactor;
+        } // End of SpreadDecay()
+        
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // TheSpecialists::CommonFunctions::WeaponRecoilSmooth                                                              //
+        // Function:                                                                                                        //
+        //      Handles weapon recoil                                                                                       //
+        // Parameter:                                                                                                       //
+        //      CBasePlayer@    pPlayer             = [BOTH] The player the recoil effect is applied to                     //
+        //      float&          fInterpolator       = [BOTH] The interpolation value to apply to a curve smoothing function //
+        // Return value:                                                                                                    //
+        //      bool    - true  = Weapon still has some recoiling to do                                                     //
+        //              - false = Weapon recoil function has finished                                                       //
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        bool WeaponRecoilSmooth(CBasePlayer@ pPlayer, float &out fInterpolator)
+        {
+            // Default return value is true, or recoil interpolation can continue
+            bool bReturn = true;
+            
+            float fInterpolationResult = 0.0;
+            
+            // Get the interpolated value
+            fInterpolationResult = sin(fInterpolator + 0.5);
+            
+            // Decrease the interpolation delta
+            fInterpolator += 0.2;
+            
+            // g_EngineFuncs.ClientPrintf(pPlayer, print_console, "1 fiveseven: player pev angles (x,y)=(" + m_pPlayer.pev.v_angle.x + ", " + m_pPlayer.pev.v_angle.y + ")\n");
+            // pPlayer.pev.v_angle.x += 50.0;
+            pPlayer.pev.avelocity = Vector(0.0, -fInterpolationResult, 0.0);
+            // g_EngineFuncs.ClientPrintf(pPlayer, print_console, "sin(m_fInterpolator - pi/2)=" + fInterpolation_result + "\n");
+            
+            // Set the fixangle to 2 (or velocity based angle)
+            pPlayer.pev.fixangle = 2;
+            
+            // Determine if the interpolative delta has reached 0
+            if (fInterpolationResult < 0.0)
+            {
+                // Recoil interpolation has finished, return false
+                bReturn = false;
+            }
+            
+            return bReturn;
+        } // End of WeaponRecoilSmooth()
+        
+        ///////////////////////////////////////////////////////////////////////////////////
+        // TheSpecialists::CommonFunctions::WeaponRecoil                                 //
+        // Function:                                                                     //
+        //      Handles weapon recoil                                                    //
+        // Parameter:                                                                    //
+        //      CBasePlayer@ pPlayer = [BOTH] The player the recoil effect is applied to //
+        // Return value:                                                                 //
+        //      void                                                                     //
+        ///////////////////////////////////////////////////////////////////////////////////
+        void WeaponRecoil(CBasePlayer@ pPlayer)
+        {
+            // View punch as a way to simulate recoil
+            // TODO:
+            //      Move the players cursor instead of applying a visual transformation
+            //pPlayer.pev.punchangle.x = -1;
+            //pPlayer.pev.punchangle.y = -1;
+        } // End of WeaponRecoilSmooth()
+        
         //////////////////////////////////////////////////////////////////////////////////
         // TheSpecialists::CommonFunctions::ApplyBulletDecal                            //
         // Function:                                                                    //
@@ -316,7 +429,7 @@ namespace TheSpecialists
         // Return value:                                                                //
         //      None                                                                    //
         //////////////////////////////////////////////////////////////////////////////////
-        void ApplyBulletDecal(CBasePlayer@ pPlayer, Vector vecSrc, Vector vecAiming)
+        void ApplyBulletDecal(CBasePlayer@ pPlayer, Vector vecSrc, Vector vecAiming, Vector vecSpread)
         {
             // Decal tracing variables
             TraceResult tr;
@@ -326,8 +439,8 @@ namespace TheSpecialists
             g_Utility.GetCircularGaussianSpread(x, y);
                     
             Vector vecDir = vecAiming 
-                            + x * VECTOR_CONE_6DEGREES.x * g_Engine.v_right 
-                            + y * VECTOR_CONE_6DEGREES.y * g_Engine.v_up;
+                            + x * vecSpread.x * g_Engine.v_right 
+                            + y * vecSpread.y * g_Engine.v_up;
             Vector vecEnd	= vecSrc + vecDir * TheSpecialists::fMAXIMUM_FIRE_DISTANCE;
 
 

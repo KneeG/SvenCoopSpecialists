@@ -63,11 +63,18 @@ namespace TS_Glock22
     // Glock22 class
     class weapon_ts_glock22 : ScriptBasePlayerWeaponEntity
     {
-        private CBasePlayer@ m_pPlayer      ; // Player reference pointer
-        private int m_iDamage               ; // Weapon damage
-        private int m_bSilenced             ; // Silenced flag
+        private CBasePlayer@ m_pPlayer          ; // Player reference pointer
+        private int     m_iDamage               ; // Weapon damage
+        private int     m_bSilenced             ; // Silenced flag
+        private float   m_flAnimationCooldown   ; // Animation cooldown timer, helps prevent the weapon from going to idle animations while the weapon is being tilted
+
+        private float   m_fInaccuracyFactor     ; // Negatively affects weapon spread
+        private float   m_fInaccuracyDelta      ; // How much inaccuracy
+        private float   m_fInaccuracyDecay      ; // How much inaccuracy decreases over time
         
-        TraceResult m_trHit                 ; // Keeps track of what is hit when the glock22 is swung
+        Vector          m_vecAccuracy           ; // Current accuracy of the weapon
+        
+        TraceResult m_trHit                     ; // Keeps track of what is hit when the glock22 is swung
         
         //////////////////////////////////////////
         // TS_Glock22::Spawn                    //
@@ -86,6 +93,13 @@ namespace TS_Glock22
             
             // Set the world model
             g_EntityFuncs.SetModel(self, self.GetW_Model(strMODEL_W));
+            
+            m_fInaccuracyFactor = 1.0                                               ; // Scale factor added to weapon spread cone, negatively affects weapon spread
+            m_fInaccuracyDelta  = TheSpecialists::fWEAPON__PISTOL__INACCURACY_DELTA ; // How much inaccuracy increases per shot
+            m_fInaccuracyDecay  = TheSpecialists::fWEAPON__PISTOL__INACCURACY_DECAY ; // How much inaccuracy decreases over time
+            
+            // Initialize accuracy
+            m_vecAccuracy = vecSPREAD;
             
             // Set the clip size
             self.m_iClip = TheSpecialists::iWEAPON__GLOCK22__CLIP;
@@ -168,7 +182,7 @@ namespace TS_Glock22
                 @m_pPlayer = pPlayer;
                 
                 // Debug printing
-            g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "Glock 22 m_iPrimaryAmmoType: " + self.m_iPrimaryAmmoType + "\n");
+                // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "Glock 22 m_iPrimaryAmmoType: " + self.m_iPrimaryAmmoType + "\n");
                 
                 NetworkMessage message
                 (
@@ -250,7 +264,11 @@ namespace TS_Glock22
                 Shoot();
             }
             
-            self.m_flNextPrimaryAttack = g_Engine.time + fPRIMARY_ATTACK_DELAY;
+            // Apply decay, if the player is holding the fire button, the weapon won't idle, and thus the spread won't decay
+            m_fInaccuracyFactor = TheSpecialists::CommonFunctions::SpreadDecay(m_fInaccuracyFactor, m_fInaccuracyDecay);
+            
+            self.m_flNextPrimaryAttack  = g_Engine.time + fPRIMARY_ATTACK_DELAY;
+            m_flAnimationCooldown       = g_Engine.time + 1.0;
         } // End of PrimaryAttack()
 
         //////////////////////////////
@@ -271,7 +289,7 @@ namespace TS_Glock22
             int iPrimaryAmmo = m_pPlayer.m_rgAmmo(self.m_iPrimaryAmmoType);
             
             // Determine if the player is above water
-            if (m_pPlayer.pev.waterlevel != WATERLEVEL_HEAD)
+            if (TheSpecialists::CommonFunctions::IsAboveWater(m_pPlayer.pev.waterlevel))
             {
                 // Determine if the weapon has bullets left in the magazine
                 if (self.m_iClip > 0)
@@ -300,6 +318,7 @@ namespace TS_Glock22
                     
                     Vector vecSrc	 = m_pPlayer.GetGunPosition();
                     Vector vecAiming = m_pPlayer.GetAutoaimVector(AUTOAIM_5DEGREES);
+                    m_vecAccuracy    = vecSPREAD * m_fInaccuracyFactor;
                     
                     // Fire bullets from the player
                     // https://github.com/ValveSoftware/halflife/blob/e5815c34e2772a247a6843b67eab7c3395bdba66/dlls/cbase.h#L255
@@ -308,11 +327,11 @@ namespace TS_Glock22
                         1                                       , // ULONG cShots           - Number of bullets fired, anything more than 1 is useful for shotguns
                         vecSrc                                  , // Vector vecSrc          - Vector where the shot is originating from, but it's a vector so I don't know why this information isn't already stored in a single vector
                         vecAiming                               , // Vector vecDirShooting  - Vector where the shot is going to go towards
-                        vecSPREAD                               , // Vector vecSpread       - Vector detailing how large the cone of randomness the bullets will randomly spread out
+                        m_vecAccuracy                           , // Vector vecSpread       - Vector detailing how large the cone of randomness the bullets will randomly spread out
                         TheSpecialists::fMAXIMUM_FIRE_DISTANCE  , // float flDistance       - Maximum distance the bullet will scan for a hit
                         BULLET_PLAYER_MP5                       , // int iBulletType        - Bullet type, not sure what this means
                         2                                       , // int iTracerFreq = 4    - How frequently there will be bullet tracers, not sure what the scale is
-                        iDAMAGE                                   // int iDamage = 0        - How much damage the bullet will do
+                        m_iDamage                                 // int iDamage = 0        - How much damage the bullet will do
                     );
                     
                     // Decrement the magazine by one
@@ -330,12 +349,8 @@ namespace TS_Glock22
                         );
                     }
                     
-                    // View punch as a way to simulate recoil
-                    // TODO:
-                    //      Move the players cursor instead of applying a visual transformation
-                    m_pPlayer.pev.punchangle.x = Math.RandomLong(-2, 2);
-                    
-                    TheSpecialists::CommonFunctions::ApplyBulletDecal(m_pPlayer, vecSrc, vecAiming);
+                    TheSpecialists::CommonFunctions::WeaponRecoil(m_pPlayer);
+                    TheSpecialists::CommonFunctions::ApplyBulletDecal(m_pPlayer, vecSrc, vecAiming, m_vecAccuracy);
                     
                 } // End of if (self.m_iClip > 0)
                 else
@@ -377,9 +392,41 @@ namespace TS_Glock22
         
             self.DefaultReload(TheSpecialists::iWEAPON__GLOCK22__CLIP, Animations::RELOAD1, 1.5, 0);
 
+            // Prevent the weapon idle animation from overriding the reload animation
+            m_flAnimationCooldown = g_Engine.time + 2.5;
+
             // Set 3rd person reloading animation -Sniper
             BaseClass.Reload();
+            
         } // End of Reload()
+        
+        //////////////////////////////
+        // TS_Glock22::WeaponIdle   //
+        // Function:                //
+        //      Weapon idle handler //
+        // Parameters:              //
+        //      None                //
+        // Return value:            //
+        //      None                //
+        //////////////////////////////
+        void WeaponIdle()
+        {
+            // Decrease the weapon spread while it is not being fired
+            m_fInaccuracyFactor = TheSpecialists::CommonFunctions::SpreadDecay(m_fInaccuracyFactor, m_fInaccuracyDecay);
+            
+            // Failed attempt at recoil that doesn't involve view punching
+            /*if (m_bRecoilActive)
+            {
+                m_bRecoilActive = TheSpecialists::CommonFunctions::WeaponRecoil(m_pPlayer, m_fInterpolator);
+            }*/
+            
+            // Determine if the tilting animation has finished
+            if (m_flAnimationCooldown < g_Engine.time)
+            {
+                self.SendWeaponAnim(Animations::IDLE1);
+            } // End of if (m_flAnimationCooldown < g_Engine.time)
+            
+        } // End of WeaponIdle()
         
     } // End of class weapon_ts_glock22
 
