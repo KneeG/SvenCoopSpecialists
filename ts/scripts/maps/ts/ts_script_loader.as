@@ -12,6 +12,7 @@
 #include "weapon_ts_glock18"
 #include "weapon_ts_glock22"
 #include "weapon_ts_fiveseven"
+#include "weapon_ts_beretta"
 
 #include "weapon_ts_tmp"
 
@@ -26,6 +27,7 @@ void TS_LoadWeapons()
     TS_Glock18      ::Register_Weapon();
     TS_Glock22      ::Register_Weapon();
     TS_Fiveseven    ::Register_Weapon();
+    TS_Beretta      ::Register_Weapon();
     
     TS_TMP          ::Register_Weapon();
 }

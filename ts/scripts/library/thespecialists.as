@@ -212,7 +212,15 @@ namespace TheSpecialists
     const Vector    vecWEAPON__FIVESEVEN__SPREAD        = VECTOR_CONE_1DEGREES          ; // Accuracy of the weapon
     const int       iWEAPON__FIVESEVEN__FIRE_MODE       = FireMode::iSEMI_AUTOMATIC     ;
     const int       iWEAPON__FIVESEVEN__DAMAGE          = 18                            ;
-    const float     fWEAPON__FIVESEVEN__ATTACK_DELAY    = (60.0 / 500.0)                ; // Time in seconds between swings
+    const float     fWEAPON__FIVESEVEN__ATTACK_DELAY    = (60.0 / 800.0)                ; // Time in seconds between swings
+    
+    const int       iWEAPON__BERETTA__CLIP              = 12                            ;
+    const int       iWEAPON__BERETTA__AMMO1             = iWEAPON__PISTOL__AMMO1__MAX   ;
+    const int       iWEAPON__BERETTA__AMMO2             = -1                            ;
+    const Vector    vecWEAPON__BERETTA__SPREAD          = VECTOR_CONE_1DEGREES          ; // Accuracy of the weapon
+    const int       iWEAPON__BERETTA__FIRE_MODE         = FireMode::iSEMI_AUTOMATIC     ;
+    const int       iWEAPON__BERETTA__DAMAGE            = 20                            ;
+    const float     fWEAPON__BERETTA__ATTACK_DELAY      = (60.0 / 800.0)                ; // Time in seconds between swings
     
     // Submachine guns behavior
     const int       iWEAPON__TMP__CLIP                  = 20                            ;
@@ -414,8 +422,8 @@ namespace TheSpecialists
             // View punch as a way to simulate recoil
             // TODO:
             //      Move the players cursor instead of applying a visual transformation
-            //pPlayer.pev.punchangle.x = -1;
-            //pPlayer.pev.punchangle.y = -1;
+            float fRandomPunch = Math.RandomLong(-1, 1) * 0.5;
+            pPlayer.pev.punchangle = Vector(fRandomPunch, fRandomPunch, 0);
         } // End of WeaponRecoilSmooth()
         
         //////////////////////////////////////////////////////////////////////////////////
