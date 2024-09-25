@@ -33,45 +33,45 @@ Hopefully their functionality is also implemented as well.
 
 <a name="weaponlist"></a>
 ## 2. Weapon list:
-| \# | Entity Name                      | Progress              | To do notes                   |
-| -- | -------------------------------- | --------------------- | ----------------------------- |
-| 1  | weapon_ts_kungfu                 | Functionally complete | Refactor this mess of code    |
-| 2  | weapon_ts_katana                 | Functionally complete | Add throwable blades          |
-| 3  | weapon_ts_seal_knife             | Functionally complete | Add throwable blades          |
-| 4  | weapon_ts_combat_knife           | Functionally complete | Add throwable blades          |
-| 5  | weapon_ts_glock18                | Functionally complete | Add suppressor                |
-| 6  | weapon_ts_glock22                | Functionally complete | Add suppressor                |
-| 7  | weapon_ts_fiveseven              | Functionally complete | Add suppressor                |
-| 8  | weapon_ts_fiveseven_akimbo       | Not started           | To do                         |
-| 9  | weapon_ts_beretta                | Not started           | To do                         |
-| 10 | weapon_ts_beretta_akimbo         | Not started           | To do                         |
-| 11 | weapon_ts_socom                  | Not started           | To do                         |
-| 12 | weapon_ts_socom_akimbo           | Not started           | To do                         |
-| 13 | weapon_ts_ruger                  | Not started           | To do                         |
-| 14 | weapon_ts_deagle                 | Not started           | To do                         |
-| 15 | weapon_ts_raging_bull            | Not started           | To do                         |
-| 16 | weapon_ts_contender              | Not started           | To do                         |
-| 17 | weapon_ts_gold_colts             | Not started           | To do                         |
-| 18 | weapon_ts_mp5sd                  | Not started           | To do                         |
-| 19 | weapon_ts_mp5k                   | Not started           | To do                         |
-| 20 | weapon_ts_ump45                  | Not started           | To do                         |
-| 21 | weapon_ts_mp7                    | Not started           | To do                         |
-| 22 | weapon_ts_tmp                    | Functionally complete | Figure out ammo types         |
-| 23 | weapon_ts_mac10                  | Not started           | To do                         |
-| 24 | weapon_ts_skorpion               | Not started           | To do                         |
-| 25 | weapon_ts_skorpion_akimbo        | Not started           | To do                         |
-| 26 | weapon_ts_benelli                | Not started           | To do                         |
-| 27 | weapon_ts_spas                   | Not started           | To do                         |
-| 28 | weapon_ts_mossberg               | Not started           | To do                         |
-| 29 | weapon_ts_usas12                 | Not started           | To do                         |
-| 30 | weapon_ts_double_barrel_shotgun  | Not started           | To do                         |
-| 31 | weapon_ts_ak47                   | Not started           | To do                         |
-| 32 | weapon_ts_m4a1                   | Not started           | To do                         |
-| 33 | weapon_ts_m16                    | Not started           | To do                         |
-| 34 | weapon_ts_aug                    | Not started           | To do                         |
-| 35 | weapon_ts_barrett                | Not started           | To do                         |
-| 36 | weapon_ts_m60                    | Not started           | To do                         |
-| 37 | weapon_ts_grenade                | Not started           | To do                         |
+| \# | Entity Name                      | Progress              | To do notes                       |
+| -- | -------------------------------- | --------------------- | --------------------------------- |
+| 1  | weapon_ts_kungfu                 | Functionally complete | Refactor this mess of code        |
+| 2  | weapon_ts_katana                 | Functionally complete | Add throwable blades              |
+| 3  | weapon_ts_seal_knife             | Functionally complete | Add throwable blades              |
+| 4  | weapon_ts_combat_knife           | Functionally complete | Add throwable blades              |
+| 5  | weapon_ts_glock18                | Functionally complete | Add suppressor, laser, flashlight |
+| 6  | weapon_ts_glock22                | Functionally complete | Add suppressor, laser, flashlight |
+| 7  | weapon_ts_fiveseven              | Functionally complete | Add suppressor, laser, flashlight |
+| 8  | weapon_ts_fiveseven_akimbo       | Not started           | To do                             |
+| 9  | weapon_ts_beretta                | Functionally complete | Add suppressor, laser, flashlight |
+| 10 | weapon_ts_beretta_akimbo         | Not started           | To do                             |
+| 11 | weapon_ts_socom                  | Not started           | To do                             |
+| 12 | weapon_ts_socom_akimbo           | Not started           | To do                             |
+| 13 | weapon_ts_ruger                  | Not started           | To do                             |
+| 14 | weapon_ts_deagle                 | Not started           | To do                             |
+| 15 | weapon_ts_raging_bull            | Not started           | To do                             |
+| 16 | weapon_ts_contender              | Not started           | To do                             |
+| 17 | weapon_ts_gold_colts             | Not started           | To do                             |
+| 18 | weapon_ts_mp5sd                  | Not started           | To do                             |
+| 19 | weapon_ts_mp5k                   | Not started           | To do                             |
+| 20 | weapon_ts_ump45                  | Not started           | To do                             |
+| 21 | weapon_ts_mp7                    | Not started           | To do                             |
+| 22 | weapon_ts_tmp                    | Functionally complete | Figure out ammo types             |
+| 23 | weapon_ts_mac10                  | Not started           | Can't find files, might not do    |
+| 24 | weapon_ts_skorpion               | Not started           | To do                             |
+| 25 | weapon_ts_skorpion_akimbo        | Not started           | To do                             |
+| 26 | weapon_ts_benelli                | Not started           | To do                             |
+| 27 | weapon_ts_spas                   | Not started           | To do                             |
+| 28 | weapon_ts_mossberg               | Not started           | To do                             |
+| 29 | weapon_ts_usas12                 | Not started           | To do                             |
+| 30 | weapon_ts_double_barrel_shotgun  | Not started           | To do                             |
+| 31 | weapon_ts_ak47                   | Not started           | To do                             |
+| 32 | weapon_ts_m4a1                   | Not started           | To do                             |
+| 33 | weapon_ts_m16                    | Not started           | To do                             |
+| 34 | weapon_ts_aug                    | Not started           | To do                             |
+| 35 | weapon_ts_barrett                | Not started           | To do                             |
+| 36 | weapon_ts_m60                    | Not started           | To do                             |
+| 37 | weapon_ts_grenade                | Not started           | To do                             |
 
 <a name="weaponfeatures"></a>
 ## 3. Weapon features:
