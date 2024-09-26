@@ -18,6 +18,7 @@
 #include "weapon_ts_deagle"
 #include "weapon_ts_raging_bull"
 #include "weapon_ts_contender"
+#include "weapon_ts_gold_colts"
 
 #include "weapon_ts_tmp"
 
@@ -38,6 +39,7 @@ void TS_LoadWeapons()
     TS_Deagle       ::Register_Weapon();
     TS_RagingBull   ::Register_Weapon();
     TS_Contender    ::Register_Weapon();
+    TS_GoldColts    ::Register_Weapon();
     
     TS_TMP          ::Register_Weapon();
 }

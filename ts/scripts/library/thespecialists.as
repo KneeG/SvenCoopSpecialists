@@ -265,6 +265,14 @@ namespace TheSpecialists
     const float     fWEAPON__CONTENDER__ATTACK_DELAY        = (60.0 / 60.0)                     ; // Time in seconds between swings
     const float     fWEAPON__CONTENDER__RECOIL_MULITPLIER   = 10.0                              ;
     
+    const int       iWEAPON__GOLD_COLTS__CLIP               = 15                                ; // 15 bullets per colt
+    const int       iWEAPON__GOLD_COLTS__AMMO1              = iWEAPON__PISTOL__AMMO1__MAX       ;
+    const int       iWEAPON__GOLD_COLTS__AMMO2              = -1                                ;
+    const Vector    vecWEAPON__GOLD_COLTS__SPREAD           = VECTOR_CONE_4DEGREES              ; // Accuracy of the weapon
+    const int       iWEAPON__GOLD_COLTS__FIRE_MODE          = FireMode::iSEMI_AUTOMATIC         ;
+    const int       iWEAPON__GOLD_COLTS__DAMAGE             = 18                                ;
+    const float     fWEAPON__GOLD_COLTS__ATTACK_DELAY       = (60.0 / 800.0)                    ; // Time in seconds between swings
+    
     // Submachine guns behavior
     const int       iWEAPON__TMP__CLIP                      = 20                                ;
     const int       iWEAPON__TMP__AMMO1                     = iWEAPON__SMG__AMMO1__MAX          ;
