@@ -16,7 +16,7 @@ Hopefully their functionality is also implemented as well.
 #### Current problems
 - Crosshair sprite is missing and or incomplete
 - Don't know how to move the player's view to simulate recoil
-  all I know how to do currently is use punchangle, but the player's view will return o the center of the screen which is not the desired behavior
+  all I know how to do currently is use punchangle, but the player's view will return to the center of the screen which is not the desired behavior
 - Making proper use of the melee weapons' block function, deflect bullets? Is that even possible?
 - Need to add a "useitems" command to toggle laser sight and flashlight
 - Need to figure out how to add weapon attachments
@@ -132,3 +132,4 @@ Hopefully their functionality is also implemented as well.
     - https://github.com/DrAbcOfficial/AngelScripts
 - Sven Coop Angelscript API
     - https://github.com/baso88/SC_AngelScript/wiki/Script-Fundamentals
+    - Ammo types: https://github.com/baso88/SC_AngelScript/wiki/Default-Ammo-Types
