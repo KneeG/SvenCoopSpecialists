@@ -1,0 +1,4 @@
+3
+weapon			640 ts/ruger			0	0	128	48
+weapon_s		640 ts/ruger			0	0	128	48
+crosshair		640 ts/crosshair/cross2	0	0	64	64

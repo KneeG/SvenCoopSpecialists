@@ -1,31 +1,23 @@
 //////////////////////////////////////////////////////////
-// File         : weapon_ts_socom.as                    //
+// File         : weapon_ts_ruger.as                    //
 // Author       : Knee                                  //
-// Description  : Socom from The Specialists Mod 3.0    //
+// Description  : Ruger from The Specialists Mod 3.0    //
 //////////////////////////////////////////////////////////
 #include "../../library/thespecialists"
 
 /////////////////////////////////////
-// TS_Socom namespace
-namespace TS_Socom
+// TS_Ruger namespace
+namespace TS_Ruger
 {
     /////////////////////////////////////
-    // Socom animation enumeration
+    // Ruger animation enumeration
     namespace Animations
     {
-        const int IDLE1                 = 0 ;
-        const int SHOOT1                = 1 ;
-        const int SHOOT2                = 2 ; // Haven't seen any meaningful difference between this and SHOOT1 based on my inspection
-        const int SHOOTEMPTY1           = 3 ;
-        const int DRAW1                 = 4 ;
-        const int IDLE_SIDEWAYS1        = 5 ;
-        const int SHOOT_SIDEWAYS1       = 6 ;
-        const int SHOOT_SIDEWAYS2       = 7 ;
-        const int SHOOTEMPTY_SIDEWAYS1  = 8 ;
-        const int TILT_SIDEWAYS         = 9 ; 
-        const int TILT_UPRIGHT          = 10;
-        const int RELOAD1               = 11;
-        const int RELOAD_SIDEWAYS1      = 12;
+        const int IDLE1                 = 0;
+        const int SHOOT1                = 1;
+        const int SHOOT2                = 2; // Haven't seen any meaningful difference between this and SHOOT1 based on my inspection
+        const int DRAW1                 = 3;
+        const int RELOAD1               = 4;
     }
     
     // Return constants
@@ -33,9 +25,9 @@ namespace TS_Socom
     const int               RETURN_ERROR_NULL_POINTER   = -1;
     
     // Meta data
-    const string            strNAME                 = "socom"             ;
-    const string            strNAMESPACE            = "TS_Socom::"        ;
-    const string            strCLASSNAME            = "weapon_ts_socom"   ;
+    const string            strNAME                 = "ruger"             ;
+    const string            strNAMESPACE            = "TS_Ruger::"        ;
+    const string            strCLASSNAME            = "weapon_ts_ruger"   ;
 
     // Asset paths
     const string            strMODEL_P              = TheSpecialists::strMODEL_PATH + "pistols/" + strNAME + "/p_" + strNAME + ".mdl";
@@ -58,22 +50,17 @@ namespace TS_Socom
         Animations::SHOOT2
     };
     
-    const array<int> arrSidewaysAnimationList = {
-        Animations::SHOOT_SIDEWAYS1,
-        Animations::SHOOT_SIDEWAYS2
-    };
-    
     const float             fHOLSTER_TIME           = TheSpecialists::fDEFAULT_HOSTER_TIME          ;
     const float             fNEXT_THINK             = TheSpecialists::fDEFAULT_NEXT_THINK           ;
-    const float             fPRIMARY_ATTACK_DELAY   = TheSpecialists::fWEAPON__SOCOM__ATTACK_DELAY  ;
+    const float             fPRIMARY_ATTACK_DELAY   = TheSpecialists::fWEAPON__RUGER__ATTACK_DELAY  ;
     const float             fSWING_DISTANCE         = TheSpecialists::fSWING_DISTANCE               ;
     const IGNORE_MONSTERS   eIGNORE_RULE            = TheSpecialists::eIGNORE_RULE                  ;
-    const int               iDAMAGE                 = TheSpecialists::iWEAPON__SOCOM__DAMAGE        ;
-    const Vector            vecSPREAD               = TheSpecialists::vecWEAPON__SOCOM__SPREAD      ;
+    const int               iDAMAGE                 = TheSpecialists::iWEAPON__RUGER__DAMAGE        ;
+    const Vector            vecSPREAD               = TheSpecialists::vecWEAPON__RUGER__SPREAD      ;
     
     /////////////////////////////////////
-    // Socom class
-    class weapon_ts_socom : ScriptBasePlayerWeaponEntity
+    // Ruger class
+    class weapon_ts_ruger : ScriptBasePlayerWeaponEntity
     {
         private CBasePlayer@ m_pPlayer          ; // Player reference pointer
         private int     m_iDamage               ; // Weapon damage
@@ -87,10 +74,10 @@ namespace TS_Socom
         
         Vector          m_vecAccuracy           ; // Current accuracy of the weapon
         
-        TraceResult m_trHit                     ; // Keeps track of what is hit when the socom is swung
+        TraceResult m_trHit                     ; // Keeps track of what is hit when the ruger is swung
         
         //////////////////////////////////////////
-        // TS_Socom::Spawn                    //
+        // TS_Ruger::Spawn                    //
         // Function:                            //
         //      Spawn function for the weapon   //
         // Parameters:                          //
@@ -108,14 +95,14 @@ namespace TS_Socom
             g_EntityFuncs.SetModel(self, self.GetW_Model(strMODEL_W));
             
             m_fInaccuracyFactor = 1.0                                               ; // Scale factor added to weapon spread cone, negatively affects weapon spread
-            m_fInaccuracyDelta  = TheSpecialists::fWEAPON__PISTOL__INACCURACY_DELTA ; // How much inaccuracy increases per shot
+            m_fInaccuracyDelta  = 0.5                                               ; // How much inaccuracy increases per shot
             m_fInaccuracyDecay  = TheSpecialists::fWEAPON__PISTOL__INACCURACY_DECAY ; // How much inaccuracy decreases over time
             
             // Initialize accuracy
             m_vecAccuracy = vecSPREAD;
             
             // Set the clip size
-            self.m_iClip = TheSpecialists::iWEAPON__SOCOM__CLIP;
+            self.m_iClip = TheSpecialists::iWEAPON__RUGER__CLIP;
             
             // Set the weapon damage
             self.m_flCustomDmg = m_iDamage;
@@ -125,7 +112,7 @@ namespace TS_Socom
         } // End of Spawn()
 
         //////////////////////////////////////////////////
-        // TS_Socom::Precache                           //
+        // TS_Ruger::Precache                           //
         // Function:                                    //
         //      Prechacing function for weapon assets   //
         // Parameters:                                  //
@@ -154,7 +141,7 @@ namespace TS_Socom
         } // End of Precache()
 
         //////////////////////////////////////////////////////////////////////////////
-        // TS_Socom::GetItemInfo                                                    //
+        // TS_Ruger::GetItemInfo                                                    //
         // Function:                                                                //
         //      Sets the weapon metadata                                            //
         // Parameters:                                                              //
@@ -164,18 +151,18 @@ namespace TS_Socom
         //////////////////////////////////////////////////////////////////////////////
         bool GetItemInfo(ItemInfo& out info)
         {
-            info.iMaxClip		= TheSpecialists::iWEAPON__SOCOM__CLIP      ;
-            info.iMaxAmmo1		= TheSpecialists::iWEAPON__SOCOM__AMMO1     ;
-            info.iMaxAmmo2		= TheSpecialists::iWEAPON__SOCOM__AMMO2     ;
+            info.iMaxClip		= TheSpecialists::iWEAPON__RUGER__CLIP      ;
+            info.iMaxAmmo1		= TheSpecialists::iWEAPON__RUGER__AMMO1     ;
+            info.iMaxAmmo2		= TheSpecialists::iWEAPON__RUGER__AMMO2     ;
             info.iSlot			= TheSpecialists::iWEAPON__SLOT__PISTOL     ;
-            info.iPosition		= TheSpecialists::iWEAPON__POSITION__SOCOM  ;
+            info.iPosition		= TheSpecialists::iWEAPON__POSITION__RUGER  ;
             info.iWeight		= TheSpecialists::iDEFAULT_WEIGHT           ;
             
             return true;
         } // End of GetItemInfo()
         
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_Socom::AddToPlayer                                                                    //
+        // TS_Ruger::AddToPlayer                                                                    //
         // Function:                                                                                //
         //      Adds the weapon to the player if they exist                                         //
         //      If the player exists, save a reference to the player                                //
@@ -195,7 +182,7 @@ namespace TS_Socom
                 @m_pPlayer = pPlayer;
                 
                 // Debug printing
-                // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "Socom m_iPrimaryAmmoType: " + self.m_iPrimaryAmmoType + "\n");
+                // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "Ruger m_iPrimaryAmmoType: " + self.m_iPrimaryAmmoType + "\n");
                 
                 NetworkMessage message
                 (
@@ -217,7 +204,7 @@ namespace TS_Socom
         } // End of AddToPlayer()
 
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_Socom::Deploy                                                                         //
+        // TS_Ruger::Deploy                                                                         //
         // Function:                                                                                //
         //      Adds the weapon to the player if they exist                                         //
         //      If the player exists, save a reference to the player                                //
@@ -241,7 +228,7 @@ namespace TS_Socom
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_Socom::Holster                                                                        //
+        // TS_Ruger::Holster                                                                        //
         // Function:                                                                                //
         //      Hides the weapon from the player                                                    //
         // Parameters:                                                                              //
@@ -259,12 +246,12 @@ namespace TS_Socom
             // Hide the player model by making the viewmodel path empty
             m_pPlayer.pev.viewmodel = "";
             
-            // Tell the looping function to stop calling any of our socom functions
+            // Tell the looping function to stop calling any of our ruger functions
             SetThink(null);
         } // End of Holster()
         
         //////////////////////////////////////////////////
-        // TS_Socom::PrimaryAttack                      //
+        // TS_Ruger::PrimaryAttack                      //
         // Function:                                    //
         //      Performs the weapon's primary attack    //
         // Parameters:                                  //
@@ -287,45 +274,8 @@ namespace TS_Socom
             m_flAnimationCooldown       = g_Engine.time + 1.0;
         } // End of PrimaryAttack()
         
-        //////////////////////////////////////////////////
-        // TS_Socom::SecondaryAttack                    //
-        // Function:                                    //
-        //      Performs the weapon's secondary attack  //
-        // Parameters:                                  //
-        //      None                                    //
-        // Return value:                                //
-        //      None                                    //
-        //////////////////////////////////////////////////
-        void SecondaryAttack()
-        {
-            int iAnimationIndex = 0;
-            
-            // Toggle the flag
-            m_bSideways = !m_bSideways;
-            
-            if (m_bSideways)
-            {
-                iAnimationIndex = Animations::TILT_SIDEWAYS;
-            }
-            else
-            {
-                iAnimationIndex = Animations::TILT_UPRIGHT;
-            }
-            
-            // Show the tilt animation
-            self.SendWeaponAnim(iAnimationIndex);
-            
-            // Delay the next fire
-            self.m_flNextPrimaryAttack  = g_Engine.time + 0.8;
-            self.m_flNextSecondaryAttack= g_Engine.time + 0.8;
-            self.m_flTimeWeaponIdle     = g_Engine.time + 2.0; // For some reason this doesn't work
-            
-            // Don't allow the weapon to go through any animation routines until we've finished tilting
-            m_flAnimationCooldown = g_Engine.time + 1.0;
-        } // End of SecondaryAttack()
-
         //////////////////////////////
-        // TS_Socom::Shoot          //
+        // TS_Ruger::Shoot          //
         // Function:                //
         //      Gun fire handling   //
         // Parameters:              //
@@ -349,15 +299,7 @@ namespace TS_Socom
                 if (self.m_iClip > 0)
                 {
                     // Determine if a random animation can be picked
-                    if (m_bSideways)
-                    {
-                        iRandomAnimation = TheSpecialists::CommonFunctions::PickRandomElementFromListInt(arrSidewaysAnimationList);
-                    }
-                    else
-                    {
-                        iRandomAnimation = TheSpecialists::CommonFunctions::PickRandomElementFromListInt(arrAnimationList);
-                    }
-                    
+                    iRandomAnimation = TheSpecialists::CommonFunctions::PickRandomElementFromListInt(arrAnimationList);
                     if (iRandomAnimation != -1)
                     {
                         self.SendWeaponAnim
@@ -399,26 +341,7 @@ namespace TS_Socom
                     // Decrement the magazine by one
                     self.m_iClip--;
                     
-                    // Determine if the magazine is empty
-                    if (0 == self.m_iClip)
-                    {
-                        if (m_bSideways)
-                        {
-                            iAnimationIndex = Animations::SHOOTEMPTY_SIDEWAYS1;
-                        }
-                        else
-                        {
-                            iAnimationIndex = Animations::SHOOTEMPTY1;
-                        }
-                        
-                        // Indicate to the user that the magazine is empty
-                        self.SendWeaponAnim
-                        (
-                            iAnimationIndex , // Animation index
-                            0               , // skiplocal (Don't know what this means)
-                            0                 // body (probably model related 'body')
-                        );
-                    }
+                    // No empty weapon animation so not checking for 0 clip
                     
                     TheSpecialists::CommonFunctions::WeaponRecoil(m_pPlayer);
                     TheSpecialists::CommonFunctions::ApplyBulletDecal(m_pPlayer, vecSrc, vecAiming, m_vecAccuracy);
@@ -444,7 +367,7 @@ namespace TS_Socom
         } // End of Shoot()
 
         //////////////////////////
-        // TS_Socom::Reload     //
+        // TS_Ruger::Reload     //
         // Function:            //
         //      Reload handler  //
         // Parameters:          //
@@ -455,21 +378,13 @@ namespace TS_Socom
         void Reload()
         {
             // Determine if the gun does not need to reload
-            if (    (self.m_iClip == TheSpecialists::iWEAPON__SOCOM__CLIP)
+            if (    (self.m_iClip == TheSpecialists::iWEAPON__RUGER__CLIP)
                  || (m_pPlayer.m_rgAmmo(self.m_iPrimaryAmmoType) <= 0)    )
             {
                 return;
             }
             
-            // Determine if the weapon is tilted sideways
-            if (m_bSideways)                
-            {
-                self.DefaultReload(TheSpecialists::iWEAPON__SOCOM__CLIP, Animations::RELOAD_SIDEWAYS1, 1.5, 0);
-            }
-            else
-            {
-                self.DefaultReload(TheSpecialists::iWEAPON__SOCOM__CLIP, Animations::RELOAD1, 1.5, 0);
-            }
+            self.DefaultReload(TheSpecialists::iWEAPON__RUGER__CLIP, Animations::RELOAD1, 1.5, 0);
 
             // Prevent the weapon idle animation from overriding the reload animation
             m_flAnimationCooldown = g_Engine.time + 2.5;
@@ -480,7 +395,7 @@ namespace TS_Socom
         } // End of Reload()
         
         //////////////////////////////
-        // TS_Socom::WeaponIdle     //
+        // TS_Ruger::WeaponIdle     //
         // Function:                //
         //      Weapon idle handler //
         // Parameters:              //
@@ -504,21 +419,14 @@ namespace TS_Socom
             // Determine if the tilting animation has finished
             if (m_flAnimationCooldown < g_Engine.time)
             {            
-                if (m_bSideways)
-                {
-                    iAnimationIndex = Animations::IDLE_SIDEWAYS1;
-                }
-                else
-                {
-                    iAnimationIndex = Animations::IDLE1;
-                }
+                iAnimationIndex = Animations::IDLE1;
                 
                 self.SendWeaponAnim(iAnimationIndex);
             } // End of if (m_flAnimationCooldown < g_Engine.time)
             
         } // End of WeaponIdle()
         
-    } // End of class weapon_ts_socom
+    } // End of class weapon_ts_ruger
 
     void Register_Weapon()
     {
@@ -530,4 +438,4 @@ namespace TS_Socom
             TheSpecialists::strWEAPON__PISTOL__AMMO_TYPE  // string - ammo type
         );
     }
-} // End of namespace TS_Socom
+} // End of namespace TS_Ruger

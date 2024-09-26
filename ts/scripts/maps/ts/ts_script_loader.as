@@ -14,6 +14,7 @@
 #include "weapon_ts_fiveseven"
 #include "weapon_ts_beretta"
 #include "weapon_ts_socom"
+#include "weapon_ts_ruger"
 
 #include "weapon_ts_tmp"
 
@@ -30,6 +31,7 @@ void TS_LoadWeapons()
     TS_Fiveseven    ::Register_Weapon();
     TS_Beretta      ::Register_Weapon();
     TS_Socom        ::Register_Weapon();
+    TS_Ruger        ::Register_Weapon();
     
     TS_TMP          ::Register_Weapon();
 }

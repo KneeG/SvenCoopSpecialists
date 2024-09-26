@@ -230,6 +230,14 @@ namespace TheSpecialists
     const int       iWEAPON__SOCOM__DAMAGE              = 20                            ;
     const float     fWEAPON__SOCOM__ATTACK_DELAY        = (60.0 / 800.0)                ; // Time in seconds between swings
     
+    const int       iWEAPON__RUGER__CLIP                = 17                            ;
+    const int       iWEAPON__RUGER__AMMO1               = iWEAPON__PISTOL__AMMO1__MAX   ;
+    const int       iWEAPON__RUGER__AMMO2               = -1                            ;
+    const Vector    vecWEAPON__RUGER__SPREAD            = VECTOR_CONE_1DEGREES          ; // Accuracy of the weapon
+    const int       iWEAPON__RUGER__FIRE_MODE           = FireMode::iSEMI_AUTOMATIC     ;
+    const int       iWEAPON__RUGER__DAMAGE              = 12                            ;
+    const float     fWEAPON__RUGER__ATTACK_DELAY        = (60.0 / 800.0)                ; // Time in seconds between swings
+    
     // Submachine guns behavior
     const int       iWEAPON__TMP__CLIP                  = 20                            ;
     const int       iWEAPON__TMP__AMMO1                 = iWEAPON__SMG__AMMO1__MAX      ;
