@@ -45,7 +45,7 @@ Hopefully their functionality is also implemented as well.
 | 8  | weapon_ts_fiveseven_akimbo       | Not started           | To do                             |
 | 9  | weapon_ts_beretta                | Functionally complete | Add suppressor, laser, flashlight |
 | 10 | weapon_ts_beretta_akimbo         | Not started           | To do                             |
-| 11 | weapon_ts_socom                  | Not started           | To do                             |
+| 11 | weapon_ts_socom                  | Functionally complete | Add suppressor, laser, flashlight |
 | 12 | weapon_ts_socom_akimbo           | Not started           | To do                             |
 | 13 | weapon_ts_ruger                  | Not started           | To do                             |
 | 14 | weapon_ts_deagle                 | Not started           | To do                             |
