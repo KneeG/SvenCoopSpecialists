@@ -168,100 +168,108 @@ namespace TheSpecialists
     
     // Melee behavior
     // A melee weapon will not have a clip size (might go back on this to implement blocking which uses the reload button)
-    const int iWEAPON__MELEE__MAX_CLIP                  = 0;
+    const int       iWEAPON__MELEE__MAX_CLIP                = 0                                 ;
     
-    const int   iWEAPON__KATANA__AMMO1                  = -1                                ;
-    const int   iWEAPON__KATANA__AMMO2                  = 1                                 ;
-    const int   iWEAPON__KATANA__DAMAGE                 = 55                                ;
-    const float fWEAPON__KATANA__ATTACK_DELAY           = (60 / 60.0)                       ; // Time in seconds between swings
+    const int       iWEAPON__KATANA__AMMO1                  = -1                                ;
+    const int       iWEAPON__KATANA__AMMO2                  = 1                                 ;
+    const int       iWEAPON__KATANA__DAMAGE                 = 55                                ;
+    const float     fWEAPON__KATANA__ATTACK_DELAY           = (60 / 60.0)                       ; // Time in seconds between swings
     
-    const int   iWEAPON__SEAL_KNIFE__AMMO1              = -1                                ;
-    const int   iWEAPON__SEAL_KNIFE__AMMO2              = 10                                ;
-    const int   iWEAPON__SEAL_KNIFE__DAMAGE             = 20                                ;
-    const float fWEAPON__SEAL_KNIFE__ATTACK_DELAY       = (60 / 240.0)                      ; // Time in seconds between swings
+    const int       iWEAPON__SEAL_KNIFE__AMMO1              = -1                                ;
+    const int       iWEAPON__SEAL_KNIFE__AMMO2              = 10                                ;
+    const int       iWEAPON__SEAL_KNIFE__DAMAGE             = 20                                ;
+    const float     fWEAPON__SEAL_KNIFE__ATTACK_DELAY       = (60 / 240.0)                      ; // Time in seconds between swings
     
-    const int   iWEAPON__COMBAT_KNIFE__AMMO1            = -1                                ;
-    const int   iWEAPON__COMBAT_KNIFE__AMMO2            = 5                                 ;
-    const int   iWEAPON__COMBAT_KNIFE__DAMAGE           = 25                                ;
-    const float fWEAPON__COMBAT_KNIFE__ATTACK_DELAY     = (60 / 150.0)                      ; // Time in seconds between swings
+    const int       iWEAPON__COMBAT_KNIFE__AMMO1            = -1                                ;
+    const int       iWEAPON__COMBAT_KNIFE__AMMO2            = 5                                 ;
+    const int       iWEAPON__COMBAT_KNIFE__DAMAGE           = 25                                ;
+    const float     fWEAPON__COMBAT_KNIFE__ATTACK_DELAY     = (60 / 150.0)                      ; // Time in seconds between swings
     
     // Pistols behavior
-    const float     fWEAPON__PISTOL__MAX_INACCURACY     = 10.0                              ;
-    const float     fWEAPON__PISTOL__INACCURACY_DELTA   = 1.0                               ;
-    const float     fWEAPON__PISTOL__INACCURACY_DECAY   = 0.06                              ;
+    const float     fWEAPON__PISTOL__MAX_INACCURACY         = 10.0                              ;
+    const float     fWEAPON__PISTOL__INACCURACY_DELTA       = 1.0                               ;
+    const float     fWEAPON__PISTOL__INACCURACY_DECAY       = 0.06                              ;
     
-    const int       iWEAPON__GLOCK18__CLIP              = 18                                ;
-    const int       iWEAPON__GLOCK18__AMMO1             = iWEAPON__PISTOL__AMMO1__MAX       ;
-    const int       iWEAPON__GLOCK18__AMMO2             = -1                                ;
-    const Vector    vecWEAPON__GLOCK18__SPREAD          = VECTOR_CONE_3DEGREES              ; // Accuracy of the weapon
-    const int       iWEAPON__GLOCK18__FIRE_MODE         = FireMode::iAUTOMATIC              ;
-    const int       iWEAPON__GLOCK18__DAMAGE            = 15                                ;
-    const float     fWEAPON__GLOCK18__ATTACK_DELAY      = (60.0 / 900.0)                    ; // Time in seconds between swings
+    const int       iWEAPON__GLOCK18__CLIP                  = 18                                ;
+    const int       iWEAPON__GLOCK18__AMMO1                 = iWEAPON__PISTOL__AMMO1__MAX       ;
+    const int       iWEAPON__GLOCK18__AMMO2                 = -1                                ;
+    const Vector    vecWEAPON__GLOCK18__SPREAD              = VECTOR_CONE_3DEGREES              ; // Accuracy of the weapon
+    const int       iWEAPON__GLOCK18__FIRE_MODE             = FireMode::iAUTOMATIC              ;
+    const int       iWEAPON__GLOCK18__DAMAGE                = 15                                ;
+    const float     fWEAPON__GLOCK18__ATTACK_DELAY          = (60.0 / 900.0)                    ; // Time in seconds between swings
     
-    const int       iWEAPON__GLOCK22__CLIP              = 15                                ;
-    const int       iWEAPON__GLOCK22__AMMO1             = iWEAPON__PISTOL__AMMO1__MAX       ;
-    const int       iWEAPON__GLOCK22__AMMO2             = -1                                ;
-    const Vector    vecWEAPON__GLOCK22__SPREAD          = VECTOR_CONE_2DEGREES              ; // Accuracy of the weapon
-    const int       iWEAPON__GLOCK22__FIRE_MODE         = FireMode::iSEMI_AUTOMATIC         ;
-    const int       iWEAPON__GLOCK22__DAMAGE            = 23                                ;
-    const float     fWEAPON__GLOCK22__ATTACK_DELAY      = (60.0 / 500.0)                    ; // Time in seconds between swings
+    const int       iWEAPON__GLOCK22__CLIP                  = 15                                ;
+    const int       iWEAPON__GLOCK22__AMMO1                 = iWEAPON__PISTOL__AMMO1__MAX       ;
+    const int       iWEAPON__GLOCK22__AMMO2                 = -1                                ;
+    const Vector    vecWEAPON__GLOCK22__SPREAD              = VECTOR_CONE_2DEGREES              ; // Accuracy of the weapon
+    const int       iWEAPON__GLOCK22__FIRE_MODE             = FireMode::iSEMI_AUTOMATIC         ;
+    const int       iWEAPON__GLOCK22__DAMAGE                = 23                                ;
+    const float     fWEAPON__GLOCK22__ATTACK_DELAY          = (60.0 / 500.0)                    ; // Time in seconds between swings
     
-    const int       iWEAPON__FIVESEVEN__CLIP            = 20                                ;
-    const int       iWEAPON__FIVESEVEN__AMMO1           = iWEAPON__PISTOL__AMMO1__MAX       ;
-    const int       iWEAPON__FIVESEVEN__AMMO2           = -1                                ;
-    const Vector    vecWEAPON__FIVESEVEN__SPREAD        = VECTOR_CONE_2DEGREES              ; // Accuracy of the weapon
-    const int       iWEAPON__FIVESEVEN__FIRE_MODE       = FireMode::iSEMI_AUTOMATIC         ;
-    const int       iWEAPON__FIVESEVEN__DAMAGE          = 18                                ;
-    const float     fWEAPON__FIVESEVEN__ATTACK_DELAY    = (60.0 / 800.0)                    ; // Time in seconds between swings
+    const int       iWEAPON__FIVESEVEN__CLIP                = 20                                ;
+    const int       iWEAPON__FIVESEVEN__AMMO1               = iWEAPON__PISTOL__AMMO1__MAX       ;
+    const int       iWEAPON__FIVESEVEN__AMMO2               = -1                                ;
+    const Vector    vecWEAPON__FIVESEVEN__SPREAD            = VECTOR_CONE_2DEGREES              ; // Accuracy of the weapon
+    const int       iWEAPON__FIVESEVEN__FIRE_MODE           = FireMode::iSEMI_AUTOMATIC         ;
+    const int       iWEAPON__FIVESEVEN__DAMAGE              = 18                                ;
+    const float     fWEAPON__FIVESEVEN__ATTACK_DELAY        = (60.0 / 800.0)                    ; // Time in seconds between swings
     
-    const int       iWEAPON__BERETTA__CLIP              = 12                                ;
-    const int       iWEAPON__BERETTA__AMMO1             = iWEAPON__PISTOL__AMMO1__MAX       ;
-    const int       iWEAPON__BERETTA__AMMO2             = -1                                ;
-    const Vector    vecWEAPON__BERETTA__SPREAD          = VECTOR_CONE_2DEGREES              ; // Accuracy of the weapon
-    const int       iWEAPON__BERETTA__FIRE_MODE         = FireMode::iSEMI_AUTOMATIC         ;
-    const int       iWEAPON__BERETTA__DAMAGE            = 20                                ;
-    const float     fWEAPON__BERETTA__ATTACK_DELAY      = (60.0 / 800.0)                    ; // Time in seconds between swings
+    const int       iWEAPON__BERETTA__CLIP                  = 12                                ;
+    const int       iWEAPON__BERETTA__AMMO1                 = iWEAPON__PISTOL__AMMO1__MAX       ;
+    const int       iWEAPON__BERETTA__AMMO2                 = -1                                ;
+    const Vector    vecWEAPON__BERETTA__SPREAD              = VECTOR_CONE_2DEGREES              ; // Accuracy of the weapon
+    const int       iWEAPON__BERETTA__FIRE_MODE             = FireMode::iSEMI_AUTOMATIC         ;
+    const int       iWEAPON__BERETTA__DAMAGE                = 20                                ;
+    const float     fWEAPON__BERETTA__ATTACK_DELAY          = (60.0 / 800.0)                    ; // Time in seconds between swings
     
-    const int       iWEAPON__SOCOM__CLIP                = 12                                ;
-    const int       iWEAPON__SOCOM__AMMO1               = iWEAPON__PISTOL__AMMO1__MAX       ;
-    const int       iWEAPON__SOCOM__AMMO2               = -1                                ;
-    const Vector    vecWEAPON__SOCOM__SPREAD            = VECTOR_CONE_2DEGREES              ; // Accuracy of the weapon
-    const int       iWEAPON__SOCOM__FIRE_MODE           = FireMode::iSEMI_AUTOMATIC         ;
-    const int       iWEAPON__SOCOM__DAMAGE              = 20                                ;
-    const float     fWEAPON__SOCOM__ATTACK_DELAY        = (60.0 / 800.0)                    ; // Time in seconds between swings
+    const int       iWEAPON__SOCOM__CLIP                    = 12                                ;
+    const int       iWEAPON__SOCOM__AMMO1                   = iWEAPON__PISTOL__AMMO1__MAX       ;
+    const int       iWEAPON__SOCOM__AMMO2                   = -1                                ;
+    const Vector    vecWEAPON__SOCOM__SPREAD                = VECTOR_CONE_2DEGREES              ; // Accuracy of the weapon
+    const int       iWEAPON__SOCOM__FIRE_MODE               = FireMode::iSEMI_AUTOMATIC         ;
+    const int       iWEAPON__SOCOM__DAMAGE                  = 20                                ;
+    const float     fWEAPON__SOCOM__ATTACK_DELAY            = (60.0 / 800.0)                    ; // Time in seconds between swings
     
-    const int       iWEAPON__RUGER__CLIP                = 17                                ;
-    const int       iWEAPON__RUGER__AMMO1               = iWEAPON__PISTOL__AMMO1__MAX       ;
-    const int       iWEAPON__RUGER__AMMO2               = -1                                ;
-    const Vector    vecWEAPON__RUGER__SPREAD            = VECTOR_CONE_1DEGREES              ; // Accuracy of the weapon
-    const int       iWEAPON__RUGER__FIRE_MODE           = FireMode::iSEMI_AUTOMATIC         ;
-    const int       iWEAPON__RUGER__DAMAGE              = 12                                ;
-    const float     fWEAPON__RUGER__ATTACK_DELAY        = (60.0 / 800.0)                    ; // Time in seconds between swings
+    const int       iWEAPON__RUGER__CLIP                    = 17                                ;
+    const int       iWEAPON__RUGER__AMMO1                   = iWEAPON__PISTOL__AMMO1__MAX       ;
+    const int       iWEAPON__RUGER__AMMO2                   = -1                                ;
+    const Vector    vecWEAPON__RUGER__SPREAD                = VECTOR_CONE_1DEGREES              ; // Accuracy of the weapon
+    const int       iWEAPON__RUGER__FIRE_MODE               = FireMode::iSEMI_AUTOMATIC         ;
+    const int       iWEAPON__RUGER__DAMAGE                  = 12                                ;
+    const float     fWEAPON__RUGER__ATTACK_DELAY            = (60.0 / 800.0)                    ; // Time in seconds between swings
     
-    const int       iWEAPON__DEAGLE__CLIP               = 7                                 ;
-    const int       iWEAPON__DEAGLE__AMMO1              = iWEAPON__PISTOL_MAGNUM__AMMO1__MAX;
-    const int       iWEAPON__DEAGLE__AMMO2              = -1                                ;
-    const Vector    vecWEAPON__DEAGLE__SPREAD           = VECTOR_CONE_2DEGREES              ; // Accuracy of the weapon
-    const int       iWEAPON__DEAGLE__FIRE_MODE          = FireMode::iSEMI_AUTOMATIC         ;
-    const int       iWEAPON__DEAGLE__DAMAGE             = 35                                ;
-    const float     fWEAPON__DEAGLE__ATTACK_DELAY       = (60.0 / 500.0)                    ; // Time in seconds between swings
-    const float     fWEAPON__DEAGLE__RECOIL_MULITPLIER  = 8.0                               ;
+    const int       iWEAPON__DEAGLE__CLIP                   = 7                                 ;
+    const int       iWEAPON__DEAGLE__AMMO1                  = iWEAPON__PISTOL_MAGNUM__AMMO1__MAX;
+    const int       iWEAPON__DEAGLE__AMMO2                  = -1                                ;
+    const Vector    vecWEAPON__DEAGLE__SPREAD               = VECTOR_CONE_2DEGREES              ; // Accuracy of the weapon
+    const int       iWEAPON__DEAGLE__FIRE_MODE              = FireMode::iSEMI_AUTOMATIC         ;
+    const int       iWEAPON__DEAGLE__DAMAGE                 = 35                                ;
+    const float     fWEAPON__DEAGLE__ATTACK_DELAY           = (60.0 / 500.0)                    ; // Time in seconds between swings
+    const float     fWEAPON__DEAGLE__RECOIL_MULITPLIER      = 4.0                               ;
+    
+    const int       iWEAPON__RAGING_BULL__CLIP              = 5                                 ;
+    const int       iWEAPON__RAGING_BULL__AMMO1             = iWEAPON__PISTOL_MAGNUM__AMMO1__MAX;
+    const int       iWEAPON__RAGING_BULL__AMMO2             = -1                                ;
+    const Vector    vecWEAPON__RAGING_BULL__SPREAD          = VECTOR_CONE_2DEGREES              ; // Accuracy of the weapon
+    const int       iWEAPON__RAGING_BULL__FIRE_MODE         = FireMode::iSEMI_AUTOMATIC         ;
+    const int       iWEAPON__RAGING_BULL__DAMAGE            = 45                                ;
+    const float     fWEAPON__RAGING_BULL__ATTACK_DELAY      = (60.0 / 300.0)                    ; // Time in seconds between swings
+    const float     fWEAPON__RAGING_BULL__RECOIL_MULITPLIER = 6.0                               ;
     
     // Submachine guns behavior
-    const int       iWEAPON__TMP__CLIP                  = 20                                ;
-    const int       iWEAPON__TMP__AMMO1                 = iWEAPON__SMG__AMMO1__MAX          ;
-    const int       iWEAPON__TMP__AMMO2                 = -1                                ;
-    const Vector    vecWEAPON__TMP__SPREAD              = VECTOR_CONE_4DEGREES              ; // Accuracy of the weapon
-    const int       iWEAPON__TMP__FIRE_MODE             = FireMode::iAUTOMATIC              ;
-    const int       iWEAPON__TMP__DAMAGE                = 14                                ;
-    const float     fWEAPON__TMP__ATTACK_DELAY          = (60.0 / 1100.0)                   ; // Time in seconds between swings
+    const int       iWEAPON__TMP__CLIP                      = 20                                ;
+    const int       iWEAPON__TMP__AMMO1                     = iWEAPON__SMG__AMMO1__MAX          ;
+    const int       iWEAPON__TMP__AMMO2                     = -1                                ;
+    const Vector    vecWEAPON__TMP__SPREAD                  = VECTOR_CONE_4DEGREES              ; // Accuracy of the weapon
+    const int       iWEAPON__TMP__FIRE_MODE                 = FireMode::iAUTOMATIC              ;
+    const int       iWEAPON__TMP__DAMAGE                    = 14                                ;
+    const float     fWEAPON__TMP__ATTACK_DELAY              = (60.0 / 1100.0)                   ; // Time in seconds between swings
     
     
     ///////////////////////////////
     // Ammunitions
     
-    // Melee weapons    
-    
+    // Melee weapons
     
     // Pistols
     const string    strWEAPON__PISTOL__AMMO_TYPE            = "9mm";
@@ -451,9 +459,15 @@ namespace TheSpecialists
             // View punch as a way to simulate recoil
             // TODO:
             //      Move the players cursor instead of applying a visual transformation
-            float fRandomPunchX = (Math.RandomLong(-1, 1) * 0.5) * fMultiplier;
-            float fRandomPunchY = (Math.RandomLong(-1, 1) * 0.5) * fMultiplier;
-            pPlayer.pev.punchangle = Vector(fRandomPunchX, fRandomPunchY, 0);
+            // X = Up   (negative)      Down    (positive)
+            // Y = Left (negative)      Right   (positive)
+            
+            float fRandomPunchX = Math.RandomFloat(-2, 0) * fMultiplier;
+            float fRandomPunchY = Math.RandomFloat(-2, 2) * fMultiplier;
+            
+            Vector vecOldPunchangle = Vector(pPlayer.pev.punchangle.x, pPlayer.pev.punchangle.y, pPlayer.pev.punchangle.z);
+            
+            pPlayer.pev.punchangle = Vector(fRandomPunchX, fRandomPunchY, 0) + vecOldPunchangle;
         } // End of WeaponRecoil()
         
         //////////////////////////////////////////////////////////////////////////////////
