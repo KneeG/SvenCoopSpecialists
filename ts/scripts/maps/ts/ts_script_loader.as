@@ -17,6 +17,7 @@
 #include "weapon_ts_ruger"
 #include "weapon_ts_deagle"
 #include "weapon_ts_raging_bull"
+#include "weapon_ts_contender"
 
 #include "weapon_ts_tmp"
 
@@ -36,6 +37,7 @@ void TS_LoadWeapons()
     TS_Ruger        ::Register_Weapon();
     TS_Deagle       ::Register_Weapon();
     TS_RagingBull   ::Register_Weapon();
+    TS_Contender    ::Register_Weapon();
     
     TS_TMP          ::Register_Weapon();
 }

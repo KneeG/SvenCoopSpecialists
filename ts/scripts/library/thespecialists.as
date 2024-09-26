@@ -256,6 +256,15 @@ namespace TheSpecialists
     const float     fWEAPON__RAGING_BULL__ATTACK_DELAY      = (60.0 / 300.0)                    ; // Time in seconds between swings
     const float     fWEAPON__RAGING_BULL__RECOIL_MULITPLIER = 6.0                               ;
     
+    const int       iWEAPON__CONTENDER__CLIP                = 1                                 ;
+    const int       iWEAPON__CONTENDER__AMMO1               = iWEAPON__PISTOL_MAGNUM__AMMO1__MAX;
+    const int       iWEAPON__CONTENDER__AMMO2               = -1                                ;
+    const Vector    vecWEAPON__CONTENDER__SPREAD            = VECTOR_CONE_2DEGREES              ; // Accuracy of the weapon
+    const int       iWEAPON__CONTENDER__FIRE_MODE           = FireMode::iSEMI_AUTOMATIC         ;
+    const int       iWEAPON__CONTENDER__DAMAGE              = 120                               ;
+    const float     fWEAPON__CONTENDER__ATTACK_DELAY        = (60.0 / 60.0)                     ; // Time in seconds between swings
+    const float     fWEAPON__CONTENDER__RECOIL_MULITPLIER   = 10.0                              ;
+    
     // Submachine guns behavior
     const int       iWEAPON__TMP__CLIP                      = 20                                ;
     const int       iWEAPON__TMP__AMMO1                     = iWEAPON__SMG__AMMO1__MAX          ;
@@ -277,6 +286,9 @@ namespace TheSpecialists
     
     const string    strWEAPON__PISTOL_MAGNUM__AMMO_TYPE     = "357";
     const int       iWEAPON__PISTOL_MAGNUM__AMMO1__MAX      = 70;
+    
+    const string    strWEAPON__PISTOL_762__AMMO_TYPE        = "m40a1";
+    const int       iWEAPON__PISTOL_762__AMMO1__MAX         = 30;
     
     // Submachine guns
     const string    strWEAPON__SMG__AMMO_TYPE               = "9mm";
