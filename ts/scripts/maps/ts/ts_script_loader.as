@@ -13,6 +13,7 @@
 #include "weapon_ts_glock22"
 #include "weapon_ts_fiveseven"
 #include "weapon_ts_beretta"
+#include "weapon_ts_socom"
 
 #include "weapon_ts_tmp"
 
@@ -28,6 +29,7 @@ void TS_LoadWeapons()
     TS_Glock22      ::Register_Weapon();
     TS_Fiveseven    ::Register_Weapon();
     TS_Beretta      ::Register_Weapon();
+    TS_Socom        ::Register_Weapon();
     
     TS_TMP          ::Register_Weapon();
 }

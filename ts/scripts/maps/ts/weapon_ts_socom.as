@@ -1,24 +1,31 @@
 //////////////////////////////////////////////////////////
-// File         : weapon_ts_beretta.as                  //
+// File         : weapon_ts_socom.as                    //
 // Author       : Knee                                  //
-// Description  : Beretta from The Specialists Mod 3.0  //
+// Description  : Socom from The Specialists Mod 3.0    //
 //////////////////////////////////////////////////////////
 #include "../../library/thespecialists"
 
 /////////////////////////////////////
-// TS_Beretta namespace
-namespace TS_Beretta
+// TS_Socom namespace
+namespace TS_Socom
 {
     /////////////////////////////////////
-    // Beretta animation enumeration
+    // Socom animation enumeration
     namespace Animations
     {
-        const int IDLE1         = 0;
-        const int SHOOT1        = 1;
-        const int SHOOT2        = 2; // Haven't seen any meaningful difference between this and SHOOT1 based on my inspection
-        const int SHOOTEMPTY1   = 3;
-        const int DRAW1         = 4;
-        const int RELOAD1       = 5;
+        const int IDLE1                 = 0 ;
+        const int SHOOT1                = 1 ;
+        const int SHOOT2                = 2 ; // Haven't seen any meaningful difference between this and SHOOT1 based on my inspection
+        const int SHOOTEMPTY1           = 3 ;
+        const int DRAW1                 = 4 ;
+        const int IDLE_SIDEWAYS1        = 5 ;
+        const int SHOOT_SIDEWAYS1       = 6 ;
+        const int SHOOT_SIDEWAYS2       = 7 ;
+        const int SHOOTEMPTY_SIDEWAYS1  = 8 ;
+        const int TILT_SIDEWAYS         = 9 ; 
+        const int TILT_UPRIGHT          = 10;
+        const int RELOAD1               = 11;
+        const int RELOAD_SIDEWAYS1      = 12;
     }
     
     // Return constants
@@ -26,9 +33,9 @@ namespace TS_Beretta
     const int               RETURN_ERROR_NULL_POINTER   = -1;
     
     // Meta data
-    const string            strNAME                 = "beretta"             ;
-    const string            strNAMESPACE            = "TS_Beretta::"        ;
-    const string            strCLASSNAME            = "weapon_ts_beretta"   ;
+    const string            strNAME                 = "socom"             ;
+    const string            strNAMESPACE            = "TS_Socom::"        ;
+    const string            strCLASSNAME            = "weapon_ts_socom"   ;
 
     // Asset paths
     const string            strMODEL_P              = TheSpecialists::strMODEL_PATH + "pistols/" + strNAME + "/p_" + strNAME + ".mdl";
@@ -51,20 +58,26 @@ namespace TS_Beretta
         Animations::SHOOT2
     };
     
+    const array<int> arrSidewaysAnimationList = {
+        Animations::SHOOT_SIDEWAYS1,
+        Animations::SHOOT_SIDEWAYS2
+    };
+    
     const float             fHOLSTER_TIME           = TheSpecialists::fDEFAULT_HOSTER_TIME          ;
     const float             fNEXT_THINK             = TheSpecialists::fDEFAULT_NEXT_THINK           ;
-    const float             fPRIMARY_ATTACK_DELAY   = TheSpecialists::fWEAPON__BERETTA__ATTACK_DELAY;
+    const float             fPRIMARY_ATTACK_DELAY   = TheSpecialists::fWEAPON__SOCOM__ATTACK_DELAY;
     const float             fSWING_DISTANCE         = TheSpecialists::fSWING_DISTANCE               ;
     const IGNORE_MONSTERS   eIGNORE_RULE            = TheSpecialists::eIGNORE_RULE                  ;
-    const int               iDAMAGE                 = TheSpecialists::iWEAPON__BERETTA__DAMAGE      ;
-    const Vector            vecSPREAD               = TheSpecialists::vecWEAPON__BERETTA__SPREAD    ;
+    const int               iDAMAGE                 = TheSpecialists::iWEAPON__SOCOM__DAMAGE      ;
+    const Vector            vecSPREAD               = TheSpecialists::vecWEAPON__SOCOM__SPREAD    ;
     
     /////////////////////////////////////
-    // Beretta class
-    class weapon_ts_beretta : ScriptBasePlayerWeaponEntity
+    // Socom class
+    class weapon_ts_socom : ScriptBasePlayerWeaponEntity
     {
         private CBasePlayer@ m_pPlayer          ; // Player reference pointer
         private int     m_iDamage               ; // Weapon damage
+        private bool    m_bSideways             ; // Sideways flag
         private int     m_bSilenced             ; // Silenced flag
         private float   m_flAnimationCooldown   ; // Animation cooldown timer, helps prevent the weapon from going to idle animations while the weapon is being tilted
 
@@ -74,10 +87,10 @@ namespace TS_Beretta
         
         Vector          m_vecAccuracy           ; // Current accuracy of the weapon
         
-        TraceResult m_trHit                     ; // Keeps track of what is hit when the beretta is swung
+        TraceResult m_trHit                     ; // Keeps track of what is hit when the socom is swung
         
         //////////////////////////////////////////
-        // TS_Beretta::Spawn                    //
+        // TS_Socom::Spawn                    //
         // Function:                            //
         //      Spawn function for the weapon   //
         // Parameters:                          //
@@ -102,7 +115,7 @@ namespace TS_Beretta
             m_vecAccuracy = vecSPREAD;
             
             // Set the clip size
-            self.m_iClip = TheSpecialists::iWEAPON__BERETTA__CLIP;
+            self.m_iClip = TheSpecialists::iWEAPON__SOCOM__CLIP;
             
             // Set the weapon damage
             self.m_flCustomDmg = m_iDamage;
@@ -112,7 +125,7 @@ namespace TS_Beretta
         } // End of Spawn()
 
         //////////////////////////////////////////////////
-        // TS_Beretta::Precache                         //
+        // TS_Socom::Precache                           //
         // Function:                                    //
         //      Prechacing function for weapon assets   //
         // Parameters:                                  //
@@ -141,7 +154,7 @@ namespace TS_Beretta
         } // End of Precache()
 
         //////////////////////////////////////////////////////////////////////////////
-        // TS_Beretta::GetItemInfo                                                  //
+        // TS_Socom::GetItemInfo                                                    //
         // Function:                                                                //
         //      Sets the weapon metadata                                            //
         // Parameters:                                                              //
@@ -151,18 +164,18 @@ namespace TS_Beretta
         //////////////////////////////////////////////////////////////////////////////
         bool GetItemInfo(ItemInfo& out info)
         {
-            info.iMaxClip		= TheSpecialists::iWEAPON__BERETTA__CLIP        ;
-            info.iMaxAmmo1		= TheSpecialists::iWEAPON__BERETTA__AMMO1       ;
-            info.iMaxAmmo2		= TheSpecialists::iWEAPON__BERETTA__AMMO2       ;
-            info.iSlot			= TheSpecialists::iWEAPON__SLOT__PISTOL         ;
-            info.iPosition		= TheSpecialists::iWEAPON__POSITION__BERETTA    ;
-            info.iWeight		= TheSpecialists::iDEFAULT_WEIGHT               ;
+            info.iMaxClip		= TheSpecialists::iWEAPON__SOCOM__CLIP      ;
+            info.iMaxAmmo1		= TheSpecialists::iWEAPON__SOCOM__AMMO1     ;
+            info.iMaxAmmo2		= TheSpecialists::iWEAPON__SOCOM__AMMO2     ;
+            info.iSlot			= TheSpecialists::iWEAPON__SLOT__PISTOL     ;
+            info.iPosition		= TheSpecialists::iWEAPON__POSITION__SOCOM  ;
+            info.iWeight		= TheSpecialists::iDEFAULT_WEIGHT           ;
             
             return true;
         } // End of GetItemInfo()
         
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_Beretta::AddToPlayer                                                                  //
+        // TS_Socom::AddToPlayer                                                                    //
         // Function:                                                                                //
         //      Adds the weapon to the player if they exist                                         //
         //      If the player exists, save a reference to the player                                //
@@ -182,7 +195,7 @@ namespace TS_Beretta
                 @m_pPlayer = pPlayer;
                 
                 // Debug printing
-                // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "Beretta m_iPrimaryAmmoType: " + self.m_iPrimaryAmmoType + "\n");
+                // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "Socom m_iPrimaryAmmoType: " + self.m_iPrimaryAmmoType + "\n");
                 
                 NetworkMessage message
                 (
@@ -204,7 +217,7 @@ namespace TS_Beretta
         } // End of AddToPlayer()
 
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_Beretta::Deploy                                                                       //
+        // TS_Socom::Deploy                                                                         //
         // Function:                                                                                //
         //      Adds the weapon to the player if they exist                                         //
         //      If the player exists, save a reference to the player                                //
@@ -228,7 +241,7 @@ namespace TS_Beretta
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_Beretta::Holster                                                                      //
+        // TS_Socom::Holster                                                                        //
         // Function:                                                                                //
         //      Hides the weapon from the player                                                    //
         // Parameters:                                                                              //
@@ -246,12 +259,12 @@ namespace TS_Beretta
             // Hide the player model by making the viewmodel path empty
             m_pPlayer.pev.viewmodel = "";
             
-            // Tell the looping function to stop calling any of our beretta functions
+            // Tell the looping function to stop calling any of our socom functions
             SetThink(null);
         } // End of Holster()
         
         //////////////////////////////////////////////////
-        // TS_Beretta::PrimaryAttack                    //
+        // TS_Socom::PrimaryAttack                      //
         // Function:                                    //
         //      Performs the weapon's primary attack    //
         // Parameters:                                  //
@@ -273,9 +286,46 @@ namespace TS_Beretta
             self.m_flNextPrimaryAttack  = g_Engine.time + fPRIMARY_ATTACK_DELAY;
             m_flAnimationCooldown       = g_Engine.time + 1.0;
         } // End of PrimaryAttack()
+        
+        //////////////////////////////////////////////////
+        // TS_Socom::SecondaryAttack                    //
+        // Function:                                    //
+        //      Performs the weapon's secondary attack  //
+        // Parameters:                                  //
+        //      None                                    //
+        // Return value:                                //
+        //      None                                    //
+        //////////////////////////////////////////////////
+        void SecondaryAttack()
+        {
+            int iAnimationIndex = 0;
+            
+            // Toggle the flag
+            m_bSideways = !m_bSideways;
+            
+            if (m_bSideways)
+            {
+                iAnimationIndex = Animations::TILT_SIDEWAYS;
+            }
+            else
+            {
+                iAnimationIndex = Animations::TILT_UPRIGHT;
+            }
+            
+            // Show the tilt animation
+            self.SendWeaponAnim(iAnimationIndex);
+            
+            // Delay the next fire
+            self.m_flNextPrimaryAttack  = g_Engine.time + 0.8;
+            self.m_flNextSecondaryAttack= g_Engine.time + 0.8;
+            self.m_flTimeWeaponIdle     = g_Engine.time + 2.0; // For some reason this doesn't work
+            
+            // Don't allow the weapon to go through any animation routines until we've finished tilting
+            m_flAnimationCooldown = g_Engine.time + 1.0;
+        } // End of SecondaryAttack()
 
         //////////////////////////////
-        // TS_Beretta::Shoot        //
+        // TS_Socom::Shoot          //
         // Function:                //
         //      Gun fire handling   //
         // Parameters:              //
@@ -285,6 +335,7 @@ namespace TS_Beretta
         //////////////////////////////
         void Shoot()
         {
+            int iAnimationIndex  = 0;
             int iRandomAnimation = 0;
             
             // Under the hood, m_rgAmmo is an array
@@ -298,7 +349,17 @@ namespace TS_Beretta
                 if (self.m_iClip > 0)
                 {
                     // Determine if a random animation can be picked
-                    iRandomAnimation = TheSpecialists::CommonFunctions::PickRandomElementFromListInt(arrAnimationList);
+                    
+                    // Determine if a random animation can be picked
+                    if (m_bSideways)
+                    {
+                        iRandomAnimation = TheSpecialists::CommonFunctions::PickRandomElementFromListInt(arrSidewaysAnimationList);
+                    }
+                    else
+                    {
+                        iRandomAnimation = TheSpecialists::CommonFunctions::PickRandomElementFromListInt(arrAnimationList);
+                    }
+                    
                     if (iRandomAnimation != -1)
                     {
                         self.SendWeaponAnim
@@ -343,12 +404,21 @@ namespace TS_Beretta
                     // Determine if the magazine is empty
                     if (0 == self.m_iClip)
                     {
+                        if (m_bSideways)
+                        {
+                            iAnimationIndex = Animations::SHOOTEMPTY_SIDEWAYS1;
+                        }
+                        else
+                        {
+                            iAnimationIndex = Animations::SHOOTEMPTY1;
+                        }
+                        
                         // Indicate to the user that the magazine is empty
                         self.SendWeaponAnim
                         (
-                            Animations::SHOOTEMPTY1 , // Animation index
-                            0                       , // skiplocal (Don't know what this means)
-                            0                         // body (probably model related 'body')
+                            iAnimationIndex , // Animation index
+                            0               , // skiplocal (Don't know what this means)
+                            0                 // body (probably model related 'body')
                         );
                     }
                     
@@ -376,7 +446,7 @@ namespace TS_Beretta
         } // End of Shoot()
 
         //////////////////////////
-        // TS_Beretta::Reload   //
+        // TS_Socom::Reload     //
         // Function:            //
         //      Reload handler  //
         // Parameters:          //
@@ -387,13 +457,21 @@ namespace TS_Beretta
         void Reload()
         {
             // Determine if the gun does not need to reload
-            if (    (self.m_iClip == TheSpecialists::iWEAPON__BERETTA__CLIP)
+            if (    (self.m_iClip == TheSpecialists::iWEAPON__SOCOM__CLIP)
                  || (m_pPlayer.m_rgAmmo(self.m_iPrimaryAmmoType) <= 0)    )
             {
                 return;
             }
-        
-            self.DefaultReload(TheSpecialists::iWEAPON__BERETTA__CLIP, Animations::RELOAD1, 1.5, 0);
+            
+            // Determine if the weapon is tilted sideways
+            if (m_bSideways)                
+            {
+                self.DefaultReload(TheSpecialists::iWEAPON__SOCOM__CLIP, Animations::RELOAD_SIDEWAYS1, 1.5, 0);
+            }
+            else
+            {
+                self.DefaultReload(TheSpecialists::iWEAPON__SOCOM__CLIP, Animations::RELOAD1, 1.5, 0);
+            }
 
             // Prevent the weapon idle animation from overriding the reload animation
             m_flAnimationCooldown = g_Engine.time + 2.5;
@@ -404,7 +482,7 @@ namespace TS_Beretta
         } // End of Reload()
         
         //////////////////////////////
-        // TS_Beretta::WeaponIdle   //
+        // TS_Socom::WeaponIdle     //
         // Function:                //
         //      Weapon idle handler //
         // Parameters:              //
@@ -414,6 +492,8 @@ namespace TS_Beretta
         //////////////////////////////
         void WeaponIdle()
         {
+            int iAnimationIndex = 0;
+            
             // Decrease the weapon spread while it is not being fired
             m_fInaccuracyFactor = TheSpecialists::CommonFunctions::SpreadDecay(m_fInaccuracyFactor, m_fInaccuracyDecay);
             
@@ -425,13 +505,22 @@ namespace TS_Beretta
             
             // Determine if the tilting animation has finished
             if (m_flAnimationCooldown < g_Engine.time)
-            {
-                self.SendWeaponAnim(Animations::IDLE1);
+            {            
+                if (m_bSideways)
+                {
+                    iAnimationIndex = Animations::IDLE_SIDEWAYS1;
+                }
+                else
+                {
+                    iAnimationIndex = Animations::IDLE1;
+                }
+                
+                self.SendWeaponAnim(iAnimationIndex);
             } // End of if (m_flAnimationCooldown < g_Engine.time)
             
         } // End of WeaponIdle()
         
-    } // End of class weapon_ts_beretta
+    } // End of class weapon_ts_socom
 
     void Register_Weapon()
     {
@@ -443,4 +532,4 @@ namespace TS_Beretta
             TheSpecialists::strWEAPON__PISTOL__AMMO_TYPE  // string - ammo type
         );
     }
-} // End of namespace TS_Beretta
+} // End of namespace TS_Socom
