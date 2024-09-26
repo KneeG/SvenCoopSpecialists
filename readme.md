@@ -50,7 +50,7 @@ Hopefully their functionality is also implemented as well.
 | 13 | weapon_ts_ruger                  | Functionally complete | Add laser, flashlight             |
 | 14 | weapon_ts_deagle                 | Functionally complete | Add suppressor, laser, flashlight |
 | 15 | weapon_ts_raging_bull            | Functionally complete | Add laser                         |
-| 16 | weapon_ts_contender              | Not started           | To do                             |
+| 16 | weapon_ts_contender              | Functionally complete | Add laser, scope                  |
 | 17 | weapon_ts_gold_colts             | Not started           | To do                             |
 | 18 | weapon_ts_mp5sd                  | Not started           | To do                             |
 | 19 | weapon_ts_mp5k                   | Not started           | To do                             |
