@@ -298,7 +298,16 @@ namespace TheSpecialists
     const int       iWEAPON__MP5SD__FIRE_MODE               = FireMode::iAUTOMATIC              ;
     const int       iWEAPON__MP5SD__DAMAGE                  = 12                                ;
     const float     fWEAPON__MP5SD__ATTACK_DELAY            = (60.0 / 700.0)                    ; // Time in seconds between swings
-    const float     fWEAPON__MP5SD__RECOIL_MULITPLIER       = 0.5                               ;
+    const float     fWEAPON__MP5SD__RECOIL_MULTIPLIER       = 0.5                               ;
+    
+    const int       iWEAPON__MP5K__CLIP                     = 32                                ;
+    const int       iWEAPON__MP5K__AMMO1                    = iWEAPON__SMG__AMMO1__MAX          ;
+    const int       iWEAPON__MP5K__AMMO2                    = -1                                ;
+    const Vector    vecWEAPON__MP5K__SPREAD                 = VECTOR_CONE_4DEGREES              ; // Accuracy of the weapon
+    const int       iWEAPON__MP5K__FIRE_MODE                = FireMode::iAUTOMATIC              ;
+    const int       iWEAPON__MP5K__DAMAGE                   = 10                                ;
+    const float     fWEAPON__MP5K__ATTACK_DELAY             = (60.0 / 800.0)                    ; // Time in seconds between swings
+    const float     fWEAPON__MP5K__RECOIL_MULTIPLIER        = 0.6                               ;
     
     ///////////////////////////////
     // Ammunitions
