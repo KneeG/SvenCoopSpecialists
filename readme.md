@@ -52,9 +52,9 @@ Hopefully their functionality is also implemented as well.
 | 15 | weapon_ts_raging_bull            | Functionally complete | Add laser                         |
 | 16 | weapon_ts_contender              | Functionally complete | Add laser, scope                  |
 | 17 | weapon_ts_gold_colts             | Complete              | Done                              |
-| 18 | weapon_ts_mp5sd                  | Not started           | To do                             |
-| 19 | weapon_ts_mp5k                   | Not started           | To do                             |
-| 20 | weapon_ts_ump45                  | Not started           | To do                             |
+| 18 | weapon_ts_mp5sd                  | Functionally complete | Add laser, scope                  |
+| 19 | weapon_ts_mp5k                   | Functionally complete | Add suppressor, laser, flashlight |
+| 20 | weapon_ts_ump45                  | Functionally complete | Add suppressor, laser, flashlight |
 | 21 | weapon_ts_mp7                    | Not started           | To do                             |
 | 22 | weapon_ts_tmp                    | Functionally complete | Figure out ammo types             |
 | 23 | weapon_ts_mac10                  | Not started           | Can't find files, might not do    |

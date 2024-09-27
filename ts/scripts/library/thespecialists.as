@@ -83,6 +83,7 @@ namespace TheSpecialists
     const string strSMG__SOUND__EMPTY           = "pistol_empty.wav"                            ; // Name of the dry fire pistol sound
     const string strSMG__SOUND__BOLTPULL        = "boltpull.wav"                                ; // Name of the bolt pull sound
     const string strSMG__SOUND__BOLTSLAP        = "boltslap.wav"                                ; // Name of the bolt slap sound
+    const string strSMG__SOUND__CLIPSLAP        = "clipslap.wav"                                ; // Name of the magazine slap sound
     
     const int iSPRITE__WEAPONS__WIDTH           = 128                                           ; // [pixels] Width of the weapon sprites
     const int iSPRITE__WEAPONS__HEIGHT          = 48                                            ; // [pixels] Height of the weapon sprites
@@ -308,6 +309,15 @@ namespace TheSpecialists
     const int       iWEAPON__MP5K__DAMAGE                   = 10                                ;
     const float     fWEAPON__MP5K__ATTACK_DELAY             = (60.0 / 800.0)                    ; // Time in seconds between swings
     const float     fWEAPON__MP5K__RECOIL_MULTIPLIER        = 0.6                               ;
+    
+    const int       iWEAPON__UMP45__CLIP                    = 25                                ;
+    const int       iWEAPON__UMP45__AMMO1                   = iWEAPON__SMG__AMMO1__MAX          ;
+    const int       iWEAPON__UMP45__AMMO2                   = -1                                ;
+    const Vector    vecWEAPON__UMP45__SPREAD                = VECTOR_CONE_4DEGREES              ; // Accuracy of the weapon
+    const int       iWEAPON__UMP45__FIRE_MODE               = FireMode::iAUTOMATIC              ;
+    const int       iWEAPON__UMP45__DAMAGE                  = 19                                ;
+    const float     fWEAPON__UMP45__ATTACK_DELAY            = (60.0 / 600.0)                    ; // Time in seconds between swings
+    const float     fWEAPON__UMP45__RECOIL_MULTIPLIER       = 0.7                               ;
     
     ///////////////////////////////
     // Ammunitions
