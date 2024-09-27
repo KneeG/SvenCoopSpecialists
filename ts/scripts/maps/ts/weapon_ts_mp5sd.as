@@ -1,29 +1,25 @@
-//////////////////////////////////////////////////////
-// File         : weapon_ts_tmp.as                  //
-// Author       : Knee                              //
-// Description  : TMP from The Specialists Mod 3.0  //
-//////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////
+// File         : weapon_ts_mp5sd.as                    //
+// Author       : Knee                                  //
+// Description  : MP5SD from The Specialists Mod 3.0    //
+//////////////////////////////////////////////////////////
 #include "../../library/thespecialists"
 
 /////////////////////////////////////
-// TS_TMP namespace
-namespace TS_TMP
+// TS_MP5SD namespace
+namespace TS_MP5SD
 {
     /////////////////////////////////////
-    // TMP animation enumeration
+    // MP5SD animation enumeration
     namespace Animations
     {
-        const int IDLE1             = 0 ;
-        const int RELOAD1           = 1 ;
-        const int DRAW1             = 2 ;
-        const int SHOOT1            = 3 ;
-        const int SHOOT2            = 4 ; // Haven't seen any meaningful difference between this and SHOOT1 based on my inspection
-        const int TILT_SIDEWAYS     = 5 ; 
-        const int TILT_UPRIGHT      = 6 ;
-        const int IDLE_SIDEWAYS1    = 7 ;
-        const int SHOOT_SIDEWAYS1   = 8 ;
-        const int SHOOT_SIDEWAYS2   = 9 ;
-        const int RELOAD_SIDEWAYS1  = 10;
+        const int IDLE1             = 0;
+        const int SHOOT1            = 1;
+        const int SHOOT2            = 2;
+        const int SHOOT3            = 3;
+        const int DRAW1             = 4;
+        const int RELOAD1           = 5;
+        const int MELEE             = 6;
     }
     
     // Return constants
@@ -31,9 +27,9 @@ namespace TS_TMP
     const int               RETURN_ERROR_NULL_POINTER   = -1;
     
     // Meta data
-    const string            strNAME                 = "tmp"             ;
-    const string            strNAMESPACE            = "TS_TMP::"        ;
-    const string            strCLASSNAME            = "weapon_ts_tmp"   ;
+    const string            strNAME                 = "mp5sd"             ;
+    const string            strNAMESPACE            = "TS_MP5SD::"        ;
+    const string            strCLASSNAME            = "weapon_ts_mp5sd"   ;
 
     // Asset paths
     const string            strMODEL_P              = TheSpecialists::strMODEL_PATH + "smgs/" + strNAME + "/p_" + strNAME + ".mdl";
@@ -46,39 +42,34 @@ namespace TS_TMP
     const string            strSOUND_CLIPIN         = TheSpecialists::strSOUND_PATH + "smgs/" + strNAME + "/" + TheSpecialists::strSMG__SOUND__CLIPIN         ;
     const string            strSOUND_CLIPOUT        = TheSpecialists::strSOUND_PATH + "smgs/" + strNAME + "/" + TheSpecialists::strSMG__SOUND__CLIPOUT        ;
     const string            strSOUND_FIRE           = TheSpecialists::strSOUND_PATH + "smgs/" + strNAME + "/" + TheSpecialists::strSMG__SOUND__FIRE           ;
-    const string            strSOUND_FIRE_SILENCED  = TheSpecialists::strSOUND_PATH + "smgs/" + strNAME + "/" + TheSpecialists::strSMG__SOUND__FIRE_SILENCED  ;
+    
+    // This weapon is, by default, silenced
+    //const string            strSOUND_FIRE_SILENCED  = TheSpecialists::strSOUND_PATH + "smgs/" + strNAME + "/" + TheSpecialists::strSMG__SOUND__FIRE_SILENCED  ;
     const string            strSOUND_SLIDEBACK      = TheSpecialists::strSOUND_PATH + "smgs/" + strNAME + "/" + TheSpecialists::strSMG__SOUND__SLIDEBACK      ;
     const string            strSOUND_EMPTY          = TheSpecialists::strSOUND_PATH + TheSpecialists::strSMG__SOUND__EMPTY                                       ;
     
     // Create a list of animations to be played at random
     const array<int> arrAnimationList = {
         Animations::SHOOT1,
-        Animations::SHOOT2
-    };
-    
-    const array<int> arrSidewaysAnimationList = {
-        Animations::SHOOT_SIDEWAYS1,
-        Animations::SHOOT_SIDEWAYS2
+        Animations::SHOOT2,
+        Animations::SHOOT3
     };
     
     const float             fHOLSTER_TIME           = TheSpecialists::fDEFAULT_HOSTER_TIME              ;
     const float             fNEXT_THINK             = TheSpecialists::fDEFAULT_NEXT_THINK               ;
-    const float             fPRIMARY_ATTACK_DELAY   = TheSpecialists::fWEAPON__TMP__ATTACK_DELAY        ;
+    const float             fPRIMARY_ATTACK_DELAY   = TheSpecialists::fWEAPON__MP5SD__ATTACK_DELAY      ;
     const float             fSWING_DISTANCE         = TheSpecialists::fSWING_DISTANCE                   ;
     const IGNORE_MONSTERS   eIGNORE_RULE            = TheSpecialists::eIGNORE_RULE                      ;
-    const int               iDAMAGE                 = TheSpecialists::iWEAPON__TMP__DAMAGE              ;
-    const Vector            vecSPREAD               = TheSpecialists::vecWEAPON__TMP__SPREAD            ;
-    const float             fRECOIL_MULTIPLIER      = TheSpecialists::fWEAPON__TMP__RECOIL_MULTIPLIER   ;
+    const int               iDAMAGE                 = TheSpecialists::iWEAPON__MP5SD__DAMAGE            ;
+    const Vector            vecSPREAD               = TheSpecialists::vecWEAPON__MP5SD__SPREAD          ;
+    const float             fRECOIL_MULTIPLIER      = TheSpecialists::fWEAPON__MP5SD__RECOIL_MULITPLIER ;
     
     /////////////////////////////////////
-    // TMP class
-    class weapon_ts_tmp : ScriptBasePlayerWeaponEntity
+    // MP5SD class
+    class weapon_ts_mp5sd : ScriptBasePlayerWeaponEntity
     {
         private CBasePlayer@ m_pPlayer          ; // Player reference pointer
         private int     m_iDamage               ; // Weapon damage
-        private bool    m_bSilenced             ; // Silenced flag
-        private bool    m_bSideways             ; // Sideways flag
-        private bool    m_bTilting              ; // Tilting flag, helps prevent the weapon from going to idle animations while the weapon is being tilted
         private float   m_flAnimationCooldown   ; // Animation cooldown timer, helps prevent the weapon from going to idle animations while the weapon is being tilted
         
         private float   m_fInaccuracyFactor     ; // Negatively affects weapon spread
@@ -87,10 +78,10 @@ namespace TS_TMP
         
         Vector          m_vecAccuracy           ; // Current accuracy of the weapon
         
-        TraceResult     m_trHit                 ; // Keeps track of what is hit when the tmp is swung
+        TraceResult     m_trHit                 ; // Keeps track of what is hit when the mp5sd is swung
         
         //////////////////////////////////////////
-        // TS_TMP::Spawn                        //
+        // TS_MP5SD::Spawn                      //
         // Function:                            //
         //      Spawn function for the weapon   //
         // Parameters:                          //
@@ -104,9 +95,6 @@ namespace TS_TMP
             
             m_iDamage = iDAMAGE;
             
-            // Start the weapon facing upright
-            m_bSideways = false;
-            
             m_fInaccuracyFactor = 1.0                                               ; // Scale factor added to weapon spread cone, negatively affects weapon spread
             m_fInaccuracyDelta  = TheSpecialists::fWEAPON__PISTOL__INACCURACY_DELTA ; // How much inaccuracy increases per shot
             m_fInaccuracyDecay  = TheSpecialists::fWEAPON__PISTOL__INACCURACY_DECAY ; // How much inaccuracy decreases over time
@@ -118,7 +106,7 @@ namespace TS_TMP
             g_EntityFuncs.SetModel(self, self.GetW_Model(strMODEL_W));
             
             // Set the clip size
-            self.m_iClip = TheSpecialists::iWEAPON__TMP__CLIP;
+            self.m_iClip = TheSpecialists::iWEAPON__MP5SD__CLIP;
             
             // Set the weapon damage
             self.m_flCustomDmg = m_iDamage;
@@ -128,7 +116,7 @@ namespace TS_TMP
         } // End of Spawn()
 
         //////////////////////////////////////////////////
-        // TS_TMP::Precache                             //
+        // TS_MP5SD::Precache                           //
         // Function:                                    //
         //      Prechacing function for weapon assets   //
         // Parameters:                                  //
@@ -149,7 +137,9 @@ namespace TS_TMP
             g_SoundSystem.PrecacheSound(strSOUND_CLIPIN         );
             g_SoundSystem.PrecacheSound(strSOUND_CLIPOUT        );
             g_SoundSystem.PrecacheSound(strSOUND_FIRE           );         
-            g_SoundSystem.PrecacheSound(strSOUND_FIRE_SILENCED  );
+            
+            // The gun by default is silenced, so commenting this out
+            //g_SoundSystem.PrecacheSound(strSOUND_FIRE_SILENCED  );
             g_SoundSystem.PrecacheSound(strSOUND_SLIDEBACK      );
             
             g_Game.PrecacheGeneric(TheSpecialists::strSPRITE_ROOT + strSPRITE_FILE);
@@ -157,7 +147,7 @@ namespace TS_TMP
         } // End of Precache()
 
         //////////////////////////////////////////////////////////////////////////////
-        // TS_TMP::GetItemInfo                                                  //
+        // TS_MP5SD::GetItemInfo                                                    //
         // Function:                                                                //
         //      Sets the weapon metadata                                            //
         // Parameters:                                                              //
@@ -167,18 +157,18 @@ namespace TS_TMP
         //////////////////////////////////////////////////////////////////////////////
         bool GetItemInfo(ItemInfo& out info)
         {
-            info.iMaxClip		= TheSpecialists::iWEAPON__TMP__CLIP    ;
-            info.iMaxAmmo1		= TheSpecialists::iWEAPON__TMP__AMMO1   ;
-            info.iMaxAmmo2		= TheSpecialists::iWEAPON__TMP__AMMO2   ;
-            info.iSlot			= TheSpecialists::iWEAPON__SLOT__SMG    ;
-            info.iPosition		= TheSpecialists::iWEAPON__POSITION__TMP;
-            info.iWeight		= TheSpecialists::iDEFAULT_WEIGHT       ;
+            info.iMaxClip		= TheSpecialists::iWEAPON__MP5SD__CLIP      ;
+            info.iMaxAmmo1		= TheSpecialists::iWEAPON__MP5SD__AMMO1     ;
+            info.iMaxAmmo2		= TheSpecialists::iWEAPON__MP5SD__AMMO2     ;
+            info.iSlot			= TheSpecialists::iWEAPON__SLOT__SMG        ;
+            info.iPosition		= TheSpecialists::iWEAPON__POSITION__MP5SD  ;
+            info.iWeight		= TheSpecialists::iDEFAULT_WEIGHT           ;
             
             return true;
         } // End of GetItemInfo()
         
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_TMP::AddToPlayer                                                                      //
+        // TS_MP5SD::AddToPlayer                                                                    //
         // Function:                                                                                //
         //      Adds the weapon to the player if they exist                                         //
         //      If the player exists, save a reference to the player                                //
@@ -198,7 +188,7 @@ namespace TS_TMP
                 @m_pPlayer = pPlayer;
                 
                 // Debug printing
-                // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "TMP m_iPrimaryAmmoType: " + self.m_iPrimaryAmmoType + "\n");
+                // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "MP5SD m_iPrimaryAmmoType: " + self.m_iPrimaryAmmoType + "\n");
                 
                 NetworkMessage message
                 (
@@ -220,7 +210,7 @@ namespace TS_TMP
         } // End of AddToPlayer()
 
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_TMP::Deploy                                                                           //
+        // TS_MP5SD::Deploy                                                                         //
         // Function:                                                                                //
         //      Adds the weapon to the player if they exist                                         //
         //      If the player exists, save a reference to the player                                //
@@ -241,7 +231,7 @@ namespace TS_TMP
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_TMP::Holster                                                                          //
+        // TS_MP5SD::Holster                                                                        //
         // Function:                                                                                //
         //      Hides the weapon from the player                                                    //
         // Parameters:                                                                              //
@@ -259,12 +249,12 @@ namespace TS_TMP
             // Hide the player model by making the viewmodel path empty
             m_pPlayer.pev.viewmodel = "";
             
-            // Tell the game loop to stop calling any of our tmp functions
+            // Tell the game loop to stop calling any of our mp5sd functions
             SetThink(null);
         } // End of Holster()
         
         //////////////////////////////////////////////////
-        // TS_TMP::PrimaryAttack                        //
+        // TS_MP5SD::PrimaryAttack                      //
         // Function:                                    //
         //      Performs the weapon's primary attack    //
         // Parameters:                                  //
@@ -283,46 +273,9 @@ namespace TS_TMP
             self.m_flNextPrimaryAttack  = g_Engine.time + fPRIMARY_ATTACK_DELAY;
             m_flAnimationCooldown       = g_Engine.time + 1.0;
         } // End of PrimaryAttack()
-        
-        //////////////////////////////////////////////////
-        // TS_TMP::SecondaryAttack                      //
-        // Function:                                    //
-        //      Performs the weapon's secondary attack  //
-        // Parameters:                                  //
-        //      None                                    //
-        // Return value:                                //
-        //      None                                    //
-        //////////////////////////////////////////////////
-        void SecondaryAttack()
-        {
-            int iAnimationIndex = 0;
-            
-            // Toggle the flag
-            m_bSideways = !m_bSideways;
-            
-            if (m_bSideways)
-            {
-                iAnimationIndex = Animations::TILT_SIDEWAYS;
-            }
-            else
-            {
-                iAnimationIndex = Animations::TILT_UPRIGHT;
-            }
-            
-            // Show the tilt animation
-            self.SendWeaponAnim(iAnimationIndex);
-            
-            // Delay the next fire
-            self.m_flNextPrimaryAttack  = g_Engine.time + 0.8;
-            self.m_flNextSecondaryAttack= g_Engine.time + 0.8;
-            self.m_flTimeWeaponIdle     = g_Engine.time + 2.0; // For some reason this doesn't work
-            
-            // Don't allow the weapon to go through any animation routines until we've finished tilting
-            m_flAnimationCooldown = g_Engine.time + 1.0;
-        } // End of SecondaryAttack()
 
         //////////////////////////////
-        // TS_TMP::Shoot            //
+        // TS_MP5SD::Shoot          //
         // Function:                //
         //      Gun fire handling   //
         // Parameters:              //
@@ -345,15 +298,7 @@ namespace TS_TMP
                 if (self.m_iClip > 0)
                 {
                     // Determine if a random animation can be picked
-                    if (m_bSideways)
-                    {
-                        iRandomAnimation = TheSpecialists::CommonFunctions::PickRandomElementFromListInt(arrSidewaysAnimationList);
-                    }
-                    else
-                    {
-                        iRandomAnimation = TheSpecialists::CommonFunctions::PickRandomElementFromListInt(arrAnimationList);
-                    }
-                    
+                    iRandomAnimation = TheSpecialists::CommonFunctions::PickRandomElementFromListInt(arrAnimationList);
                     if (iRandomAnimation != -1)
                     {
                         self.SendWeaponAnim
@@ -421,7 +366,7 @@ namespace TS_TMP
         } // End of Shoot()
 
         //////////////////////////
-        // TS_TMP::Reload       //
+        // TS_MP5SD::Reload     //
         // Function:            //
         //      Reload handler  //
         // Parameters:          //
@@ -432,21 +377,13 @@ namespace TS_TMP
         void Reload()
         {
             // Determine if the gun does not need to reload
-            if (    (self.m_iClip == TheSpecialists::iWEAPON__TMP__CLIP)
+            if (    (self.m_iClip == TheSpecialists::iWEAPON__MP5SD__CLIP)
                  || (m_pPlayer.m_rgAmmo(self.m_iPrimaryAmmoType) <= 0)    )
             {
                 return;
             }
             
-            // Determine if the weapon is tilted sideways
-            if (m_bSideways)                
-            {
-                self.DefaultReload(TheSpecialists::iWEAPON__TMP__CLIP, Animations::RELOAD_SIDEWAYS1, 1.5, 0);
-            }
-            else
-            {
-                self.DefaultReload(TheSpecialists::iWEAPON__TMP__CLIP, Animations::RELOAD1, 1.5, 0);
-            }
+            self.DefaultReload(TheSpecialists::iWEAPON__MP5SD__CLIP, Animations::RELOAD1, 1.5, 0);
             
             // Prevent the weapon idle animation from overriding the reload animation
             m_flAnimationCooldown = g_Engine.time + 2.5;
@@ -456,7 +393,7 @@ namespace TS_TMP
         } // End of Reload()
         
         //////////////////////////
-        // TS_TMP::WeaponIdle   //
+        // TS_MP5SD::WeaponIdle //
         // Function:            //
         //      Reload handler  //
         // Parameters:          //
@@ -473,22 +410,15 @@ namespace TS_TMP
             
             // Determine if the tilting animation has finished
             if (m_flAnimationCooldown < g_Engine.time)
-            {            
-                if (m_bSideways)
-                {
-                    iAnimationIndex = Animations::IDLE_SIDEWAYS1;
-                }
-                else
-                {
-                    iAnimationIndex = Animations::IDLE1;
-                }
+            {
+                iAnimationIndex = Animations::IDLE1;
                 
                 self.SendWeaponAnim(iAnimationIndex);
             } // End of if (m_flAnimationCooldown < g_Engine.time)
             
         } // End of WeaponIdle()
         
-    } // End of class weapon_ts_tmp
+    } // End of class weapon_ts_mp5sd
 
     void Register_Weapon()
     {
@@ -500,4 +430,4 @@ namespace TS_TMP
             TheSpecialists::strWEAPON__SMG__AMMO_TYPE     // string - ammo type
         );
     }
-} // End of namespace TS_TMP
+} // End of namespace TS_MP5SD

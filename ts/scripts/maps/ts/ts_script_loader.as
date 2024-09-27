@@ -21,6 +21,7 @@
 #include "weapon_ts_gold_colts"
 
 #include "weapon_ts_tmp"
+#include "weapon_ts_mp5sd"
 
 void TS_LoadWeapons()
 {
@@ -42,4 +43,5 @@ void TS_LoadWeapons()
     TS_GoldColts    ::Register_Weapon();
     
     TS_TMP          ::Register_Weapon();
+    TS_MP5SD        ::Register_Weapon();
 }

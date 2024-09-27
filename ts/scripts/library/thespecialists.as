@@ -81,6 +81,8 @@ namespace TheSpecialists
     const string strSMG__SOUND__FIRE_SILENCED   = "fire_silenced.wav"                           ; // Name of the gun fire silenced  file
     const string strSMG__SOUND__SLIDEBACK       = "slideback.wav"                               ; // Name of the slide pull file
     const string strSMG__SOUND__EMPTY           = "pistol_empty.wav"                            ; // Name of the dry fire pistol sound
+    const string strSMG__SOUND__BOLTPULL        = "boltpull.wav"                                ; // Name of the bolt pull sound
+    const string strSMG__SOUND__BOLTSLAP        = "boltslap.wav"                                ; // Name of the bolt slap sound
     
     const int iSPRITE__WEAPONS__WIDTH           = 128                                           ; // [pixels] Width of the weapon sprites
     const int iSPRITE__WEAPONS__HEIGHT          = 48                                            ; // [pixels] Height of the weapon sprites
@@ -121,6 +123,12 @@ namespace TheSpecialists
     
     // Submachine guns
     const int iWEAPON__POSITION__TMP                = 5 ;
+    const int iWEAPON__POSITION__MP5SD              = 6 ;
+    const int iWEAPON__POSITION__MP5K               = 7 ;
+    const int iWEAPON__POSITION__UMP45              = 8 ;
+    const int iWEAPON__POSITION__MP7                = 9 ;
+    const int iWEAPON__POSITION__SKORPION           = 10;
+    const int iWEAPON__POSITION__SKORPION_AKIMBO    = 11;
     
     // Rifles/Shotguns
     
@@ -281,7 +289,16 @@ namespace TheSpecialists
     const int       iWEAPON__TMP__FIRE_MODE                 = FireMode::iAUTOMATIC              ;
     const int       iWEAPON__TMP__DAMAGE                    = 14                                ;
     const float     fWEAPON__TMP__ATTACK_DELAY              = (60.0 / 1100.0)                   ; // Time in seconds between swings
+    const float     fWEAPON__TMP__RECOIL_MULTIPLIER         = 0.5                               ; // Time in seconds between swings
     
+    const int       iWEAPON__MP5SD__CLIP                    = 30                                ;
+    const int       iWEAPON__MP5SD__AMMO1                   = iWEAPON__SMG__AMMO1__MAX          ;
+    const int       iWEAPON__MP5SD__AMMO2                   = -1                                ;
+    const Vector    vecWEAPON__MP5SD__SPREAD                = VECTOR_CONE_4DEGREES              ; // Accuracy of the weapon
+    const int       iWEAPON__MP5SD__FIRE_MODE               = FireMode::iAUTOMATIC              ;
+    const int       iWEAPON__MP5SD__DAMAGE                  = 12                                ;
+    const float     fWEAPON__MP5SD__ATTACK_DELAY            = (60.0 / 700.0)                    ; // Time in seconds between swings
+    const float     fWEAPON__MP5SD__RECOIL_MULITPLIER       = 0.5                               ;
     
     ///////////////////////////////
     // Ammunitions
