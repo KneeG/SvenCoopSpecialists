@@ -319,6 +319,24 @@ namespace TheSpecialists
     const float     fWEAPON__UMP45__ATTACK_DELAY            = (60.0 / 600.0)                    ; // Time in seconds between swings
     const float     fWEAPON__UMP45__RECOIL_MULTIPLIER       = 0.7                               ;
     
+    const int       iWEAPON__MP7__CLIP                      = 40                                ;
+    const int       iWEAPON__MP7__AMMO1                     = iWEAPON__SMG__AMMO1__MAX          ;
+    const int       iWEAPON__MP7__AMMO2                     = -1                                ;
+    const Vector    vecWEAPON__MP7__SPREAD                  = VECTOR_CONE_6DEGREES              ; // Accuracy of the weapon
+    const int       iWEAPON__MP7__FIRE_MODE                 = FireMode::iAUTOMATIC              ;
+    const int       iWEAPON__MP7__DAMAGE                    = 11                                ;
+    const float     fWEAPON__MP7__ATTACK_DELAY              = (60.0 / 800.0)                    ; // Time in seconds between swings
+    const float     fWEAPON__MP7__RECOIL_MULTIPLIER         = 0.6                               ;
+    
+    const int       iWEAPON__SKORPION__CLIP                 = 20                                ;
+    const int       iWEAPON__SKORPION__AMMO1                = iWEAPON__SMG__AMMO1__MAX          ;
+    const int       iWEAPON__SKORPION__AMMO2                = -1                                ;
+    const Vector    vecWEAPON__SKORPION__SPREAD             = VECTOR_CONE_6DEGREES              ; // Accuracy of the weapon
+    const int       iWEAPON__SKORPION__FIRE_MODE            = FireMode::iAUTOMATIC              ;
+    const int       iWEAPON__SKORPION__DAMAGE               = 19                                ;
+    const float     fWEAPON__SKORPION__ATTACK_DELAY         = (60.0 / 700.0)                    ; // Time in seconds between swings
+    const float     fWEAPON__SKORPION__RECOIL_MULTIPLIER    = 0.6                               ;
+    
     ///////////////////////////////
     // Ammunitions
     

@@ -24,6 +24,8 @@
 #include "weapon_ts_mp5sd"
 #include "weapon_ts_mp5k"
 #include "weapon_ts_ump45"
+#include "weapon_ts_mp7"
+#include "weapon_ts_skorpion"
 
 void TS_LoadWeapons()
 {
@@ -48,4 +50,6 @@ void TS_LoadWeapons()
     TS_MP5SD        ::Register_Weapon();
     TS_MP5K         ::Register_Weapon();
     TS_UMP45        ::Register_Weapon();
+    TS_MP7          ::Register_Weapon();
+    TS_Skorpion     ::Register_Weapon();
 }
