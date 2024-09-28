@@ -388,14 +388,14 @@ namespace TS_Deagle
                     // https://github.com/ValveSoftware/halflife/blob/e5815c34e2772a247a6843b67eab7c3395bdba66/dlls/cbase.h#L255
                     m_pPlayer.FireBullets
                     (
-                        1                                       , // ULONG cShots           - Number of bullets fired, anything more than 1 is useful for shotguns
-                        vecSrc                                  , // Vector vecSrc          - Vector where the shot is originating from, but it's a vector so I don't know why this information isn't already stored in a single vector
-                        vecAiming                               , // Vector vecDirShooting  - Vector where the shot is going to go towards
-                        m_vecAccuracy                           , // Vector vecSpread       - Vector detailing how large the cone of randomness the bullets will randomly spread out
-                        TheSpecialists::fMAXIMUM_FIRE_DISTANCE  , // float flDistance       - Maximum distance the bullet will scan for a hit
-                        BULLET_PLAYER_MP5                       , // int iBulletType        - Bullet type, not sure what this means
-                        2                                       , // int iTracerFreq = 4    - How frequently there will be bullet tracers, not sure what the scale is
-                        m_iDamage                                 // int iDamage = 0        - How much damage the bullet will do
+                        1                                                   , // ULONG cShots           - Number of bullets fired, anything more than 1 is useful for shotguns
+                        vecSrc                                              , // Vector vecSrc          - Vector where the shot is originating from, but it's a vector so I don't know why this information isn't already stored in a single vector
+                        vecAiming                                           , // Vector vecDirShooting  - Vector where the shot is going to go towards
+                        m_vecAccuracy                                       , // Vector vecSpread       - Vector detailing how large the cone of randomness the bullets will randomly spread out
+                        TheSpecialists::fMAXIMUM_FIRE_DISTANCE              , // float flDistance       - Maximum distance the bullet will scan for a hit
+                        TheSpecialists::iWEAPON__PISTOL_MAGNUM__BULLET__TYPE, // int iBulletType        - Bullet type, not sure what this means
+                        2                                                   , // int iTracerFreq = 4    - How frequently there will be bullet tracers, not sure what the scale is
+                        m_iDamage                                             // int iDamage = 0        - How much damage the bullet will do
                     );
                     
                     // Decrement the magazine by one

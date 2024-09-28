@@ -13,11 +13,11 @@ namespace TS_RagingBull
     // Raging Bull animation enumeration
     namespace Animations
     {
-        const int IDLE1                 = 0;
-        const int SHOOT1                = 1;
-        const int SHOOT2                = 2; // Haven't seen any meaningful difference between this and SHOOT1 based on my inspection
-        const int DRAW1                 = 3;
-        const int RELOAD1               = 4;
+        const int IDLE1     = 0;
+        const int SHOOT1    = 1;
+        const int SHOOT2    = 2; // Haven't seen any meaningful difference between this and SHOOT1 based on my inspection
+        const int DRAW1     = 3;
+        const int RELOAD1   = 4;
         
     }
     
@@ -66,7 +66,6 @@ namespace TS_RagingBull
         private CBasePlayer@ m_pPlayer          ; // Player reference pointer
         private int     m_iDamage               ; // Weapon damage
         private float   m_fRecoilMultiplier     ; // Recoil multiplier flag
-        private int     m_bSilenced             ; // Silenced flag
         private float   m_flAnimationCooldown   ; // Animation cooldown timer, helps prevent the weapon from going to idle animations while the weapon is being tilted
 
         private float   m_fInaccuracyFactor     ; // Negatively affects weapon spread
@@ -154,12 +153,12 @@ namespace TS_RagingBull
         //////////////////////////////////////////////////////////////////////////////
         bool GetItemInfo(ItemInfo& out info)
         {
-            info.iMaxClip		= TheSpecialists::iWEAPON__RAGING_BULL__CLIP     ;
-            info.iMaxAmmo1		= TheSpecialists::iWEAPON__RAGING_BULL__AMMO1    ;
-            info.iMaxAmmo2		= TheSpecialists::iWEAPON__RAGING_BULL__AMMO2    ;
-            info.iSlot			= TheSpecialists::iWEAPON__SLOT__PISTOL     ;
-            info.iPosition		= TheSpecialists::iWEAPON__POSITION__RAGING_BULL ;
-            info.iWeight		= TheSpecialists::iDEFAULT_WEIGHT           ;
+            info.iMaxClip		= TheSpecialists::iWEAPON__RAGING_BULL__CLIP    ;
+            info.iMaxAmmo1		= TheSpecialists::iWEAPON__RAGING_BULL__AMMO1   ;
+            info.iMaxAmmo2		= TheSpecialists::iWEAPON__RAGING_BULL__AMMO2   ;
+            info.iSlot			= TheSpecialists::iWEAPON__SLOT__PISTOL         ;
+            info.iPosition		= TheSpecialists::iWEAPON__POSITION__RAGING_BULL;
+            info.iWeight		= TheSpecialists::iDEFAULT_WEIGHT               ;
             
             return true;
         } // End of GetItemInfo()
@@ -329,14 +328,14 @@ namespace TS_RagingBull
                     // https://github.com/ValveSoftware/halflife/blob/e5815c34e2772a247a6843b67eab7c3395bdba66/dlls/cbase.h#L255
                     m_pPlayer.FireBullets
                     (
-                        1                                       , // ULONG cShots           - Number of bullets fired, anything more than 1 is useful for shotguns
-                        vecSrc                                  , // Vector vecSrc          - Vector where the shot is originating from, but it's a vector so I don't know why this information isn't already stored in a single vector
-                        vecAiming                               , // Vector vecDirShooting  - Vector where the shot is going to go towards
-                        m_vecAccuracy                           , // Vector vecSpread       - Vector detailing how large the cone of randomness the bullets will randomly spread out
-                        TheSpecialists::fMAXIMUM_FIRE_DISTANCE  , // float flDistance       - Maximum distance the bullet will scan for a hit
-                        BULLET_PLAYER_MP5                       , // int iBulletType        - Bullet type, not sure what this means
-                        2                                       , // int iTracerFreq = 4    - How frequently there will be bullet tracers, not sure what the scale is
-                        m_iDamage                                 // int iDamage = 0        - How much damage the bullet will do
+                        1                                                   , // ULONG cShots           - Number of bullets fired, anything more than 1 is useful for shotguns
+                        vecSrc                                              , // Vector vecSrc          - Vector where the shot is originating from, but it's a vector so I don't know why this information isn't already stored in a single vector
+                        vecAiming                                           , // Vector vecDirShooting  - Vector where the shot is going to go towards
+                        m_vecAccuracy                                       , // Vector vecSpread       - Vector detailing how large the cone of randomness the bullets will randomly spread out
+                        TheSpecialists::fMAXIMUM_FIRE_DISTANCE              , // float flDistance       - Maximum distance the bullet will scan for a hit
+                        TheSpecialists::iWEAPON__PISTOL_MAGNUM__BULLET__TYPE, // int iBulletType        - Bullet type, not sure what this means
+                        2                                                   , // int iTracerFreq = 4    - How frequently there will be bullet tracers, not sure what the scale is
+                        m_iDamage                                             // int iDamage = 0        - How much damage the bullet will do
                     );
                     
                     // Decrement the magazine by one

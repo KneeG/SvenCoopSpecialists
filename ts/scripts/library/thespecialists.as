@@ -85,6 +85,10 @@ namespace TheSpecialists
     const string strSMG__SOUND__BOLTSLAP        = "boltslap.wav"                                ; // Name of the bolt slap sound
     const string strSMG__SOUND__CLIPSLAP        = "clipslap.wav"                                ; // Name of the magazine slap sound
     
+    // Shotgun asset paths
+    const string strSHOTGUN__SOUND__FIRE        = "fire.wav"                                    ; // Name of the gun fire file
+    const string strSHOTGUN__SOUND__PUMP        = "pump.wav"                                    ; // Name of the pump sound file
+    
     const int iSPRITE__WEAPONS__WIDTH           = 128                                           ; // [pixels] Width of the weapon sprites
     const int iSPRITE__WEAPONS__HEIGHT          = 48                                            ; // [pixels] Height of the weapon sprites
     
@@ -132,10 +136,22 @@ namespace TheSpecialists
     const int iWEAPON__POSITION__SKORPION_AKIMBO    = 11;
     
     // Rifles/Shotguns
+    const int iWEAPON__POSITION__BENELLI            = 5 ;
+    const int iWEAPON__POSITION__SPAS               = 6 ;
+    const int iWEAPON__POSITION__MOSSBERG           = 7 ;
+    const int iWEAPON__POSITION__USAS12             = 8 ;
+    const int iWEAPON__POSITION__DOUBLE_BARREL      = 9 ;
+    const int iWEAPON__POSITION__AK47               = 10;
+    const int iWEAPON__POSITION__M4A1               = 11;
+    const int iWEAPON__POSITION__M16                = 12;
+    const int iWEAPON__POSITION__AUG                = 13;
     
     // Heavy weapons
+    const int iWEAPON__POSITION__BARRETT            = 5;
+    const int iWEAPON__POSITION__M60                = 6;
     
     // Ordinance
+    const int iWEAPON__POSITION__GRENADE            = 5;
     
     ///////////////////////////////
     // Weapon behavior
@@ -150,20 +166,21 @@ namespace TheSpecialists
     } // End of namespace FireMode
     
     const int           iDEFAULT_FIRE_MODE          = FireMode::iSEMI_AUTOMATIC ; // Default fire mode of a weapon
-    const int           iDEFAULT_PITCH_VARIATION    = 15                        ; // Default pitch variation (in hertz)
+    const int           iDEFAULT_PITCH_VARIATION    = 15                        ; // Default pitch variation
     const float         iDEFAULT_PITCH              = 100                       ; // Default pitch
     const float         fDEFAULT_SOUND_DISTANCE     = 512                       ; // Default limit the sound will be transmitted
-    const float         fDEFAULT_VOLUME             = 1.0                       ; // Default volume (in percentage)
+    const float         fDEFAULT_VOLUME             = 1.0                       ; // [percent] Default volume (in percentage)
     const SOUND_CHANNEL scDEFAULT_CHANNEL           = CHAN_WEAPON               ; // Default sound channel
     const float         fDEFAULT_ATTENUATION        = ATTN_NORM                 ; // Default attenuation, or sound dropoff
     const int           iMONSTER_GUN_VOLUME         = 384                       ; // Default gun fire volume, I can only assume this is distance in its implementation
-    const float         fGUN_SOUND_DURATION         = 0.3                       ; // How long the gun sound persists (in seconds)
+    const float         fGUN_SOUND_DURATION         = 0.3                       ; // [seconds] How long the gun sound persists (in seconds)
     const float         fSWING_DISTANCE             = 48.0                      ; // Number of units the melee weapon can hit
-    const float         fDEFAULT_HOSTER_TIME        = 0.5                       ; // Time in seconds it will take for the crowbar to be holstered
+    const float         fDEFAULT_HOSTER_TIME        = 0.5                       ; // [seconds] Time in seconds it will take for the crowbar to be holstered
     const int           iDEFAULT_WEIGHT             = 1                         ; // Not certain what the weight does for a weapon, but it is defined in other weapon scripts
-    const float         fDEFAULT_NEXT_THINK         = 1.0                       ; // Time in seconds between weapon think function calls
-    const float         fDEFAULT_FIRE_ON_EMPTY_DELAY= 0.25                      ; // Time in seconds between trigger pulls while the gun is empty
+    const float         fDEFAULT_NEXT_THINK         = 1.0                       ; // [seconds] Time in seconds between weapon think function calls
+    const float         fDEFAULT_FIRE_ON_EMPTY_DELAY= 0.25                      ; // [seconds] Time in seconds between trigger pulls while the gun is empty
     const float         fMAXIMUM_FIRE_DISTANCE      = 8192.0                    ; // Maximum distance a bullet will do damage to targets
+    const float         fDEFAULT_SHELL_LOAD_TIME    = 0.5                       ; // [seconds] Time it takes to load a shell into a shotgun
     
     // Weapon traceline rules
     // IGNORE_MONSTERS enum     Purpose
@@ -199,143 +216,154 @@ namespace TheSpecialists
     const float     fWEAPON__PISTOL__INACCURACY_DELTA       = 1.0                               ;
     const float     fWEAPON__PISTOL__INACCURACY_DECAY       = 0.06                              ;
     
-    const int       iWEAPON__GLOCK18__CLIP                  = 18                                ;
-    const int       iWEAPON__GLOCK18__AMMO1                 = iWEAPON__PISTOL__AMMO1__MAX       ;
-    const int       iWEAPON__GLOCK18__AMMO2                 = -1                                ;
+    const int       iWEAPON__GLOCK18__CLIP                  = 18                                ; // Size of the magazine
+    const int       iWEAPON__GLOCK18__AMMO1                 = iWEAPON__PISTOL__AMMO1__MAX       ; // Primary ammo capacity
+    const int       iWEAPON__GLOCK18__AMMO2                 = -1                                ; // Secondary ammo capacity
     const Vector    vecWEAPON__GLOCK18__SPREAD              = VECTOR_CONE_3DEGREES              ; // Accuracy of the weapon
-    const int       iWEAPON__GLOCK18__FIRE_MODE             = FireMode::iAUTOMATIC              ;
-    const int       iWEAPON__GLOCK18__DAMAGE                = 15                                ;
-    const float     fWEAPON__GLOCK18__ATTACK_DELAY          = (60.0 / 900.0)                    ; // Time in seconds between swings
+    const int       iWEAPON__GLOCK18__FIRE_MODE             = FireMode::iAUTOMATIC              ; // Fire mode of the weapon
+    const int       iWEAPON__GLOCK18__DAMAGE                = 15                                ; // Weapon damage
+    const float     fWEAPON__GLOCK18__ATTACK_DELAY          = (60.0 / 900.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
     
-    const int       iWEAPON__GLOCK22__CLIP                  = 15                                ;
-    const int       iWEAPON__GLOCK22__AMMO1                 = iWEAPON__PISTOL__AMMO1__MAX       ;
-    const int       iWEAPON__GLOCK22__AMMO2                 = -1                                ;
+    const int       iWEAPON__GLOCK22__CLIP                  = 15                                ; // Size of the magazine
+    const int       iWEAPON__GLOCK22__AMMO1                 = iWEAPON__PISTOL__AMMO1__MAX       ; // Primary ammo capacity
+    const int       iWEAPON__GLOCK22__AMMO2                 = -1                                ; // Secondary ammo capacity
     const Vector    vecWEAPON__GLOCK22__SPREAD              = VECTOR_CONE_2DEGREES              ; // Accuracy of the weapon
-    const int       iWEAPON__GLOCK22__FIRE_MODE             = FireMode::iSEMI_AUTOMATIC         ;
-    const int       iWEAPON__GLOCK22__DAMAGE                = 23                                ;
-    const float     fWEAPON__GLOCK22__ATTACK_DELAY          = (60.0 / 500.0)                    ; // Time in seconds between swings
+    const int       iWEAPON__GLOCK22__FIRE_MODE             = FireMode::iSEMI_AUTOMATIC         ; // Fire mode of the weapon
+    const int       iWEAPON__GLOCK22__DAMAGE                = 23                                ; // Weapon damage
+    const float     fWEAPON__GLOCK22__ATTACK_DELAY          = (60.0 / 500.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
     
-    const int       iWEAPON__FIVESEVEN__CLIP                = 20                                ;
-    const int       iWEAPON__FIVESEVEN__AMMO1               = iWEAPON__PISTOL__AMMO1__MAX       ;
-    const int       iWEAPON__FIVESEVEN__AMMO2               = -1                                ;
+    const int       iWEAPON__FIVESEVEN__CLIP                = 20                                ; // Size of the magazine
+    const int       iWEAPON__FIVESEVEN__AMMO1               = iWEAPON__PISTOL__AMMO1__MAX       ; // Primary ammo capacity
+    const int       iWEAPON__FIVESEVEN__AMMO2               = -1                                ; // Secondary ammo capacity
     const Vector    vecWEAPON__FIVESEVEN__SPREAD            = VECTOR_CONE_2DEGREES              ; // Accuracy of the weapon
-    const int       iWEAPON__FIVESEVEN__FIRE_MODE           = FireMode::iSEMI_AUTOMATIC         ;
-    const int       iWEAPON__FIVESEVEN__DAMAGE              = 18                                ;
-    const float     fWEAPON__FIVESEVEN__ATTACK_DELAY        = (60.0 / 800.0)                    ; // Time in seconds between swings
+    const int       iWEAPON__FIVESEVEN__FIRE_MODE           = FireMode::iSEMI_AUTOMATIC         ; // Fire mode of the weapon
+    const int       iWEAPON__FIVESEVEN__DAMAGE              = 18                                ; // Weapon damage
+    const float     fWEAPON__FIVESEVEN__ATTACK_DELAY        = (60.0 / 800.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
     
-    const int       iWEAPON__BERETTA__CLIP                  = 12                                ;
-    const int       iWEAPON__BERETTA__AMMO1                 = iWEAPON__PISTOL__AMMO1__MAX       ;
-    const int       iWEAPON__BERETTA__AMMO2                 = -1                                ;
+    const int       iWEAPON__BERETTA__CLIP                  = 12                                ; // Size of the magazine
+    const int       iWEAPON__BERETTA__AMMO1                 = iWEAPON__PISTOL__AMMO1__MAX       ; // Primary ammo capacity
+    const int       iWEAPON__BERETTA__AMMO2                 = -1                                ; // Secondary ammo capacity
     const Vector    vecWEAPON__BERETTA__SPREAD              = VECTOR_CONE_2DEGREES              ; // Accuracy of the weapon
-    const int       iWEAPON__BERETTA__FIRE_MODE             = FireMode::iSEMI_AUTOMATIC         ;
-    const int       iWEAPON__BERETTA__DAMAGE                = 20                                ;
-    const float     fWEAPON__BERETTA__ATTACK_DELAY          = (60.0 / 800.0)                    ; // Time in seconds between swings
+    const int       iWEAPON__BERETTA__FIRE_MODE             = FireMode::iSEMI_AUTOMATIC         ; // Fire mode of the weapon
+    const int       iWEAPON__BERETTA__DAMAGE                = 20                                ; // Weapon damage
+    const float     fWEAPON__BERETTA__ATTACK_DELAY          = (60.0 / 800.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
     
-    const int       iWEAPON__SOCOM__CLIP                    = 12                                ;
-    const int       iWEAPON__SOCOM__AMMO1                   = iWEAPON__PISTOL__AMMO1__MAX       ;
-    const int       iWEAPON__SOCOM__AMMO2                   = -1                                ;
+    const int       iWEAPON__SOCOM__CLIP                    = 12                                ; // Size of the magazine
+    const int       iWEAPON__SOCOM__AMMO1                   = iWEAPON__PISTOL__AMMO1__MAX       ; // Primary ammo capacity
+    const int       iWEAPON__SOCOM__AMMO2                   = -1                                ; // Secondary ammo capacity
     const Vector    vecWEAPON__SOCOM__SPREAD                = VECTOR_CONE_2DEGREES              ; // Accuracy of the weapon
-    const int       iWEAPON__SOCOM__FIRE_MODE               = FireMode::iSEMI_AUTOMATIC         ;
-    const int       iWEAPON__SOCOM__DAMAGE                  = 20                                ;
-    const float     fWEAPON__SOCOM__ATTACK_DELAY            = (60.0 / 800.0)                    ; // Time in seconds between swings
+    const int       iWEAPON__SOCOM__FIRE_MODE               = FireMode::iSEMI_AUTOMATIC         ; // Fire mode of the weapon
+    const int       iWEAPON__SOCOM__DAMAGE                  = 20                                ; // Weapon damage
+    const float     fWEAPON__SOCOM__ATTACK_DELAY            = (60.0 / 800.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
     
-    const int       iWEAPON__RUGER__CLIP                    = 17                                ;
-    const int       iWEAPON__RUGER__AMMO1                   = iWEAPON__PISTOL__AMMO1__MAX       ;
-    const int       iWEAPON__RUGER__AMMO2                   = -1                                ;
+    const int       iWEAPON__RUGER__CLIP                    = 17                                ; // Size of the magazine
+    const int       iWEAPON__RUGER__AMMO1                   = iWEAPON__PISTOL__AMMO1__MAX       ; // Primary ammo capacity
+    const int       iWEAPON__RUGER__AMMO2                   = -1                                ; // Secondary ammo capacity
     const Vector    vecWEAPON__RUGER__SPREAD                = VECTOR_CONE_1DEGREES              ; // Accuracy of the weapon
-    const int       iWEAPON__RUGER__FIRE_MODE               = FireMode::iSEMI_AUTOMATIC         ;
-    const int       iWEAPON__RUGER__DAMAGE                  = 12                                ;
-    const float     fWEAPON__RUGER__ATTACK_DELAY            = (60.0 / 800.0)                    ; // Time in seconds between swings
+    const int       iWEAPON__RUGER__FIRE_MODE               = FireMode::iSEMI_AUTOMATIC         ; // Fire mode of the weapon
+    const int       iWEAPON__RUGER__DAMAGE                  = 12                                ; // Weapon damage
+    const float     fWEAPON__RUGER__ATTACK_DELAY            = (60.0 / 800.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
     
-    const int       iWEAPON__DEAGLE__CLIP                   = 7                                 ;
-    const int       iWEAPON__DEAGLE__AMMO1                  = iWEAPON__PISTOL_MAGNUM__AMMO1__MAX;
-    const int       iWEAPON__DEAGLE__AMMO2                  = -1                                ;
+    const int       iWEAPON__DEAGLE__CLIP                   = 7                                 ; // Size of the magazine
+    const int       iWEAPON__DEAGLE__AMMO1                  = iWEAPON__PISTOL_MAGNUM__AMMO1__MAX; // Primary ammo capacity
+    const int       iWEAPON__DEAGLE__AMMO2                  = -1                                ; // Secondary ammo capacity
     const Vector    vecWEAPON__DEAGLE__SPREAD               = VECTOR_CONE_2DEGREES              ; // Accuracy of the weapon
-    const int       iWEAPON__DEAGLE__FIRE_MODE              = FireMode::iSEMI_AUTOMATIC         ;
-    const int       iWEAPON__DEAGLE__DAMAGE                 = 35                                ;
-    const float     fWEAPON__DEAGLE__ATTACK_DELAY           = (60.0 / 500.0)                    ; // Time in seconds between swings
-    const float     fWEAPON__DEAGLE__RECOIL_MULITPLIER      = 4.0                               ;
+    const int       iWEAPON__DEAGLE__FIRE_MODE              = FireMode::iSEMI_AUTOMATIC         ; // Fire mode of the weapon
+    const int       iWEAPON__DEAGLE__DAMAGE                 = 35                                ; // Weapon damage
+    const float     fWEAPON__DEAGLE__ATTACK_DELAY           = (60.0 / 500.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
+    const float     fWEAPON__DEAGLE__RECOIL_MULITPLIER      = 4.0                               ; // Severity of the recoil
     
-    const int       iWEAPON__RAGING_BULL__CLIP              = 5                                 ;
-    const int       iWEAPON__RAGING_BULL__AMMO1             = iWEAPON__PISTOL_MAGNUM__AMMO1__MAX;
-    const int       iWEAPON__RAGING_BULL__AMMO2             = -1                                ;
+    const int       iWEAPON__RAGING_BULL__CLIP              = 5                                 ; // Size of the magazine
+    const int       iWEAPON__RAGING_BULL__AMMO1             = iWEAPON__PISTOL_MAGNUM__AMMO1__MAX; // Primary ammo capacity
+    const int       iWEAPON__RAGING_BULL__AMMO2             = -1                                ; // Secondary ammo capacity
     const Vector    vecWEAPON__RAGING_BULL__SPREAD          = VECTOR_CONE_2DEGREES              ; // Accuracy of the weapon
-    const int       iWEAPON__RAGING_BULL__FIRE_MODE         = FireMode::iSEMI_AUTOMATIC         ;
-    const int       iWEAPON__RAGING_BULL__DAMAGE            = 45                                ;
-    const float     fWEAPON__RAGING_BULL__ATTACK_DELAY      = (60.0 / 300.0)                    ; // Time in seconds between swings
-    const float     fWEAPON__RAGING_BULL__RECOIL_MULITPLIER = 6.0                               ;
+    const int       iWEAPON__RAGING_BULL__FIRE_MODE         = FireMode::iSEMI_AUTOMATIC         ; // Fire mode of the weapon
+    const int       iWEAPON__RAGING_BULL__DAMAGE            = 45                                ; // Weapon damage
+    const float     fWEAPON__RAGING_BULL__ATTACK_DELAY      = (60.0 / 300.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
+    const float     fWEAPON__RAGING_BULL__RECOIL_MULITPLIER = 6.0                               ; // Severity of the recoil
     
-    const int       iWEAPON__CONTENDER__CLIP                = 1                                 ;
-    const int       iWEAPON__CONTENDER__AMMO1               = iWEAPON__PISTOL_MAGNUM__AMMO1__MAX;
-    const int       iWEAPON__CONTENDER__AMMO2               = -1                                ;
-    const Vector    vecWEAPON__CONTENDER__SPREAD            = VECTOR_CONE_2DEGREES              ; // Accuracy of the weapon
-    const int       iWEAPON__CONTENDER__FIRE_MODE           = FireMode::iSEMI_AUTOMATIC         ;
-    const int       iWEAPON__CONTENDER__DAMAGE              = 120                               ;
-    const float     fWEAPON__CONTENDER__ATTACK_DELAY        = (60.0 / 60.0)                     ; // Time in seconds between swings
-    const float     fWEAPON__CONTENDER__RECOIL_MULITPLIER   = 10.0                              ;
+    const int       iWEAPON__CONTENDER__CLIP                = 1                                 ; // Size of the magazine
+    const int       iWEAPON__CONTENDER__AMMO1               = iWEAPON__PISTOL_MAGNUM__AMMO1__MAX; // Primary ammo capacity
+    const int       iWEAPON__CONTENDER__AMMO2               = -1                                ; // Secondary ammo capacity
+    const Vector    vecWEAPON__CONTENDER__SPREAD            = VECTOR_CONE_2DEGREES              ; // Accuracy of the weapon // Accuracy of the weapon
+    const int       iWEAPON__CONTENDER__FIRE_MODE           = FireMode::iSEMI_AUTOMATIC         ; // Fire mode of the weapon
+    const int       iWEAPON__CONTENDER__DAMAGE              = 120                               ; // Weapon damage
+    const float     fWEAPON__CONTENDER__ATTACK_DELAY        = (60.0 / 60.0)                     ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
+    const float     fWEAPON__CONTENDER__RECOIL_MULITPLIER   = 10.0                              ; // Severity of the recoil
     
-    const int       iWEAPON__GOLD_COLTS__CLIP               = 15                                ; // 15 bullets per colt
-    const int       iWEAPON__GOLD_COLTS__AMMO1              = iWEAPON__PISTOL__AMMO1__MAX       ;
-    const int       iWEAPON__GOLD_COLTS__AMMO2              = -1                                ;
+    const int       iWEAPON__GOLD_COLTS__CLIP               = 15                                ; // Size of the magazine
+    const int       iWEAPON__GOLD_COLTS__AMMO1              = iWEAPON__PISTOL__AMMO1__MAX       ; // Primary ammo capacity
+    const int       iWEAPON__GOLD_COLTS__AMMO2              = -1                                ; // Secondary ammo capacity
     const Vector    vecWEAPON__GOLD_COLTS__SPREAD           = VECTOR_CONE_4DEGREES              ; // Accuracy of the weapon
-    const int       iWEAPON__GOLD_COLTS__FIRE_MODE          = FireMode::iSEMI_AUTOMATIC         ;
-    const int       iWEAPON__GOLD_COLTS__DAMAGE             = 18                                ;
-    const float     fWEAPON__GOLD_COLTS__ATTACK_DELAY       = (60.0 / 800.0)                    ; // Time in seconds between swings
+    const int       iWEAPON__GOLD_COLTS__FIRE_MODE          = FireMode::iSEMI_AUTOMATIC         ; // Fire mode of the weapon
+    const int       iWEAPON__GOLD_COLTS__DAMAGE             = 18                                ; // Weapon damage
+    const float     fWEAPON__GOLD_COLTS__ATTACK_DELAY       = (60.0 / 800.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
     
     // Submachine guns behavior
-    const int       iWEAPON__TMP__CLIP                      = 20                                ;
-    const int       iWEAPON__TMP__AMMO1                     = iWEAPON__SMG__AMMO1__MAX          ;
-    const int       iWEAPON__TMP__AMMO2                     = -1                                ;
+    const int       iWEAPON__TMP__CLIP                      = 20                                ; // Size of the magazine
+    const int       iWEAPON__TMP__AMMO1                     = iWEAPON__SMG__AMMO1__MAX          ; // Primary ammo capacity
+    const int       iWEAPON__TMP__AMMO2                     = -1                                ; // Secondary ammo capacity
     const Vector    vecWEAPON__TMP__SPREAD                  = VECTOR_CONE_4DEGREES              ; // Accuracy of the weapon
-    const int       iWEAPON__TMP__FIRE_MODE                 = FireMode::iAUTOMATIC              ;
-    const int       iWEAPON__TMP__DAMAGE                    = 14                                ;
-    const float     fWEAPON__TMP__ATTACK_DELAY              = (60.0 / 1100.0)                   ; // Time in seconds between swings
-    const float     fWEAPON__TMP__RECOIL_MULTIPLIER         = 0.5                               ; // Time in seconds between swings
+    const int       iWEAPON__TMP__FIRE_MODE                 = FireMode::iAUTOMATIC              ; // Fire mode of the weapon
+    const int       iWEAPON__TMP__DAMAGE                    = 14                                ; // Weapon damage
+    const float     fWEAPON__TMP__ATTACK_DELAY              = (60.0 / 1100.0)                   ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
+    const float     fWEAPON__TMP__RECOIL_MULTIPLIER         = 0.5                               ; // Severity of the recoil
     
-    const int       iWEAPON__MP5SD__CLIP                    = 30                                ;
-    const int       iWEAPON__MP5SD__AMMO1                   = iWEAPON__SMG__AMMO1__MAX          ;
-    const int       iWEAPON__MP5SD__AMMO2                   = -1                                ;
+    const int       iWEAPON__MP5SD__CLIP                    = 30                                ; // Size of the magazine
+    const int       iWEAPON__MP5SD__AMMO1                   = iWEAPON__SMG__AMMO1__MAX          ; // Primary ammo capacity
+    const int       iWEAPON__MP5SD__AMMO2                   = -1                                ; // Secondary ammo capacity
     const Vector    vecWEAPON__MP5SD__SPREAD                = VECTOR_CONE_4DEGREES              ; // Accuracy of the weapon
-    const int       iWEAPON__MP5SD__FIRE_MODE               = FireMode::iAUTOMATIC              ;
-    const int       iWEAPON__MP5SD__DAMAGE                  = 12                                ;
-    const float     fWEAPON__MP5SD__ATTACK_DELAY            = (60.0 / 700.0)                    ; // Time in seconds between swings
-    const float     fWEAPON__MP5SD__RECOIL_MULTIPLIER       = 0.5                               ;
+    const int       iWEAPON__MP5SD__FIRE_MODE               = FireMode::iAUTOMATIC              ; // Fire mode of the weapon
+    const int       iWEAPON__MP5SD__DAMAGE                  = 12                                ; // Weapon damage
+    const float     fWEAPON__MP5SD__ATTACK_DELAY            = (60.0 / 700.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
+    const float     fWEAPON__MP5SD__RECOIL_MULTIPLIER       = 0.5                               ; // Severity of the recoil
     
-    const int       iWEAPON__MP5K__CLIP                     = 32                                ;
-    const int       iWEAPON__MP5K__AMMO1                    = iWEAPON__SMG__AMMO1__MAX          ;
-    const int       iWEAPON__MP5K__AMMO2                    = -1                                ;
+    const int       iWEAPON__MP5K__CLIP                     = 32                                ; // Size of the magazine
+    const int       iWEAPON__MP5K__AMMO1                    = iWEAPON__SMG__AMMO1__MAX          ; // Primary ammo capacity
+    const int       iWEAPON__MP5K__AMMO2                    = -1                                ; // Secondary ammo capacity
     const Vector    vecWEAPON__MP5K__SPREAD                 = VECTOR_CONE_4DEGREES              ; // Accuracy of the weapon
-    const int       iWEAPON__MP5K__FIRE_MODE                = FireMode::iAUTOMATIC              ;
-    const int       iWEAPON__MP5K__DAMAGE                   = 10                                ;
-    const float     fWEAPON__MP5K__ATTACK_DELAY             = (60.0 / 800.0)                    ; // Time in seconds between swings
-    const float     fWEAPON__MP5K__RECOIL_MULTIPLIER        = 0.6                               ;
+    const int       iWEAPON__MP5K__FIRE_MODE                = FireMode::iAUTOMATIC              ; // Fire mode of the weapon
+    const int       iWEAPON__MP5K__DAMAGE                   = 10                                ; // Weapon damage
+    const float     fWEAPON__MP5K__ATTACK_DELAY             = (60.0 / 800.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
+    const float     fWEAPON__MP5K__RECOIL_MULTIPLIER        = 0.6                               ; // Severity of the recoil
     
-    const int       iWEAPON__UMP45__CLIP                    = 25                                ;
-    const int       iWEAPON__UMP45__AMMO1                   = iWEAPON__SMG__AMMO1__MAX          ;
-    const int       iWEAPON__UMP45__AMMO2                   = -1                                ;
+    const int       iWEAPON__UMP45__CLIP                    = 25                                ; // Size of the magazine
+    const int       iWEAPON__UMP45__AMMO1                   = iWEAPON__SMG__AMMO1__MAX          ; // Primary ammo capacity
+    const int       iWEAPON__UMP45__AMMO2                   = -1                                ; // Secondary ammo capacity
     const Vector    vecWEAPON__UMP45__SPREAD                = VECTOR_CONE_4DEGREES              ; // Accuracy of the weapon
-    const int       iWEAPON__UMP45__FIRE_MODE               = FireMode::iAUTOMATIC              ;
-    const int       iWEAPON__UMP45__DAMAGE                  = 19                                ;
-    const float     fWEAPON__UMP45__ATTACK_DELAY            = (60.0 / 600.0)                    ; // Time in seconds between swings
-    const float     fWEAPON__UMP45__RECOIL_MULTIPLIER       = 0.7                               ;
+    const int       iWEAPON__UMP45__FIRE_MODE               = FireMode::iAUTOMATIC              ; // Fire mode of the weapon
+    const int       iWEAPON__UMP45__DAMAGE                  = 19                                ; // Weapon damage
+    const float     fWEAPON__UMP45__ATTACK_DELAY            = (60.0 / 600.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
+    const float     fWEAPON__UMP45__RECOIL_MULTIPLIER       = 0.7                               ; // Severity of the recoil
     
-    const int       iWEAPON__MP7__CLIP                      = 40                                ;
-    const int       iWEAPON__MP7__AMMO1                     = iWEAPON__SMG__AMMO1__MAX          ;
-    const int       iWEAPON__MP7__AMMO2                     = -1                                ;
+    const int       iWEAPON__MP7__CLIP                      = 40                                ; // Size of the magazine
+    const int       iWEAPON__MP7__AMMO1                     = iWEAPON__SMG__AMMO1__MAX          ; // Primary ammo capacity
+    const int       iWEAPON__MP7__AMMO2                     = -1                                ; // Secondary ammo capacity
     const Vector    vecWEAPON__MP7__SPREAD                  = VECTOR_CONE_6DEGREES              ; // Accuracy of the weapon
-    const int       iWEAPON__MP7__FIRE_MODE                 = FireMode::iAUTOMATIC              ;
-    const int       iWEAPON__MP7__DAMAGE                    = 11                                ;
-    const float     fWEAPON__MP7__ATTACK_DELAY              = (60.0 / 800.0)                    ; // Time in seconds between swings
-    const float     fWEAPON__MP7__RECOIL_MULTIPLIER         = 0.6                               ;
+    const int       iWEAPON__MP7__FIRE_MODE                 = FireMode::iAUTOMATIC              ; // Fire mode of the weapon
+    const int       iWEAPON__MP7__DAMAGE                    = 11                                ; // Weapon damage
+    const float     fWEAPON__MP7__ATTACK_DELAY              = (60.0 / 800.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
+    const float     fWEAPON__MP7__RECOIL_MULTIPLIER         = 0.6                               ; // Severity of the recoil
     
-    const int       iWEAPON__SKORPION__CLIP                 = 20                                ;
-    const int       iWEAPON__SKORPION__AMMO1                = iWEAPON__SMG__AMMO1__MAX          ;
-    const int       iWEAPON__SKORPION__AMMO2                = -1                                ;
+    const int       iWEAPON__SKORPION__CLIP                 = 20                                ; // Size of the magazine
+    const int       iWEAPON__SKORPION__AMMO1                = iWEAPON__SMG__AMMO1__MAX          ; // Primary ammo capacity
+    const int       iWEAPON__SKORPION__AMMO2                = -1                                ; // Secondary ammo capacity
     const Vector    vecWEAPON__SKORPION__SPREAD             = VECTOR_CONE_6DEGREES              ; // Accuracy of the weapon
-    const int       iWEAPON__SKORPION__FIRE_MODE            = FireMode::iAUTOMATIC              ;
-    const int       iWEAPON__SKORPION__DAMAGE               = 19                                ;
-    const float     fWEAPON__SKORPION__ATTACK_DELAY         = (60.0 / 700.0)                    ; // Time in seconds between swings
-    const float     fWEAPON__SKORPION__RECOIL_MULTIPLIER    = 0.6                               ;
+    const int       iWEAPON__SKORPION__FIRE_MODE            = FireMode::iAUTOMATIC              ; // Fire mode of the weapon
+    const int       iWEAPON__SKORPION__DAMAGE               = 19                                ; // Weapon damage
+    const float     fWEAPON__SKORPION__ATTACK_DELAY         = (60.0 / 700.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
+    const float     fWEAPON__SKORPION__RECOIL_MULTIPLIER    = 0.6                               ; // Severity of the recoil
+    
+    const int       iWEAPON__BENELLI__CLIP                  = 8                                 ; // Size of the magazine
+    const int       iWEAPON__BENELLI__AMMO1                 = iWEAPON__SHOTGUN__AMMO1__MAX      ; // Primary ammo capacity
+    const int       iWEAPON__BENELLI__AMMO2                 = -1                                ; // Secondary ammo capacity
+    const Vector    vecWEAPON__BENELLI__SPREAD              = VECTOR_CONE_6DEGREES * 4          ; // Accuracy of the weapon
+    const int       iWEAPON__BENELLI__FIRE_MODE             = FireMode::iSEMI_AUTOMATIC         ; // Fire mode of the weapon
+    const int       iWEAPON__BENELLI__DAMAGE                = 7                                 ; // Weapon damage
+    const float     fWEAPON__BENELLI__ATTACK_DELAY          = (60.0 / 300.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
+    const float     fWEAPON__BENELLI__RECOIL_MULTIPLIER     = 0.6                               ; // Severity of the recoil
+    const float     fWEAPON__BENELLI__PUMP_DELAY            = 0.5                               ; // Time in between pumps
+    const float     fWEAPON__BENELLI__PUMP_TIME             = 0.5                               ; // Time it takes to pump
     
     ///////////////////////////////
     // Ammunitions
@@ -345,22 +373,42 @@ namespace TheSpecialists
     // Pistols
     const string    strWEAPON__PISTOL__AMMO_TYPE            = "9mm";
     const int       iWEAPON__PISTOL__AMMO1__MAX             = 250;
+    const Bullet    iWEAPON__PISTOL__BULLET__TYPE           = BULLET_PLAYER_9MM;
     
     const string    strWEAPON__PISTOL_MAGNUM__AMMO_TYPE     = "357";
     const int       iWEAPON__PISTOL_MAGNUM__AMMO1__MAX      = 70;
+    const Bullet    iWEAPON__PISTOL_MAGNUM__BULLET__TYPE    = BULLET_PLAYER_357;
     
     const string    strWEAPON__PISTOL_762__AMMO_TYPE        = "m40a1";
     const int       iWEAPON__PISTOL_762__AMMO1__MAX         = 30;
+    const Bullet    iWEAPON__PISTOL_762__BULLET__TYPE       = BULLET_PLAYER_EAGLE;
     
     // Submachine guns
     const string    strWEAPON__SMG__AMMO_TYPE               = "9mm";
     const int       iWEAPON__SMG__AMMO1__MAX                = 250;
+    const Bullet    iWEAPON__SMG__BULLET__TYPE              = BULLET_PLAYER_MP5;
     
-    // Rifles/Shotguns
+    // Shotguns
+    const string    strWEAPON__SHOTGUN__AMMO_TYPE           = "buckshot";
+    const int       iWEAPON__SHOTGUN__AMMO1__MAX            = 120;
+    const Bullet    iWEAPON__SHOTGUN__BULLET__TYPE          = BULLET_PLAYER_BUCKSHOT;
+    const int       iWEAPON__SHOTGUN__PELLET_COUNT          = 8;
+    
+    // Rifles
+    const string    strWEAPON__RIFLE__AMMO_TYPE             = "556";
+    const int       iWEAPON__RIFLE__AMMO1__MAX              = 600;
+    const Bullet    iWEAPON__RIFLE__BULLET__TYPE            = BULLET_PLAYER_SAW;
     
     // Heavy weapons
+    // M60 will use the same ammo type as the rifles
+    
+    const string    strWEAPON__SNIPER__AMMO_TYPE            = "m40a1";
+    const int       iWEAPON__SNIPER__AMMO1__MAX             = 30;
+    const Bullet    iWEAPON__SNIPER__BULLET__TYPE           = BULLET_PLAYER_SNIPER;
     
     // Ordinance
+    const string    strWEAPON__GRENADE__AMMO_TYPE           = "Hand Grenade";
+    const int       iWEAPON__GRENADE__AMMO1__MAX            = 10;
     
     namespace CommonFunctions
     {

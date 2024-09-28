@@ -27,6 +27,8 @@
 #include "weapon_ts_mp7"
 #include "weapon_ts_skorpion"
 
+#include "weapon_ts_benelli"
+
 void TS_LoadWeapons()
 {
     RegisterKungFu();
@@ -52,4 +54,6 @@ void TS_LoadWeapons()
     TS_UMP45        ::Register_Weapon();
     TS_MP7          ::Register_Weapon();
     TS_Skorpion     ::Register_Weapon();
+    
+    TS_Benelli      ::Register_Weapon();
 }

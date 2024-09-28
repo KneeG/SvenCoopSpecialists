@@ -55,10 +55,10 @@ Hopefully their functionality is also implemented as well.
 | 18 | weapon_ts_mp5sd                  | Functionally complete | Add laser, scope                  |
 | 19 | weapon_ts_mp5k                   | Functionally complete | Add suppressor, laser, flashlight |
 | 20 | weapon_ts_ump45                  | Functionally complete | Add suppressor, laser, flashlight |
-| 21 | weapon_ts_mp7                    | Not started           | To do                             |
+| 21 | weapon_ts_mp7                    | Functionally complete | Add suppressor, laser, flashlight |
 | 22 | weapon_ts_tmp                    | Functionally complete | Figure out ammo types             |
 | 23 | weapon_ts_mac10                  | Not started           | Can't find files, might not do    |
-| 24 | weapon_ts_skorpion               | Not started           | To do                             |
+| 24 | weapon_ts_skorpion               | Complete              | Done                              |
 | 25 | weapon_ts_skorpion_akimbo        | Not started           | To do                             |
 | 26 | weapon_ts_benelli                | Not started           | To do                             |
 | 27 | weapon_ts_spas                   | Not started           | To do                             |

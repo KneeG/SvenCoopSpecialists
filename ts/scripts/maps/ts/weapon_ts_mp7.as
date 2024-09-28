@@ -79,7 +79,7 @@ namespace TS_MP7
         TraceResult     m_trHit                 ; // Keeps track of what is hit when the mp7 is swung
         
         //////////////////////////////////////////
-        // TS_MP7::Spawn                      //
+        // TS_MP7::Spawn                        //
         // Function:                            //
         //      Spawn function for the weapon   //
         // Parameters:                          //
@@ -114,7 +114,7 @@ namespace TS_MP7
         } // End of Spawn()
 
         //////////////////////////////////////////////////
-        // TS_MP7::Precache                           //
+        // TS_MP7::Precache                             //
         // Function:                                    //
         //      Prechacing function for weapon assets   //
         // Parameters:                                  //
@@ -143,7 +143,7 @@ namespace TS_MP7
         } // End of Precache()
 
         //////////////////////////////////////////////////////////////////////////////
-        // TS_MP7::GetItemInfo                                                    //
+        // TS_MP7::GetItemInfo                                                      //
         // Function:                                                                //
         //      Sets the weapon metadata                                            //
         // Parameters:                                                              //
@@ -153,18 +153,18 @@ namespace TS_MP7
         //////////////////////////////////////////////////////////////////////////////
         bool GetItemInfo(ItemInfo& out info)
         {
-            info.iMaxClip		= TheSpecialists::iWEAPON__MP7__CLIP      ;
-            info.iMaxAmmo1		= TheSpecialists::iWEAPON__MP7__AMMO1     ;
-            info.iMaxAmmo2		= TheSpecialists::iWEAPON__MP7__AMMO2     ;
-            info.iSlot			= TheSpecialists::iWEAPON__SLOT__SMG        ;
-            info.iPosition		= TheSpecialists::iWEAPON__POSITION__MP7  ;
-            info.iWeight		= TheSpecialists::iDEFAULT_WEIGHT           ;
+            info.iMaxClip        = TheSpecialists::iWEAPON__MP7__CLIP    ;
+            info.iMaxAmmo1        = TheSpecialists::iWEAPON__MP7__AMMO1   ;
+            info.iMaxAmmo2        = TheSpecialists::iWEAPON__MP7__AMMO2   ;
+            info.iSlot            = TheSpecialists::iWEAPON__SLOT__SMG    ;
+            info.iPosition        = TheSpecialists::iWEAPON__POSITION__MP7;
+            info.iWeight        = TheSpecialists::iDEFAULT_WEIGHT       ;
             
             return true;
         } // End of GetItemInfo()
         
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_MP7::AddToPlayer                                                                    //
+        // TS_MP7::AddToPlayer                                                                      //
         // Function:                                                                                //
         //      Adds the weapon to the player if they exist                                         //
         //      If the player exists, save a reference to the player                                //
@@ -192,7 +192,7 @@ namespace TS_MP7
                     NetworkMessages::WeapPickup,
                     pPlayer.edict()
                 );
-				message.WriteLong(self.m_iId);
+                message.WriteLong(self.m_iId);
                 message.End();
                 
                 // Debug printing
@@ -206,7 +206,7 @@ namespace TS_MP7
         } // End of AddToPlayer()
 
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_MP7::Deploy                                                                         //
+        // TS_MP7::Deploy                                                                           //
         // Function:                                                                                //
         //      Adds the weapon to the player if they exist                                         //
         //      If the player exists, save a reference to the player                                //
@@ -250,7 +250,7 @@ namespace TS_MP7
         } // End of Holster()
         
         //////////////////////////////////////////////////
-        // TS_MP7::PrimaryAttack                      //
+        // TS_MP7::PrimaryAttack                        //
         // Function:                                    //
         //      Performs the weapon's primary attack    //
         // Parameters:                                  //
@@ -271,7 +271,7 @@ namespace TS_MP7
         } // End of PrimaryAttack()
 
         //////////////////////////////
-        // TS_MP7::Shoot          //
+        // TS_MP7::Shoot            //
         // Function:                //
         //      Gun fire handling   //
         // Parameters:              //
@@ -315,7 +315,7 @@ namespace TS_MP7
                     // Play the fire sound
                     TheSpecialists::CommonFunctions::PlaySoundDynamicWithVariablePitch(m_pPlayer, strSOUND_FIRE);
                     
-                    Vector vecSrc	 = m_pPlayer.GetGunPosition();
+                    Vector vecSrc     = m_pPlayer.GetGunPosition();
                     Vector vecAiming = m_pPlayer.GetAutoaimVector(AUTOAIM_5DEGREES);
                     m_vecAccuracy    = vecSPREAD * m_fInaccuracyFactor;
                     
@@ -323,14 +323,14 @@ namespace TS_MP7
                     // https://github.com/ValveSoftware/halflife/blob/e5815c34e2772a247a6843b67eab7c3395bdba66/dlls/cbase.h#L255
                     m_pPlayer.FireBullets
                     (
-                        1                                       , // ULONG cShots           - Number of bullets fired, anything more than 1 is useful for shotguns
-                        vecSrc                                  , // Vector vecSrc          - Vector where the shot is originating from, but it's a vector so I don't know why this information isn't already stored in a single vector
-                        vecAiming                               , // Vector vecDirShooting  - Vector where the shot is going to go towards
-                        m_vecAccuracy                           , // Vector vecSpread       - Vector detailing how large the cone of randomness the bullets will randomly spread out
-                        TheSpecialists::fMAXIMUM_FIRE_DISTANCE  , // float flDistance       - Maximum distance the bullet will scan for a hit
-                        BULLET_PLAYER_MP5                       , // int iBulletType        - Bullet type, not sure what this means
-                        2                                       , // int iTracerFreq = 4    - How frequently there will be bullet tracers, not sure what the scale is
-                        iDAMAGE                                   // int iDamage = 0        - How much damage the bullet will do
+                        1                                           , // ULONG cShots           - Number of bullets fired, anything more than 1 is useful for shotguns
+                        vecSrc                                      , // Vector vecSrc          - Vector where the shot is originating from, but it's a vector so I don't know why this information isn't already stored in a single vector
+                        vecAiming                                   , // Vector vecDirShooting  - Vector where the shot is going to go towards
+                        m_vecAccuracy                               , // Vector vecSpread       - Vector detailing how large the cone of randomness the bullets will randomly spread out
+                        TheSpecialists::fMAXIMUM_FIRE_DISTANCE      , // float flDistance       - Maximum distance the bullet will scan for a hit
+                        TheSpecialists::iWEAPON__SMG__BULLET__TYPE  , // int iBulletType        - Bullet type, not sure what this means
+                        2                                           , // int iTracerFreq = 4    - How frequently there will be bullet tracers, not sure what the scale is
+                        iDAMAGE                                       // int iDamage = 0        - How much damage the bullet will do
                     );
                     
                     // Decrement the magazine by one
@@ -362,7 +362,7 @@ namespace TS_MP7
         } // End of Shoot()
 
         //////////////////////////
-        // TS_MP7::Reload     //
+        // TS_MP7::Reload       //
         // Function:            //
         //      Reload handler  //
         // Parameters:          //
@@ -389,7 +389,7 @@ namespace TS_MP7
         } // End of Reload()
         
         //////////////////////////
-        // TS_MP7::WeaponIdle //
+        // TS_MP7::WeaponIdle   //
         // Function:            //
         //      Reload handler  //
         // Parameters:          //
