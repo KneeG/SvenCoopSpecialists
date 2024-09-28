@@ -32,7 +32,8 @@ namespace TS_Benelli
         const int RELOAD_START      = 0;
         const int RELOAD_LIFT_GUN   = 1;
         const int RELOAD_LOAD_SHELL = 2;
-        const int RELOAD_END_PUMP   = 3;
+        const int RELOAD_LAST_SHELL = 3;
+        const int RELOAD_END_PUMP   = 4;
         
         array<string> toStringArray = {
             "RELOAD_START"      ,
@@ -521,6 +522,7 @@ namespace TS_Benelli
                     if (m_fReloadShellCooldown < g_Engine.time)
                     {
                         // Transition to the end pump state
+                        m_iReloadState = ReloadState::RELOAD_END_PUMP;
                         
                         // Reset the shell cooldown timer to allow the reload animation time to play
                         m_fReloadShellCooldown = g_Engine.time + TheSpecialists::fDEFAULT_SHELL_LOAD_TIME;
