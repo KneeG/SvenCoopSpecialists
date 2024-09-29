@@ -75,14 +75,14 @@ Hopefully their functionality is also implemented as well.
 
 <a name="weaponfeatures"></a>
 ## 3. Weapon features:
-| \# | Item Description                 | Progress              | To do notes                   |
-| -- | -------------------------------- | --------------------- | ----------------------------- |
-| 1  | Lasersight attachments           | Not started           | To do: might be tricky        |
-| 2  | Silencers                        | Not started           | To do: should be easy         |
-| 3  | Flashlight attachments           | Not started           | To do: should be easy         |
-| 4  | Scoped attachments               | Not started           | To do: should be easy         |
-| 5  | Weapon firemodes                 | Not started           | To do: should be easy         |
-| 6  | Akimbo alternating fire          | Not started           | To do: should be easy         |
+| \# | Item Description                 | Progress              | To do notes                       |
+| -- | -------------------------------- | --------------------- | --------------------------------- |
+| 1  | Lasersight attachments           | Not started           | To do: might be tricky            |
+| 2  | Silencers                        | Not started           | To do: should be easy             |
+| 3  | Flashlight attachments           | Not started           | To do: should be easy             |
+| 4  | Scoped attachments               | Not started           | To do: should be easy             |
+| 5  | Weapon firemodes                 | In progress           | Figure out how to toggle them     |
+| 6  | Akimbo alternating fire          | In progress           | Figure how to fire independently  |
 
 <a name="entitylist"></a>
 ## 4. Entity list:
