@@ -387,6 +387,15 @@ namespace TheSpecialists
     const float     fWEAPON__MOSSBERG__PUMP_DELAY           = 0.5                               ; // Time in between pumps
     const float     fWEAPON__MOSSBERG__PUMP_TIME            = 0.5                               ; // Time it takes to pump
     
+    const int       iWEAPON__USAS12__CLIP                   = 20                                ; // Size of the magazine
+    const int       iWEAPON__USAS12__AMMO1                  = iWEAPON__SHOTGUN__AMMO1__MAX      ; // Primary ammo capacity
+    const int       iWEAPON__USAS12__AMMO2                  = -1                                ; // Secondary ammo capacity
+    const Vector    vecWEAPON__USAS12__SPREAD               = VECTOR_CONE_6DEGREES * 1          ; // Accuracy of the weapon
+    const int       iWEAPON__USAS12__FIRE_MODE              = FireMode::iAUTOMATIC              ; // Fire mode of the weapon
+    const int       iWEAPON__USAS12__DAMAGE                 = 6                                 ; // Weapon damage
+    const float     fWEAPON__USAS12__ATTACK_DELAY           = (60.0 / 350.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
+    const float     fWEAPON__USAS12__RECOIL_MULTIPLIER      = 0.9                               ; // Severity of the recoil
+    
     ///////////////////////////////
     // Ammunitions (See https://baso88.github.io/SC_AngelScript/docs/Bullet.htm)
     

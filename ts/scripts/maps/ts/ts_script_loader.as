@@ -30,6 +30,7 @@
 #include "weapon_ts_benelli"
 #include "weapon_ts_spas"
 #include "weapon_ts_mossberg"
+#include "weapon_ts_usas12"
 
 void TS_LoadWeapons()
 {
@@ -60,4 +61,6 @@ void TS_LoadWeapons()
     TS_Benelli      ::Register_Weapon();
     TS_Spas         ::Register_Weapon();
     TS_Mossberg     ::Register_Weapon();
+    TS_USAS12       ::Register_Weapon();
+
 }
