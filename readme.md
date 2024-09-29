@@ -61,8 +61,8 @@ Hopefully their functionality is also implemented as well.
 | 24 | weapon_ts_skorpion               | Complete              | Done                              |
 | 25 | weapon_ts_skorpion_akimbo        | Not started           | To do                             |
 | 26 | weapon_ts_benelli                | Functionally complete | Add laser, flashlight             |
-| 27 | weapon_ts_spas                   | Not started           | To do                             |
-| 28 | weapon_ts_mossberg               | Not started           | To do                             |
+| 27 | weapon_ts_spas                   | Functionally complete | Add laser, flashlight             |
+| 28 | weapon_ts_mossberg               | Functionally complete | Add laser, flashlight             |
 | 29 | weapon_ts_usas12                 | Not started           | To do                             |
 | 30 | weapon_ts_double_barrel_shotgun  | Not started           | To do                             |
 | 31 | weapon_ts_ak47                   | Not started           | To do                             |

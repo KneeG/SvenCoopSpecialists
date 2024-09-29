@@ -372,9 +372,20 @@ namespace TheSpecialists
     const int       iWEAPON__SPAS__FIRE_MODE                = FireMode::iSEMI_AUTOMATIC         ; // Fire mode of the weapon
     const int       iWEAPON__SPAS__DAMAGE                   = 9                                 ; // Weapon damage
     const float     fWEAPON__SPAS__ATTACK_DELAY             = (60.0 / 280.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
-    const float     fWEAPON__SPAS__RECOIL_MULTIPLIER        = 0.6                               ; // Severity of the recoil
+    const float     fWEAPON__SPAS__RECOIL_MULTIPLIER        = 0.7                               ; // Severity of the recoil
     const float     fWEAPON__SPAS__PUMP_DELAY               = 0.5                               ; // Time in between pumps
     const float     fWEAPON__SPAS__PUMP_TIME                = 0.5                               ; // Time it takes to pump
+    
+    const int       iWEAPON__MOSSBERG__CLIP                 = 8                                 ; // Size of the magazine
+    const int       iWEAPON__MOSSBERG__AMMO1                = iWEAPON__SHOTGUN__AMMO1__MAX      ; // Primary ammo capacity
+    const int       iWEAPON__MOSSBERG__AMMO2                = -1                                ; // Secondary ammo capacity
+    const Vector    vecWEAPON__MOSSBERG__SPREAD             = VECTOR_CONE_6DEGREES * 1          ; // Accuracy of the weapon
+    const int       iWEAPON__MOSSBERG__FIRE_MODE            = FireMode::iSEMI_AUTOMATIC         ; // Fire mode of the weapon
+    const int       iWEAPON__MOSSBERG__DAMAGE               = 7                                 ; // Weapon damage
+    const float     fWEAPON__MOSSBERG__ATTACK_DELAY         = (60.0 / 350.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
+    const float     fWEAPON__MOSSBERG__RECOIL_MULTIPLIER    = 0.9                               ; // Severity of the recoil
+    const float     fWEAPON__MOSSBERG__PUMP_DELAY           = 0.5                               ; // Time in between pumps
+    const float     fWEAPON__MOSSBERG__PUMP_TIME            = 0.5                               ; // Time it takes to pump
     
     ///////////////////////////////
     // Ammunitions (See https://baso88.github.io/SC_AngelScript/docs/Bullet.htm)
