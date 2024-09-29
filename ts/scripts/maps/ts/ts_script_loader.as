@@ -28,6 +28,7 @@
 #include "weapon_ts_skorpion"
 
 #include "weapon_ts_benelli"
+#include "weapon_ts_spas"
 
 void TS_LoadWeapons()
 {
@@ -56,4 +57,5 @@ void TS_LoadWeapons()
     TS_Skorpion     ::Register_Weapon();
     
     TS_Benelli      ::Register_Weapon();
+    TS_Spas         ::Register_Weapon();
 }

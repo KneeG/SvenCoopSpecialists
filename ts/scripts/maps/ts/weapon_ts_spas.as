@@ -1,16 +1,16 @@
-//////////////////////////////////////////////////////////
-// File         : weapon_ts_benelli.as                  //
-// Author       : Knee                                  //
-// Description  : Benelli from The Specialists Mod 3.0  //
-//////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////
+// File         : weapon_ts_spas.as                 //
+// Author       : Knee                              //
+// Description  : Spas from The Specialists Mod 3.0 //
+//////////////////////////////////////////////////////
 #include "../../library/thespecialists"
 
 /////////////////////////////////////
-// TS_Benelli namespace
-namespace TS_Benelli
+// TS_Spas namespace
+namespace TS_Spas
 {
     /////////////////////////////////////
-    // Benelli animation enumeration
+    // Spas animation enumeration
     namespace Animations
     {
         const int IDLE1             = 0 ;
@@ -23,7 +23,6 @@ namespace TS_Benelli
         const int SHOOT2            = 7 ; // Shoot semi - Haven't seen a meaningful difference between these two
         const int PUMP1             = 8 ;
         const int PUMP2             = 9 ;
-        const int MELEE             = 10;
     }
     
     // Reload state machine
@@ -49,9 +48,9 @@ namespace TS_Benelli
     const int               RETURN_ERROR_NULL_POINTER   = -1;
     
     // Meta data
-    const string            strNAME                 = "benelli"             ;
-    const string            strNAMESPACE            = "TS_Benelli::"        ;
-    const string            strCLASSNAME            = "weapon_ts_benelli"   ;
+    const string            strNAME                 = "spas"             ;
+    const string            strNAMESPACE            = "TS_Spas::"        ;
+    const string            strCLASSNAME            = "weapon_ts_spas"   ;
 
     // Asset paths
     const string            strMODEL_P              = TheSpecialists::strMODEL_PATH + "shotguns/" + strNAME + "/p_" + strNAME + ".mdl";
@@ -78,15 +77,15 @@ namespace TS_Benelli
     
     const float             fHOLSTER_TIME           = TheSpecialists::fDEFAULT_HOSTER_TIME          ;
     const float             fNEXT_THINK             = TheSpecialists::fDEFAULT_NEXT_THINK           ;
-    const float             fPRIMARY_ATTACK_DELAY   = TheSpecialists::fWEAPON__BENELLI__ATTACK_DELAY;
+    const float             fPRIMARY_ATTACK_DELAY   = TheSpecialists::fWEAPON__SPAS__ATTACK_DELAY   ;
     const float             fSWING_DISTANCE         = TheSpecialists::fSWING_DISTANCE               ;
     const IGNORE_MONSTERS   eIGNORE_RULE            = TheSpecialists::eIGNORE_RULE                  ;
-    const int               iDAMAGE                 = TheSpecialists::iWEAPON__BENELLI__DAMAGE      ;
-    const Vector            vecSPREAD               = TheSpecialists::vecWEAPON__BENELLI__SPREAD    ;
+    const int               iDAMAGE                 = TheSpecialists::iWEAPON__SPAS__DAMAGE         ;
+    const Vector            vecSPREAD               = TheSpecialists::vecWEAPON__SPAS__SPREAD       ;
     
     /////////////////////////////////////
-    // Benelli class
-    class weapon_ts_benelli : ScriptBasePlayerWeaponEntity
+    // Spas class
+    class weapon_ts_spas : ScriptBasePlayerWeaponEntity
     {
         private CBasePlayer@ m_pPlayer          ; // Player reference pointer
         private int     m_iDamage               ; // Weapon damage
@@ -106,10 +105,10 @@ namespace TS_Benelli
         
         Vector          m_vecAccuracy           ; // Current accuracy of the weapon
         
-        TraceResult m_trHit                     ; // Keeps track of what is hit when the benelli is swung
+        TraceResult m_trHit                     ; // Keeps track of what is hit when the spas is swung
         
         //////////////////////////////////////////
-        // TS_Benelli::Spawn                    //
+        // TS_Spas::Spawn                       //
         // Function:                            //
         //      Spawn function for the weapon   //
         // Parameters:                          //
@@ -148,7 +147,7 @@ namespace TS_Benelli
             m_vecAccuracy = vecSPREAD;*/
             
             // Set the clip size
-            self.m_iClip = TheSpecialists::iWEAPON__BENELLI__CLIP;
+            self.m_iClip = TheSpecialists::iWEAPON__SPAS__CLIP;
             
             // Set the weapon damage
             self.m_flCustomDmg = m_iDamage;
@@ -158,7 +157,7 @@ namespace TS_Benelli
         } // End of Spawn()
 
         //////////////////////////////////////////////////
-        // TS_Benelli::Precache                         //
+        // TS_Spas::Precache                            //
         // Function:                                    //
         //      Prechacing function for weapon assets   //
         // Parameters:                                  //
@@ -192,7 +191,7 @@ namespace TS_Benelli
         } // End of Precache()
 
         //////////////////////////////////////////////////////////////////////////////
-        // TS_Benelli::GetItemInfo                                                  //
+        // TS_Spas::GetItemInfo                                                     //
         // Function:                                                                //
         //      Sets the weapon metadata                                            //
         // Parameters:                                                              //
@@ -202,18 +201,18 @@ namespace TS_Benelli
         //////////////////////////////////////////////////////////////////////////////
         bool GetItemInfo(ItemInfo& out info)
         {
-            info.iMaxClip   = TheSpecialists::iWEAPON__BENELLI__CLIP    ;
-            info.iMaxAmmo1  = TheSpecialists::iWEAPON__BENELLI__AMMO1   ;
-            info.iMaxAmmo2  = TheSpecialists::iWEAPON__BENELLI__AMMO2   ;
+            info.iMaxClip   = TheSpecialists::iWEAPON__SPAS__CLIP       ;
+            info.iMaxAmmo1  = TheSpecialists::iWEAPON__SPAS__AMMO1      ;
+            info.iMaxAmmo2  = TheSpecialists::iWEAPON__SPAS__AMMO2      ;
             info.iSlot      = TheSpecialists::iWEAPON__SLOT__RIFLE      ;
-            info.iPosition  = TheSpecialists::iWEAPON__POSITION__BENELLI;
+            info.iPosition  = TheSpecialists::iWEAPON__POSITION__SPAS   ;
             info.iWeight    = TheSpecialists::iDEFAULT_WEIGHT           ;
             
             return true;
         } // End of GetItemInfo()
         
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_Benelli::AddToPlayer                                                                  //
+        // TS_Spas::AddToPlayer                                                                     //
         // Function:                                                                                //
         //      Adds the weapon to the player if they exist                                         //
         //      If the player exists, save a reference to the player                                //
@@ -233,7 +232,7 @@ namespace TS_Benelli
                 @m_pPlayer = pPlayer;
                 
                 // Debug printing
-                // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "Benelli m_iPrimaryAmmoType: " + self.m_iPrimaryAmmoType + "\n");
+                // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "Spas m_iPrimaryAmmoType: " + self.m_iPrimaryAmmoType + "\n");
                 
                 NetworkMessage message
                 (
@@ -255,7 +254,7 @@ namespace TS_Benelli
         } // End of AddToPlayer()
 
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_Benelli::Deploy                                                                       //
+        // TS_Spas::Deploy                                                                          //
         // Function:                                                                                //
         //      Adds the weapon to the player if they exist                                         //
         //      If the player exists, save a reference to the player                                //
@@ -279,7 +278,7 @@ namespace TS_Benelli
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_Benelli::Holster                                                                      //
+        // TS_Spas::Holster                                                                         //
         // Function:                                                                                //
         //      Hides the weapon from the player                                                    //
         // Parameters:                                                                              //
@@ -297,12 +296,12 @@ namespace TS_Benelli
             // Hide the player model by making the viewmodel path empty
             m_pPlayer.pev.viewmodel = "";
             
-            // Tell the looping function to stop calling any of our benelli functions
+            // Tell the looping function to stop calling any of our spas functions
             SetThink(null);
         } // End of Holster()
         
         //////////////////////////////////////////////////
-        // TS_Benelli::PrimaryAttack                    //
+        // TS_Spas::PrimaryAttack                       //
         // Function:                                    //
         //      Performs the weapon's primary attack    //
         // Parameters:                                  //
@@ -327,7 +326,7 @@ namespace TS_Benelli
                 Shoot();
                 
                 // Set the cooldown timer
-                m_fPumpDelay = g_Engine.time + TheSpecialists::fWEAPON__BENELLI__PUMP_DELAY;
+                m_fPumpDelay = g_Engine.time + TheSpecialists::fWEAPON__SPAS__PUMP_DELAY;
                 
                 // The weapon needs pumping, set this flag to false
                 m_bPumped = false;
@@ -339,7 +338,7 @@ namespace TS_Benelli
         } // End of PrimaryAttack()
         
         //////////////////////////////
-        // TS_Benelli::Shoot        //
+        // TS_Spas::Shoot           //
         // Function:                //
         //      Gun fire handling   //
         // Parameters:              //
@@ -431,7 +430,7 @@ namespace TS_Benelli
         } // End of Shoot()
 
         //////////////////////////
-        // TS_Benelli::Reload   //
+        // TS_Spas::Reload      //
         // Function:            //
         //      Reload handler  //
         // Parameters:          //
@@ -445,8 +444,8 @@ namespace TS_Benelli
             int iShellsReloading    = 1; // Number of shells reloaded at a time
             
             // Debug printing
-            // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "Benelli Reload() reload state: " + ReloadState::toStringArray[m_iReloadState] + "\n");
-            // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "Benelli Reload() Current clip: " + self.m_iClip + "\n");
+            // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "Spas Reload() reload state: " + ReloadState::toStringArray[m_iReloadState] + "\n");
+            // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "Spas Reload() Current clip: " + self.m_iClip + "\n");
             
             // Take action based on the reload progress
             switch (m_iReloadState)
@@ -454,7 +453,7 @@ namespace TS_Benelli
                 case ReloadState::RELOAD_START:
                 {
                     // Determine if there is any room to reload any shells
-                    if (    (self.m_iClip < TheSpecialists::iWEAPON__BENELLI__CLIP)
+                    if (    (self.m_iClip < TheSpecialists::iWEAPON__SPAS__CLIP)
                          && (m_pPlayer.m_rgAmmo(self.m_iPrimaryAmmoType) > 0)    )
                     {
                         // Start reloading the gun by lifting the gun to load shells
@@ -462,7 +461,7 @@ namespace TS_Benelli
                         
                         m_bReloadingShells = true;
                         
-                    } // End of if (self.m_iClip < TheSpecialists::iWEAPON__BENELLI__CLIP)
+                    } // End of if (self.m_iClip < TheSpecialists::iWEAPON__SPAS__CLIP)
                     
                     break;
                 } // End of case ReloadState::RELOAD_START
@@ -484,7 +483,7 @@ namespace TS_Benelli
                 case ReloadState::RELOAD_LOAD_SHELL:
                 {
                     // Determine if the gun is finished reloading
-                    if (self.m_iClip == TheSpecialists::iWEAPON__BENELLI__CLIP)
+                    if (self.m_iClip == TheSpecialists::iWEAPON__SPAS__CLIP)
                     {
                         // Transition to the end pump state
                         m_iReloadState = ReloadState::RELOAD_LAST_SHELL;
@@ -556,7 +555,7 @@ namespace TS_Benelli
         } // End of Reload()
         
         //////////////////////////////
-        // TS_Benelli::PumpHandle   //
+        // TS_Spas::PumpHandle      //
         // Function:                //
         //      Handles pump action //
         // Parameters:              //
@@ -589,7 +588,7 @@ namespace TS_Benelli
                         m_bStartedPumping = true;
                         
                         // Start the pumping timer
-                        m_fPumpTime = g_Engine.time + TheSpecialists::fWEAPON__BENELLI__PUMP_TIME;
+                        m_fPumpTime = g_Engine.time + TheSpecialists::fWEAPON__SPAS__PUMP_TIME;
                         
                         // Pick a random pump animation
                         iAnimationIndex = TheSpecialists::CommonFunctions::PickRandomElementFromListInt(arrPumpAnimationList);
@@ -625,7 +624,7 @@ namespace TS_Benelli
         } // End of PumpHandle()
         
         //////////////////////////////
-        // TS_Benelli::WeaponIdle   //
+        // TS_Spas::WeaponIdle      //
         // Function:                //
         //      Weapon idle handler //
         // Parameters:              //
@@ -672,7 +671,7 @@ namespace TS_Benelli
             
         } // End of WeaponIdle()
         
-    } // End of class weapon_ts_benelli
+    } // End of class weapon_ts_spas
 
     void Register_Weapon()
     {
@@ -684,4 +683,4 @@ namespace TS_Benelli
             TheSpecialists::strWEAPON__SHOTGUN__AMMO_TYPE     // string - ammo type
         );
     }
-} // End of namespace TS_Benelli
+} // End of namespace TS_Spas

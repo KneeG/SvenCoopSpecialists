@@ -170,7 +170,7 @@ namespace TheSpecialists
     const float         iDEFAULT_PITCH              = 100                       ; // Default pitch
     const float         fDEFAULT_SOUND_DISTANCE     = 512                       ; // Default limit the sound will be transmitted
     const float         fDEFAULT_VOLUME             = 1.0                       ; // [percent] Default volume (in percentage)
-    const SOUND_CHANNEL scDEFAULT_CHANNEL           = CHAN_WEAPON               ; // Default sound channel
+    const SOUND_CHANNEL scDEFAULT_CHANNEL           = CHAN_AUTO                 ; // Default sound channel (See https://github.com/baso88/SC_AngelScript/wiki/SoundSystem)
     const float         fDEFAULT_ATTENUATION        = ATTN_NORM                 ; // Default attenuation, or sound dropoff
     const int           iMONSTER_GUN_VOLUME         = 384                       ; // Default gun fire volume, I can only assume this is distance in its implementation
     const float         fGUN_SOUND_DURATION         = 0.3                       ; // [seconds] How long the gun sound persists (in seconds)
@@ -357,7 +357,7 @@ namespace TheSpecialists
     const int       iWEAPON__BENELLI__CLIP                  = 8                                 ; // Size of the magazine
     const int       iWEAPON__BENELLI__AMMO1                 = iWEAPON__SHOTGUN__AMMO1__MAX      ; // Primary ammo capacity
     const int       iWEAPON__BENELLI__AMMO2                 = -1                                ; // Secondary ammo capacity
-    const Vector    vecWEAPON__BENELLI__SPREAD              = VECTOR_CONE_6DEGREES * 4          ; // Accuracy of the weapon
+    const Vector    vecWEAPON__BENELLI__SPREAD              = VECTOR_CONE_6DEGREES * 1          ; // Accuracy of the weapon
     const int       iWEAPON__BENELLI__FIRE_MODE             = FireMode::iSEMI_AUTOMATIC         ; // Fire mode of the weapon
     const int       iWEAPON__BENELLI__DAMAGE                = 7                                 ; // Weapon damage
     const float     fWEAPON__BENELLI__ATTACK_DELAY          = (60.0 / 300.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
@@ -365,8 +365,19 @@ namespace TheSpecialists
     const float     fWEAPON__BENELLI__PUMP_DELAY            = 0.5                               ; // Time in between pumps
     const float     fWEAPON__BENELLI__PUMP_TIME             = 0.5                               ; // Time it takes to pump
     
+    const int       iWEAPON__SPAS__CLIP                     = 8                                 ; // Size of the magazine
+    const int       iWEAPON__SPAS__AMMO1                    = iWEAPON__SHOTGUN__AMMO1__MAX      ; // Primary ammo capacity
+    const int       iWEAPON__SPAS__AMMO2                    = -1                                ; // Secondary ammo capacity
+    const Vector    vecWEAPON__SPAS__SPREAD                 = VECTOR_CONE_6DEGREES * 2          ; // Accuracy of the weapon
+    const int       iWEAPON__SPAS__FIRE_MODE                = FireMode::iSEMI_AUTOMATIC         ; // Fire mode of the weapon
+    const int       iWEAPON__SPAS__DAMAGE                   = 9                                 ; // Weapon damage
+    const float     fWEAPON__SPAS__ATTACK_DELAY             = (60.0 / 280.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
+    const float     fWEAPON__SPAS__RECOIL_MULTIPLIER        = 0.6                               ; // Severity of the recoil
+    const float     fWEAPON__SPAS__PUMP_DELAY               = 0.5                               ; // Time in between pumps
+    const float     fWEAPON__SPAS__PUMP_TIME                = 0.5                               ; // Time it takes to pump
+    
     ///////////////////////////////
-    // Ammunitions
+    // Ammunitions (See https://baso88.github.io/SC_AngelScript/docs/Bullet.htm)
     
     // Melee weapons
     
@@ -615,7 +626,7 @@ namespace TheSpecialists
             Vector vecDir = vecAiming 
                             + x * vecSpread.x * g_Engine.v_right 
                             + y * vecSpread.y * g_Engine.v_up;
-            Vector vecEnd	= vecSrc + vecDir * TheSpecialists::fMAXIMUM_FIRE_DISTANCE;
+            Vector vecEnd    = vecSrc + vecDir * TheSpecialists::fMAXIMUM_FIRE_DISTANCE;
 
 
             // Determine if the player hit something
@@ -737,6 +748,58 @@ namespace TheSpecialists
                 return -1;
             }
         } // End of int PickRandomElementFromListInt()
+        
+        //////////////////////////////////////////////////////////////////////////////////////
+        // TheSpecialists::CommonFunctions::CreatePelletDecals                              //
+        // Function:                                                                        //
+        //      Creates a variable number of pellet decals                                  //
+        // Parameters:                                                                      //
+        //      CBasePlayer         pPlayer         = [BOTH] Player reference               //
+        //      const Vector& in    vecSrc          = [IN] Origin of the shooter            //
+        //      const Vector& in    vecAiming       = [IN] Where the player is aiming       //
+        //      const Vector& in    vecSpread       = [IN] Accuracy of the weapon           //
+        //      const uint          uiPelletCount   = [IN] How many pellet decals to create //
+        // Return value:                                                                    //
+        //      None                                                                        //
+        //////////////////////////////////////////////////////////////////////////////////////
+        void CreatePelletDecals(CBasePlayer @pPlayer, const Vector& in vecSrc, const Vector& in vecAiming, const Vector& in vecSpread, const uint uiPelletCount)
+        {
+            TraceResult tr;
+            
+            float x = 0.0;
+            float y = 0.0;
+            
+            for (uint uiPellet = 0; uiPellet < uiPelletCount; ++uiPellet)
+            {
+                g_Utility.GetCircularGaussianSpread(x, y);
+                
+                Vector vecDir = vecAiming 
+                                + x * vecSpread.x * g_Engine.v_right 
+                                + y * vecSpread.y * g_Engine.v_up;
+
+                Vector vecEnd = vecSrc + vecDir * 2048;
+                
+                g_Utility.TraceLine(vecSrc, vecEnd, dont_ignore_monsters, pPlayer.edict(), tr);
+                
+                if (tr.flFraction < 1.0)
+                {
+                    if (tr.pHit !is null)
+                    {
+                        CBaseEntity@ pHit = g_EntityFuncs.Instance(tr.pHit);
+                        
+                        if (pHit is null || pHit.IsBSPModel())
+                        {
+                            g_WeaponFuncs.DecalGunshot(tr, BULLET_PLAYER_BUCKSHOT);
+                            
+                        } // End of if (pHit is null || pHit.IsBSPModel())
+                            
+                    } // End of if (tr.pHit !is null)
+                        
+                } // End of if (tr.flFraction < 1.0)
+                    
+            } // End of for (uint uiPellet = 0; uiPellet < uiPelletCount; ++uiPellet)
+                
+        } // End of CreatePelletDecals
 
     } // End of namespace CommonFunctions
 

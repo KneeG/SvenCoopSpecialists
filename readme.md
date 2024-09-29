@@ -60,7 +60,7 @@ Hopefully their functionality is also implemented as well.
 | 23 | weapon_ts_mac10                  | Not started           | Can't find files, might not do    |
 | 24 | weapon_ts_skorpion               | Complete              | Done                              |
 | 25 | weapon_ts_skorpion_akimbo        | Not started           | To do                             |
-| 26 | weapon_ts_benelli                | Not started           | To do                             |
+| 26 | weapon_ts_benelli                | Functionally complete | Add laser, flashlight             |
 | 27 | weapon_ts_spas                   | Not started           | To do                             |
 | 28 | weapon_ts_mossberg               | Not started           | To do                             |
 | 29 | weapon_ts_usas12                 | Not started           | To do                             |
