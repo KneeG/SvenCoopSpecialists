@@ -52,7 +52,7 @@ namespace TS_Uzi
     const string            strSOUND_FIRE           = TheSpecialists::strSOUND_PATH + "smgs/" + strNAME + "/" + TheSpecialists::strSMG__SOUND__FIRE           ;
     const string            strSOUND_FIRE_SILENCED  = TheSpecialists::strSOUND_PATH + "smgs/" + strNAME + "/" + TheSpecialists::strSMG__SOUND__FIRE_SILENCED  ;
     const string            strSOUND_SLIDEBACK      = TheSpecialists::strSOUND_PATH + "smgs/" + strNAME + "/" + TheSpecialists::strSMG__SOUND__SLIDEBACK      ;
-    const string            strSOUND_EMPTY          = TheSpecialists::strSOUND_PATH + TheSpecialists::strSMG__SOUND__EMPTY                                       ;
+    const string            strSOUND_EMPTY          = TheSpecialists::strSOUND_PATH + TheSpecialists::strSMG__SOUND__EMPTY                                    ;
     
     // Create a list of animations to be played at random
     const array<int> arrAnimationList = {
@@ -159,6 +159,8 @@ namespace TS_Uzi
             g_SoundSystem.PrecacheSound(strSOUND_FIRE           );         
             g_SoundSystem.PrecacheSound(strSOUND_FIRE_SILENCED  );
             g_SoundSystem.PrecacheSound(strSOUND_SLIDEBACK      );
+            
+            g_SoundSystem.PrecacheSound(strSOUND_EMPTY          );
             
             g_Game.PrecacheGeneric(TheSpecialists::strSPRITE_ROOT + strSPRITE_FILE);
             g_Game.PrecacheGeneric(TheSpecialists::strSPRITE_ROOT + strSPRITE_TEXT_FILE);

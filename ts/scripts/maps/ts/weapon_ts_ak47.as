@@ -1,104 +1,90 @@
 //////////////////////////////////////////////////////////
-// File         : weapon_ts_sawedoff.as                 //
+// File         : weapon_ts_ak47.as                     //
 // Author       : Knee                                  //
-// Description  : Sawedoff from The Specialists Mod 3.0 //
+// Description  : AK47 from The Specialists Mod 3.0    //
 //////////////////////////////////////////////////////////
 #include "../../library/thespecialists"
 
 /////////////////////////////////////
-// TS_Sawedoff namespace
-namespace TS_Sawedoff
+// TS_AK47 namespace
+namespace TS_AK47
 {
     /////////////////////////////////////
-    // Sawedoff animation enumeration
+    // AK47 animation enumeration
     namespace Animations
     {
-        const int IDLE1                 = 0 ;
-        const int DRAW1                 = 1 ;
-        const int RELOAD1               = 2 ;
-        const int SHOOT1                = 3 ;
-        const int SHOOT2                = 4 ;
-        const int ADS_IDLE1             = 5 ;
-        const int ADS_RELOAD1           = 6 ;
-        const int ADS_SHOOT1            = 7 ;
-        const int ADS_SHOOT2            = 8 ;
-        const int RELOAD_1_SHELL        = 9 ;
-        const int ADS_RELOAD_1_SHELL    = 10;
-        const int ADS_IN                = 11;
-        const int ADS_OUT               = 12;
-        const int MELEE                 = 13;
+        const int IDLE1         = 0;
+        const int RELOAD1       = 1;
+        const int DRAW1         = 2;
+        const int SHOOT1        = 3;
+        const int ADS_IDLE1     = 4;
+        const int ADS_IN        = 5;
+        const int ADS_OUT       = 6;
+        const int ADS_SHOOT1    = 7;
+        const int ADS_RELOAD1   = 8;
     }
     
     // Return constants
-    const int               RETURN_SUCCESS              = 0;
+    const int               RETURN_SUCCESS              =  0;
     const int               RETURN_ERROR_NULL_POINTER   = -1;
     
     // Meta data
-    const string            strNAME                 = "sawedoff"             ;
-    const string            strNAMESPACE            = "TS_Sawedoff::"        ;
-    const string            strCLASSNAME            = "weapon_ts_sawedoff"   ;
+    const string            strNAME                 = "ak47"             ;
+    const string            strNAMESPACE            = "TS_AK47::"        ;
+    const string            strCLASSNAME            = "weapon_ts_ak47"   ;
 
     // Asset paths
-    const string            strMODEL_P              = TheSpecialists::strMODEL_PATH + "shotguns/" + strNAME + "/p_" + strNAME + ".mdl";
-    const string            strMODEL_V              = TheSpecialists::strMODEL_PATH + "shotguns/" + strNAME + "/v_" + strNAME + ".mdl";
-    const string            strMODEL_W              = TheSpecialists::strMODEL_PATH + "shotguns/" + strNAME + "/w_" + strNAME + ".mdl";
+    const string            strMODEL_P              = TheSpecialists::strMODEL_PATH + "rifles/" + strNAME + "/p_" + strNAME + ".mdl";
+    const string            strMODEL_V              = TheSpecialists::strMODEL_PATH + "rifles/" + strNAME + "/v_" + strNAME + ".mdl";
+    const string            strMODEL_W              = TheSpecialists::strMODEL_PATH + "rifles/" + strNAME + "/w_" + strNAME + ".mdl";
     
     const string            strSPRITE_FILE          = TheSpecialists::strSPRITE_TS_PATH       + strNAME      + ".spr";
     const string            strSPRITE_TEXT_FILE     = TheSpecialists::strSPRITE_METADATA_PATH + strCLASSNAME + ".txt";
     
-    const string            strSOUND_CLIPIN         = TheSpecialists::strSOUND_PATH + "shotguns/" + strNAME + "/" + TheSpecialists::strSHOTGUN__SOUND__CLIPIN       ;
-    const string            strSOUND_CLIPOUT        = TheSpecialists::strSOUND_PATH + "shotguns/" + strNAME + "/" + TheSpecialists::strSHOTGUN__SOUND__CLIPOUT      ;
-    const string            strSOUND_FIRE           = TheSpecialists::strSOUND_PATH + "shotguns/" + strNAME + "/" + TheSpecialists::strSHOTGUN__SOUND__FIRE         ;
-    const string            strSOUND_SLIDEBACK      = TheSpecialists::strSOUND_PATH + "shotguns/" + strNAME + "/" + TheSpecialists::strSHOTGUN__SOUND__SLIDEBACK    ;
-    const string            strSOUND_EMPTY          = TheSpecialists::strSOUND_PATH + TheSpecialists::strPISTOL__SOUND__EMPTY                                           ;
-    
-    const string            strSOUND_FIRE2          = TheSpecialists::strSOUND_PATH + "shotguns/" + strNAME + "/" + TheSpecialists::strSHOTGUN__SOUND__FIRE2          ;
-    const string            strSOUND_CLOSE          = TheSpecialists::strSOUND_PATH + "shotguns/" + strNAME + "/" + TheSpecialists::strSHOTGUN__SOUND__CLOSE          ;
-    const string            strSOUND_OPEN           = TheSpecialists::strSOUND_PATH + "shotguns/" + strNAME + "/" + TheSpecialists::strSHOTGUN__SOUND__OPEN           ;
-    const string            strSOUND_INSERT_SHELL   = TheSpecialists::strSOUND_PATH + "shotguns/" + strNAME + "/" + TheSpecialists::strSHOTGUN__SOUND__INSERT_SHELL   ;
-    const string            strSOUND_SHELL_DROP     = TheSpecialists::strSOUND_PATH + "shotguns/" + strNAME + "/" + TheSpecialists::strSHOTGUN__SOUND__SHELL_DROP     ;
-    const string            strSOUND_SHELL_OUT      = TheSpecialists::strSOUND_PATH + "shotguns/" + strNAME + "/" + TheSpecialists::strSHOTGUN__SOUND__SHELL_OUT      ;
-    const string            strSOUND_TAPSPAN        = TheSpecialists::strSOUND_PATH + "shotguns/" + strNAME + "/" + TheSpecialists::strSHOTGUN__SOUND__TAPSPAN        ;
+    const string            strSOUND_CLIPIN         = TheSpecialists::strSOUND_PATH + "rifles/" + strNAME + "/" + TheSpecialists::strRIFLE__SOUND__CLIPIN       ;
+    const string            strSOUND_CLIPOUT        = TheSpecialists::strSOUND_PATH + "rifles/" + strNAME + "/" + TheSpecialists::strRIFLE__SOUND__CLIPOUT      ;
+    const string            strSOUND_FIRE           = TheSpecialists::strSOUND_PATH + "rifles/" + strNAME + "/" + TheSpecialists::strRIFLE__SOUND__FIRE         ;
+    const string            strSOUND_FIRE_SILENCED  = TheSpecialists::strSOUND_PATH + "rifles/" + strNAME + "/" + TheSpecialists::strRIFLE__SOUND__FIRE_SILENCED;
+    const string            strSOUND_SLIDEBACK      = TheSpecialists::strSOUND_PATH + "rifles/" + strNAME + "/" + TheSpecialists::strRIFLE__SOUND__SLIDEBACK    ;
+    const string            strSOUND_EMPTY          = TheSpecialists::strSOUND_PATH + TheSpecialists::strSMG__SOUND__EMPTY                                      ;
     
     // Create a list of animations to be played at random
     const array<int> arrAnimationList = {
-        Animations::SHOOT1,
-        Animations::SHOOT2
+        Animations::SHOOT1
     };
     
     const array<int> arrADSAnimationList = {
-        Animations::ADS_SHOOT1,
-        Animations::ADS_SHOOT2
+        Animations::ADS_SHOOT1
     };
     
     const float             fHOLSTER_TIME           = TheSpecialists::fDEFAULT_HOSTER_TIME              ;
     const float             fNEXT_THINK             = TheSpecialists::fDEFAULT_NEXT_THINK               ;
-    const float             fPRIMARY_ATTACK_DELAY   = TheSpecialists::fWEAPON__SAWEDOFF__ATTACK_DELAY   ;
+    const float             fPRIMARY_ATTACK_DELAY   = TheSpecialists::fWEAPON__AK47__ATTACK_DELAY       ;
     const float             fSWING_DISTANCE         = TheSpecialists::fSWING_DISTANCE                   ;
     const IGNORE_MONSTERS   eIGNORE_RULE            = TheSpecialists::eIGNORE_RULE                      ;
-    const int               iDAMAGE                 = TheSpecialists::iWEAPON__SAWEDOFF__DAMAGE         ;
-    const Vector            vecSPREAD               = TheSpecialists::vecWEAPON__SAWEDOFF__SPREAD       ;
+    const int               iDAMAGE                 = TheSpecialists::iWEAPON__AK47__DAMAGE             ;
+    const Vector            vecSPREAD               = TheSpecialists::vecWEAPON__AK47__SPREAD           ;
+    const float             fRECOIL_MULTIPLIER      = TheSpecialists::fWEAPON__AK47__RECOIL_MULTIPLIER  ;
     
     /////////////////////////////////////
-    // Sawedoff class
-    class weapon_ts_sawedoff : ScriptBasePlayerWeaponEntity
+    // AK47 class
+    class weapon_ts_ak47 : ScriptBasePlayerWeaponEntity
     {
         private CBasePlayer@ m_pPlayer          ; // Player reference pointer
         private int     m_iDamage               ; // Weapon damage
-        private bool    m_bADS                  ; // ADS flag
-        private float   m_fRecoilMultiplier     ; // Recoil multiplier flag
         private float   m_flAnimationCooldown   ; // Animation cooldown timer, helps prevent the weapon from going to idle animations while the weapon is being tilted
-
+        private bool    m_bADS                  ; // Flag for aiming down site
+        
         private float   m_fInaccuracyFactor     ; // Negatively affects weapon spread
         private float   m_fInaccuracyDelta      ; // How much inaccuracy
         private float   m_fInaccuracyDecay      ; // How much inaccuracy decreases over time
         
         Vector          m_vecAccuracy           ; // Current accuracy of the weapon
         
-        TraceResult m_trHit                     ; // Keeps track of what is hit when the sawedoff is swung
+        TraceResult     m_trHit                 ; // Keeps track of what is hit when the ak47 is swung
         
         //////////////////////////////////////////
-        // TS_Sawedoff::Spawn                   //
+        // TS_AK47::Spawn                       //
         // Function:                            //
         //      Spawn function for the weapon   //
         // Parameters:                          //
@@ -112,12 +98,6 @@ namespace TS_Sawedoff
             
             m_iDamage = iDAMAGE;
             
-            // Initialize the aim down sights flag (ADS)
-            m_bADS = false;
-            
-            // Set the world model
-            g_EntityFuncs.SetModel(self, self.GetW_Model(strMODEL_W));
-            
             m_fInaccuracyFactor = 1.0                                               ; // Scale factor added to weapon spread cone, negatively affects weapon spread
             m_fInaccuracyDelta  = TheSpecialists::fWEAPON__PISTOL__INACCURACY_DELTA ; // How much inaccuracy increases per shot
             m_fInaccuracyDecay  = TheSpecialists::fWEAPON__PISTOL__INACCURACY_DECAY ; // How much inaccuracy decreases over time
@@ -125,10 +105,11 @@ namespace TS_Sawedoff
             // Initialize accuracy
             m_vecAccuracy = vecSPREAD;
             
-            m_fRecoilMultiplier = TheSpecialists::fWEAPON__SAWEDOFF__RECOIL_MULTIPLIER;
+            // Set the world model
+            g_EntityFuncs.SetModel(self, self.GetW_Model(strMODEL_W));
             
             // Set the clip size
-            self.m_iClip = TheSpecialists::iWEAPON__SAWEDOFF__CLIP;
+            self.m_iClip = TheSpecialists::iWEAPON__AK47__CLIP;
             
             // Set the weapon damage
             self.m_flCustomDmg = m_iDamage;
@@ -138,7 +119,7 @@ namespace TS_Sawedoff
         } // End of Spawn()
 
         //////////////////////////////////////////////////
-        // TS_Sawedoff::Precache                        //
+        // TS_AK47::Precache                            //
         // Function:                                    //
         //      Prechacing function for weapon assets   //
         // Parameters:                                  //
@@ -161,14 +142,6 @@ namespace TS_Sawedoff
             g_SoundSystem.PrecacheSound(strSOUND_FIRE           );
             g_SoundSystem.PrecacheSound(strSOUND_SLIDEBACK      );
             
-            g_SoundSystem.PrecacheSound(strSOUND_FIRE2          );
-            g_SoundSystem.PrecacheSound(strSOUND_CLOSE          );
-            g_SoundSystem.PrecacheSound(strSOUND_OPEN           );
-            g_SoundSystem.PrecacheSound(strSOUND_INSERT_SHELL   );
-            g_SoundSystem.PrecacheSound(strSOUND_SHELL_DROP     );
-            g_SoundSystem.PrecacheSound(strSOUND_SHELL_OUT      );
-            g_SoundSystem.PrecacheSound(strSOUND_TAPSPAN        );
-            
             g_SoundSystem.PrecacheSound(strSOUND_EMPTY          );
             
             g_Game.PrecacheGeneric(TheSpecialists::strSPRITE_ROOT + strSPRITE_FILE);
@@ -176,7 +149,7 @@ namespace TS_Sawedoff
         } // End of Precache()
 
         //////////////////////////////////////////////////////////////////////////////
-        // TS_Sawedoff::GetItemInfo                                                 //
+        // TS_AK47::GetItemInfo                                                     //
         // Function:                                                                //
         //      Sets the weapon metadata                                            //
         // Parameters:                                                              //
@@ -186,18 +159,18 @@ namespace TS_Sawedoff
         //////////////////////////////////////////////////////////////////////////////
         bool GetItemInfo(ItemInfo& out info)
         {
-            info.iMaxClip		= TheSpecialists::iWEAPON__SAWEDOFF__CLIP       ;
-            info.iMaxAmmo1		= TheSpecialists::iWEAPON__SAWEDOFF__AMMO1      ;
-            info.iMaxAmmo2		= TheSpecialists::iWEAPON__SAWEDOFF__AMMO2      ;
-            info.iSlot			= TheSpecialists::iWEAPON__SLOT__RIFLE          ;
-            info.iPosition		= TheSpecialists::iWEAPON__POSITION__SAWEDOFF   ;
-            info.iWeight		= TheSpecialists::iDEFAULT_WEIGHT               ;
+            info.iMaxClip		= TheSpecialists::iWEAPON__AK47__CLIP       ;
+            info.iMaxAmmo1		= TheSpecialists::iWEAPON__AK47__AMMO1      ;
+            info.iMaxAmmo2		= TheSpecialists::iWEAPON__AK47__AMMO2      ;
+            info.iSlot			= TheSpecialists::iWEAPON__SLOT__RIFLE      ;
+            info.iPosition		= TheSpecialists::iWEAPON__POSITION__AK47   ;
+            info.iWeight		= TheSpecialists::iDEFAULT_WEIGHT           ;
             
             return true;
         } // End of GetItemInfo()
         
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_Sawedoff::AddToPlayer                                                                 //
+        // TS_AK47::AddToPlayer                                                                     //
         // Function:                                                                                //
         //      Adds the weapon to the player if they exist                                         //
         //      If the player exists, save a reference to the player                                //
@@ -217,7 +190,7 @@ namespace TS_Sawedoff
                 @m_pPlayer = pPlayer;
                 
                 // Debug printing
-                // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "Sawedoff m_iPrimaryAmmoType: " + self.m_iPrimaryAmmoType + "\n");
+                // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "AK47 m_iPrimaryAmmoType: " + self.m_iPrimaryAmmoType + "\n");
                 
                 NetworkMessage message
                 (
@@ -239,7 +212,7 @@ namespace TS_Sawedoff
         } // End of AddToPlayer()
 
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_Sawedoff::Deploy                                                                      //
+        // TS_AK47::Deploy                                                                          //
         // Function:                                                                                //
         //      Adds the weapon to the player if they exist                                         //
         //      If the player exists, save a reference to the player                                //
@@ -250,9 +223,6 @@ namespace TS_Sawedoff
         //////////////////////////////////////////////////////////////////////////////////////////////
         bool Deploy()
         {
-            // Allow the deploy animation to play
-            m_flAnimationCooldown = g_Engine.time + 1.0;
-            
             return self.DefaultDeploy
             (
                 self.GetV_Model(strMODEL_V),    // string v_model
@@ -263,7 +233,7 @@ namespace TS_Sawedoff
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_Sawedoff::Holster                                                                     //
+        // TS_AK47::Holster                                                                         //
         // Function:                                                                                //
         //      Hides the weapon from the player                                                    //
         // Parameters:                                                                              //
@@ -281,12 +251,12 @@ namespace TS_Sawedoff
             // Hide the player model by making the viewmodel path empty
             m_pPlayer.pev.viewmodel = "";
             
-            // Tell the looping function to stop calling any of our sawedoff functions
+            // Tell the game loop to stop calling any of our ak47 functions
             SetThink(null);
         } // End of Holster()
         
         //////////////////////////////////////////////////
-        // TS_Sawedoff::PrimaryAttack                   //
+        // TS_AK47::PrimaryAttack                       //
         // Function:                                    //
         //      Performs the weapon's primary attack    //
         // Parameters:                                  //
@@ -296,11 +266,8 @@ namespace TS_Sawedoff
         //////////////////////////////////////////////////
         void PrimaryAttack()
         {
-            // Determine if the player hasn't already started pressing the fire button
-            if (TheSpecialists::CommonFunctions::AttackButtonPressed(m_pPlayer.m_afButtonPressed))
-            {
-                Shoot();
-            }
+            // Fully automatic SMG so no need to check for any button presses
+            Shoot();
             
             // Apply decay, if the player is holding the fire button, the weapon won't idle, and thus the spread won't decay
             m_fInaccuracyFactor = TheSpecialists::CommonFunctions::SpreadDecay(m_fInaccuracyFactor, m_fInaccuracyDecay);
@@ -310,7 +277,7 @@ namespace TS_Sawedoff
         } // End of PrimaryAttack()
         
         //////////////////////////////////////////////////
-        // TS_Sawedoff::SecondaryAttack                 //
+        // TS_AK47::SecondaryAttack                     //
         // Function:                                    //
         //      Performs the weapon's secondary attack  //
         // Parameters:                                  //
@@ -347,7 +314,7 @@ namespace TS_Sawedoff
         } // End of SecondaryAttack()
 
         //////////////////////////////
-        // TS_Sawedoff::Shoot       //
+        // TS_AK47::Shoot           //
         // Function:                //
         //      Gun fire handling   //
         // Parameters:              //
@@ -357,7 +324,6 @@ namespace TS_Sawedoff
         //////////////////////////////
         void Shoot()
         {
-            int iAnimationIndex  = 0;
             int iRandomAnimation = 0;
             
             // Under the hood, m_rgAmmo is an array
@@ -365,7 +331,7 @@ namespace TS_Sawedoff
             int iPrimaryAmmo = m_pPlayer.m_rgAmmo(self.m_iPrimaryAmmoType);
             
             // Determine if the player is above water
-            if (TheSpecialists::CommonFunctions::IsAboveWater(m_pPlayer.pev.waterlevel))
+            if (m_pPlayer.pev.waterlevel != WATERLEVEL_HEAD)
             {
                 // Determine if the weapon has bullets left in the magazine
                 if (self.m_iClip > 0)
@@ -379,7 +345,6 @@ namespace TS_Sawedoff
                     {
                         iRandomAnimation = TheSpecialists::CommonFunctions::PickRandomElementFromListInt(arrAnimationList);
                     }
-                    
                     if (iRandomAnimation != -1)
                     {
                         self.SendWeaponAnim
@@ -398,7 +363,7 @@ namespace TS_Sawedoff
                     m_pPlayer.m_iWeaponFlash    = NORMAL_GUN_FLASH;
 
                     // Play the fire sound
-                    TheSpecialists::CommonFunctions::PlaySoundDynamicWithVariablePitch(m_pPlayer, strSOUND_FIRE);
+                    TheSpecialists::CommonFunctions::PlaySoundDynamicWithVariablePitchOverChannel(m_pPlayer, CHAN_WEAPON, strSOUND_FIRE);
                     
                     Vector vecSrc	 = m_pPlayer.GetGunPosition();
                     Vector vecAiming = m_pPlayer.GetAutoaimVector(AUTOAIM_5DEGREES);
@@ -408,28 +373,23 @@ namespace TS_Sawedoff
                     // https://github.com/ValveSoftware/halflife/blob/e5815c34e2772a247a6843b67eab7c3395bdba66/dlls/cbase.h#L255
                     m_pPlayer.FireBullets
                     (
-                        TheSpecialists::iWEAPON__SHOTGUN__PELLET_COUNT  , // ULONG cShots           - Number of bullets fired, anything more than 1 is useful for shotguns
-                        vecSrc                                          , // Vector vecSrc          - Vector where the shot is originating from, but it's a vector so I don't know why this information isn't already stored in a single vector
-                        vecAiming                                       , // Vector vecDirShooting  - Vector where the shot is going to go towards
-                        m_vecAccuracy                                   , // Vector vecSpread       - Vector detailing how large the cone of randomness the bullets will randomly spread out
-                        TheSpecialists::fMAXIMUM_FIRE_DISTANCE          , // float flDistance       - Maximum distance the bullet will scan for a hit
-                        TheSpecialists::iWEAPON__SHOTGUN__BULLET__TYPE  , // int iBulletType        - Bullet type, not sure what this means
-                        2                                               , // int iTracerFreq = 4    - How frequently there will be bullet tracers, not sure what the scale is
-                        m_iDamage                                         // int iDamage = 0        - How much damage the bullet will do
+                        1                                           , // ULONG cShots           - Number of bullets fired, anything more than 1 is useful for shotguns
+                        vecSrc                                      , // Vector vecSrc          - Vector where the shot is originating from, but it's a vector so I don't know why this information isn't already stored in a single vector
+                        vecAiming                                   , // Vector vecDirShooting  - Vector where the shot is going to go towards
+                        m_vecAccuracy                               , // Vector vecSpread       - Vector detailing how large the cone of randomness the bullets will randomly spread out
+                        TheSpecialists::fMAXIMUM_FIRE_DISTANCE      , // float flDistance       - Maximum distance the bullet will scan for a hit
+                        TheSpecialists::iWEAPON__RIFLE__BULLET__TYPE, // int iBulletType        - Bullet type, not sure what this means
+                        2                                           , // int iTracerFreq = 4    - How frequently there will be bullet tracers, not sure what the scale is
+                        iDAMAGE                                       // int iDamage = 0        - How much damage the bullet will do
                     );
                     
                     // Decrement the magazine by one
                     self.m_iClip--;
                     
-                    float fRecoilMultiplier = m_fRecoilMultiplier;
-                    // This is an aim-down-sights weapon, so this should make it more accurate
-                    if (m_bADS)
-                    {
-                        fRecoilMultiplier /= 2;
-                    }
+                    // No empty weapon animation so not checking for 0 clip
                     
-                    TheSpecialists::CommonFunctions::WeaponRecoil(m_pPlayer, fRecoilMultiplier);
-                    TheSpecialists::CommonFunctions::CreatePelletDecals(m_pPlayer, vecSrc, vecAiming, m_vecAccuracy, TheSpecialists::iWEAPON__SHOTGUN__PELLET_COUNT);
+                    TheSpecialists::CommonFunctions::WeaponRecoil(m_pPlayer, fRECOIL_MULTIPLIER);
+                    TheSpecialists::CommonFunctions::ApplyBulletDecal(m_pPlayer, vecSrc, vecAiming, m_vecAccuracy);
                     
                 } // End of if (self.m_iClip > 0)
                 else
@@ -452,7 +412,7 @@ namespace TS_Sawedoff
         } // End of Shoot()
 
         //////////////////////////
-        // TS_Sawedoff::Reload  //
+        // TS_AK47::Reload      //
         // Function:            //
         //      Reload handler  //
         // Parameters:          //
@@ -462,48 +422,39 @@ namespace TS_Sawedoff
         //////////////////////////
         void Reload()
         {
-            int iAnimationIndex = 0;
-            
             // Determine if the gun does not need to reload
-            if (    (self.m_iClip == TheSpecialists::iWEAPON__SAWEDOFF__CLIP)
+            if (    (self.m_iClip == TheSpecialists::iWEAPON__AK47__CLIP)
                  || (m_pPlayer.m_rgAmmo(self.m_iPrimaryAmmoType) <= 0)    )
             {
                 return;
             }
             
-            // Determine if the weapon is aiming down sight (ADS)
+            // Determine if the weapon is tilted sideways
             if (m_bADS)                
             {
-                // Determine if both chambers are empty
-                if (0 == self.m_iClip)  { iAnimationIndex = Animations::ADS_RELOAD1          ; }
-                else                    { iAnimationIndex = Animations::ADS_RELOAD_1_SHELL   ; } // There is at least 1 shell in a chamber of the double barreled shotgun
+                self.DefaultReload(TheSpecialists::iWEAPON__AK47__CLIP, Animations::ADS_RELOAD1, 1.5, 0);
             }
             else
             {
-                // Determine if both chambers are empty
-                if (0 == self.m_iClip)  { iAnimationIndex = Animations::RELOAD1              ; }
-                else                    { iAnimationIndex = Animations::RELOAD_1_SHELL       ; } // There is at least 1 shell in a chamber of the double barreled shotgun
+                self.DefaultReload(TheSpecialists::iWEAPON__AK47__CLIP, Animations::RELOAD1, 1.5, 0);
             }
             
-            self.DefaultReload(TheSpecialists::iWEAPON__SAWEDOFF__CLIP, iAnimationIndex, 1.5, 0);
-
             // Prevent the weapon idle animation from overriding the reload animation
-            m_flAnimationCooldown = g_Engine.time + 2.5;
+            m_flAnimationCooldown = g_Engine.time + 3.5;
 
             // Set 3rd person reloading animation -Sniper
             BaseClass.Reload();
-            
         } // End of Reload()
         
-        //////////////////////////////
-        // TS_Sawedoff::WeaponIdle  //
-        // Function:                //
-        //      Weapon idle handler //
-        // Parameters:              //
-        //      None                //
-        // Return value:            //
-        //      None                //
-        //////////////////////////////
+        //////////////////////////
+        // TS_AK47::WeaponIdle  //
+        // Function:            //
+        //      Reload handler  //
+        // Parameters:          //
+        //      None            //
+        // Return value:        //
+        //      None            //
+        //////////////////////////
         void WeaponIdle()
         {
             int iAnimationIndex = 0;
@@ -511,15 +462,9 @@ namespace TS_Sawedoff
             // Decrease the weapon spread while it is not being fired
             m_fInaccuracyFactor = TheSpecialists::CommonFunctions::SpreadDecay(m_fInaccuracyFactor, m_fInaccuracyDecay);
             
-            // Failed attempt at recoil that doesn't involve view punching
-            /*if (m_bRecoilActive)
-            {
-                m_bRecoilActive = TheSpecialists::CommonFunctions::WeaponRecoil(m_pPlayer, m_fInterpolator);
-            }*/
-            
             // Determine if the tilting animation has finished
             if (m_flAnimationCooldown < g_Engine.time)
-            {            
+            {
                 if (m_bADS)
                 {
                     iAnimationIndex = Animations::ADS_IDLE1;
@@ -534,16 +479,16 @@ namespace TS_Sawedoff
             
         } // End of WeaponIdle()
         
-    } // End of class weapon_ts_sawedoff
+    } // End of class weapon_ts_ak47
 
     void Register_Weapon()
     {
         g_CustomEntityFuncs.RegisterCustomEntity(strNAMESPACE + strCLASSNAME, strCLASSNAME);
         g_ItemRegistry.RegisterWeapon
         (
-            strCLASSNAME                                    , // string - weapon name
-            TheSpecialists::strSPRITE_METADATA_PATH         , // string - sprite metadata text file path
-            TheSpecialists::strWEAPON__SHOTGUN__AMMO_TYPE     // string - ammo type
+            strCLASSNAME                                , // string - weapon name
+            TheSpecialists::strSPRITE_METADATA_PATH     , // string - sprite metadata text file path
+            TheSpecialists::strWEAPON__RIFLE__AMMO_TYPE   // string - ammo type
         );
     }
-} // End of namespace TS_Sawedoff
+} // End of namespace TS_AK47

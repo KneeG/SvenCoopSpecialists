@@ -34,6 +34,8 @@
 #include "weapon_ts_usas12"
 #include "weapon_ts_sawedoff"
 
+#include "weapon_ts_ak47"
+
 void TS_LoadWeapons()
 {
     RegisterKungFu();
@@ -67,4 +69,5 @@ void TS_LoadWeapons()
     TS_USAS12       ::Register_Weapon();
     TS_Sawedoff     ::Register_Weapon();
 
+    TS_AK47         ::Register_Weapon();
 }

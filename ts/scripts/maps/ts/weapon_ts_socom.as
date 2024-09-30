@@ -149,6 +149,8 @@ namespace TS_Socom
             g_SoundSystem.PrecacheSound(strSOUND_FIRE_SILENCED  );
             g_SoundSystem.PrecacheSound(strSOUND_SLIDEBACK      );
             
+            g_SoundSystem.PrecacheSound(strSOUND_EMPTY          );
+            
             g_Game.PrecacheGeneric(TheSpecialists::strSPRITE_ROOT + strSPRITE_FILE);
             g_Game.PrecacheGeneric(TheSpecialists::strSPRITE_ROOT + strSPRITE_TEXT_FILE);
         } // End of Precache()

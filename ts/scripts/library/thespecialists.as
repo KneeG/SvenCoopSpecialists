@@ -88,6 +88,9 @@ namespace TheSpecialists
     // Shotgun asset paths
     const string strSHOTGUN__SOUND__FIRE        = "fire.wav"                                    ; // Name of the gun fire file
     const string strSHOTGUN__SOUND__PUMP        = "pump.wav"                                    ; // Name of the pump sound file
+    const string strSHOTGUN__SOUND__CLIPIN      = "clipin.wav"                                  ; // Name of the magazine insert file
+    const string strSHOTGUN__SOUND__CLIPOUT     = "clipout.wav"                                 ; // Name of the magazine eject file
+    const string strSHOTGUN__SOUND__SLIDEBACK   = "slideback.wav"                               ; // Name of the slide pull file
     
     // Double barreled shotgun (sawed off) asset paths
     const string strSHOTGUN__SOUND__FIRE2       = "fire2.wav"                                   ; // Name of the second barrel firing noise (sawed off)
@@ -97,6 +100,13 @@ namespace TheSpecialists
     const string strSHOTGUN__SOUND__SHELL_DROP  = "shelldrop.wav"                               ; // Name of the shell drop file
     const string strSHOTGUN__SOUND__SHELL_OUT   = "shellout.wav"                                ; // Name of the unchambered shell file
     const string strSHOTGUN__SOUND__TAPSPAN     = "tapspan.wav"                                 ; // Name of the chamber unlock file
+    
+    // Rifle asset paths
+    const string strRIFLE__SOUND__CLIPIN        = "clipin.wav"                                  ; // Name of the magazine insert file
+    const string strRIFLE__SOUND__CLIPOUT       = "clipout.wav"                                 ; // Name of the magazine eject file
+    const string strRIFLE__SOUND__FIRE          = "fire.wav"                                    ; // Name of the gun fire file
+    const string strRIFLE__SOUND__FIRE_SILENCED = "fire_silenced.wav"                           ; // Name of the gun fire silenced  file
+    const string strRIFLE__SOUND__SLIDEBACK     = "slideback.wav"                               ; // Name of the slide pull file
     
     const int iSPRITE__WEAPONS__WIDTH           = 128                                           ; // [pixels] Width of the weapon sprites
     const int iSPRITE__WEAPONS__HEIGHT          = 48                                            ; // [pixels] Height of the weapon sprites
@@ -424,6 +434,15 @@ namespace TheSpecialists
     const float     fWEAPON__SAWEDOFF__ATTACK_DELAY         = (60.0 / 400.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
     const float     fWEAPON__SAWEDOFF__RECOIL_MULTIPLIER    = 3.0                               ; // Severity of the recoil
     
+    const int       iWEAPON__AK47__CLIP                     = 30                                ; // Size of the magazine
+    const int       iWEAPON__AK47__AMMO1                    = iWEAPON__RIFLE__AMMO1__MAX        ; // Primary ammo capacity
+    const int       iWEAPON__AK47__AMMO2                    = -1                                ; // Secondary ammo capacity
+    const Vector    vecWEAPON__AK47__SPREAD                 = VECTOR_CONE_6DEGREES              ; // Accuracy of the weapon
+    const int       iWEAPON__AK47__FIRE_MODE                = FireMode::iAUTOMATIC              ; // Fire mode of the weapon
+    const int       iWEAPON__AK47__DAMAGE                   = 17                                ; // Weapon damage
+    const float     fWEAPON__AK47__ATTACK_DELAY             = (60.0 / 650.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
+    const float     fWEAPON__AK47__RECOIL_MULTIPLIER        = 1.2                               ; // Severity of the recoil
+    
     ///////////////////////////////
     // Ammunitions (See https://baso88.github.io/SC_AngelScript/docs/Bullet.htm)
     
@@ -750,6 +769,38 @@ namespace TheSpecialists
         } // End of PlaySoundDynamicWithVariablePitch()
         
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // TheSpecialists::CommonFunctions::PlaySoundDynamicWithVariablePitchOverChannel                            //
+        // Function:                                                                                                //
+        //      Interface with PlaySoundDynamic, includes variable pitch for audial flavor                          //
+        // Parameters:                                                                                              //
+        //      CBasePlayer@    pPlayer         = [BOTH] The player whose location the sound will be played from    //
+        //      SOUND_CHANNEL   scChannel       = [IN] Sound channel the sound will be played through               //
+        //      string          strSoundPath    = [IN] Path of the sound to be played                               //
+        // Return value:                                                                                            //
+        //      None                                                                                                //
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        void PlaySoundDynamicWithVariablePitchOverChannel(CBasePlayer@ pPlayer, SOUND_CHANNEL scChannel, string strSoundPath)
+        {
+            // Getting library defaults and so I can reference them with a shorter variable name
+            int iDefaultPitch          = TheSpecialists::iDEFAULT_PITCH;
+            int iDefaultPitchVariation = TheSpecialists::iDEFAULT_PITCH_VARIATION;
+            
+            // Generate a random pitch
+            // Move the default pitch back half the pitch variation so it's evenly spread out +/- iDefaultPitch
+            // For example, if default pitch is 100, and pitch variation is 10
+            //      Pitch before variation applied      = 95 = 100 - (10 / 2)
+            //      Pitch after variation is applied    = 95 = 100 - (10 / 2) + RandomNumberBetween(0, 10)
+            //      Range of values that can be generated [105, 95]
+            //      So the average is still around 100
+            int iPitch = (iDefaultPitch - (iDefaultPitchVariation / 2)) + Math.RandomLong(0, iDefaultPitchVariation);
+            
+            // Debug printing
+            // g_EngineFuncs.ClientPrintf(pPlayer, print_console, "PlaySoundDynamicWithVariablePitch: strSoundPath=" + strSoundPath + "\n");
+            
+            PlaySoundDynamicOverChannel(pPlayer, scChannel, strSoundPath, iPitch);
+        } // End of PlaySoundDynamicWithVariablePitchOverChannel()
+        
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // TheSpecialists::CommonFunctions::PlaySoundDynamic                                                        //
         // Function:                                                                                                //
         //      Interface with g_SoundSystem.EmitSoundDyn                                                           //
@@ -774,6 +825,33 @@ namespace TheSpecialists
                                                           // int target_ent_unreliable = 0
             );
         } // End of PlaySoundDynamic()
+        
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // TheSpecialists::CommonFunctions::PlaySoundDynamicOverChannel                                             //
+        // Function:                                                                                                //
+        //      Interface with g_SoundSystem.EmitSoundDyn                                                           //
+        // Parameters:                                                                                              //
+        //      CBasePlayer@    pPlayer         = [BOTH] The player whose location the sound will be played from    //
+        //      SOUND_CHANNEL   scChannel       = [IN  ] Channel the sound will be played through                   //
+        //      string          strSoundPath    = [IN  ] Path of the sound to be played                             //
+        //      int             iPitch          = [IN  ] Pitch of the sound                                         //
+        // Return value:                                                                                            //
+        //      None                                                                                                //
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        void PlaySoundDynamicOverChannel(CBasePlayer@ pPlayer, SOUND_CHANNEL scChannel, string strSoundPath, int iPitch)
+        {
+            g_SoundSystem.EmitSoundDyn
+            (
+                pPlayer.edict()                         , // edict_t@ entity
+                scChannel                               , // SOUND_CHANNEL channel
+                strSoundPath                            , // const string& in szSample
+                TheSpecialists::fDEFAULT_VOLUME         , // float flVolume
+                TheSpecialists::fDEFAULT_ATTENUATION    , // float flAttenuation
+                0                                       , // int iFlags = 0
+                iPitch                                    // int iPitch = PITCH_NORM
+                                                          // int target_ent_unreliable = 0
+            );
+        } // End of PlaySoundDynamicOverChannel()
         
         //////////////////////////////////////////////////////////////////////
         // TheSpecialists::CommonFunctions::PickRandomElementFromListInt    //
