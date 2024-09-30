@@ -455,6 +455,16 @@ namespace TheSpecialists
     const float     fWEAPON__M4A1__ATTACK_DELAY             = (60.0 / 750.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
     const float     fWEAPON__M4A1__RECOIL_MULTIPLIER        = 0.8                               ; // Severity of the recoil
     
+    const int       iWEAPON__M16__CLIP                      = 18                                ; // Size of the magazine
+    const int       iWEAPON__M16__AMMO1                     = iWEAPON__RIFLE__AMMO1__MAX        ; // Primary ammo capacity
+    const int       iWEAPON__M16__AMMO2                     = -1                                ; // Secondary ammo capacity
+    const Vector    vecWEAPON__M16__SPREAD                  = VECTOR_CONE_2DEGREES              ; // Accuracy of the weapon
+    const int       iWEAPON__M16__FIRE_MODE                 = FireMode::iAUTOMATIC              ; // Fire mode of the weapon
+    const int       iWEAPON__M16__DAMAGE                    = 21                                ; // Weapon damage
+    const float     fWEAPON__M16__ATTACK_DELAY              = (60.0 / 240.0)                    ; // [seconds] Time between trigger pulls
+    const float     fWEAPON__M16__BURST_DELAY               = (60.0 / 1000.0)                   ; // [seconds] Time between round fires
+    const float     fWEAPON__M16__RECOIL_MULTIPLIER         = 1.4                               ; // Severity of the recoil
+    
     ///////////////////////////////
     // Ammunitions (See https://baso88.github.io/SC_AngelScript/docs/Bullet.htm)
     

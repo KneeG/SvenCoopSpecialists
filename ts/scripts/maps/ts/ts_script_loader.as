@@ -36,6 +36,7 @@
 
 #include "weapon_ts_ak47"
 #include "weapon_ts_m4a1"
+#include "weapon_ts_m16"
 
 void TS_LoadWeapons()
 {
@@ -72,4 +73,5 @@ void TS_LoadWeapons()
 
     TS_AK47         ::Register_Weapon();
     TS_M4A1         ::Register_Weapon();
+    TS_M16          ::Register_Weapon();
 }

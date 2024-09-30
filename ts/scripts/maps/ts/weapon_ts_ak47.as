@@ -388,8 +388,14 @@ namespace TS_AK47
                     
                     // No empty weapon animation so not checking for 0 clip
                     
-                    TheSpecialists::CommonFunctions::WeaponRecoil(m_pPlayer, fRECOIL_MULTIPLIER);
-                    TheSpecialists::CommonFunctions::ApplyBulletDecal(m_pPlayer, vecSrc, vecAiming, m_vecAccuracy);
+                    float fADS_Multiplier = 1.0;
+                    if (m_bADS)
+                    {
+                        fADS_Multiplier = 0.5;
+                    }
+                    
+                    TheSpecialists::CommonFunctions::WeaponRecoil    (m_pPlayer, fRECOIL_MULTIPLIER * fADS_Multiplier);
+                    TheSpecialists::CommonFunctions::ApplyBulletDecal(m_pPlayer, vecSrc, vecAiming, m_vecAccuracy * fADS_Multiplier);
                     
                 } // End of if (self.m_iClip > 0)
                 else

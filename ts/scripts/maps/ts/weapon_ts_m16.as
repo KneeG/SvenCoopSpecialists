@@ -1,16 +1,16 @@
 //////////////////////////////////////////////////////////
-// File         : weapon_ts_m4a1.as                     //
+// File         : weapon_ts_m16.as                     //
 // Author       : Knee                                  //
-// Description  : M4A1 from The Specialists Mod 3.0    //
+// Description  : M16 from The Specialists Mod 3.0    //
 //////////////////////////////////////////////////////////
 #include "../../library/thespecialists"
 
 /////////////////////////////////////
-// TS_M4A1 namespace
-namespace TS_M4A1
+// TS_M16 namespace
+namespace TS_M16
 {
     /////////////////////////////////////
-    // M4A1 animation enumeration
+    // M16 animation enumeration
     namespace Animations
     {
         const int IDLE1         = 0 ;
@@ -36,9 +36,9 @@ namespace TS_M4A1
     const int               RETURN_ERROR_NULL_POINTER   = -1;
     
     // Meta data
-    const string            strNAME                 = "m4a1"             ;
-    const string            strNAMESPACE            = "TS_M4A1::"        ;
-    const string            strCLASSNAME            = "weapon_ts_m4a1"   ;
+    const string            strNAME                 = "m16"             ;
+    const string            strNAMESPACE            = "TS_M16::"        ;
+    const string            strCLASSNAME            = "weapon_ts_m16"   ;
 
     // Asset paths
     const string            strMODEL_P              = TheSpecialists::strMODEL_PATH + "rifles/" + strNAME + "/p_" + strNAME + ".mdl";
@@ -51,8 +51,7 @@ namespace TS_M4A1
     const string            strSOUND_CLIPIN         = TheSpecialists::strSOUND_PATH + "rifles/" + strNAME + "/" + TheSpecialists::strRIFLE__SOUND__CLIPIN       ;
     const string            strSOUND_CLIPOUT        = TheSpecialists::strSOUND_PATH + "rifles/" + strNAME + "/" + TheSpecialists::strRIFLE__SOUND__CLIPOUT      ;
     const string            strSOUND_FIRE           = TheSpecialists::strSOUND_PATH + "rifles/" + strNAME + "/" + TheSpecialists::strRIFLE__SOUND__FIRE         ;
-    const string            strSOUND_FIRE_SILENCED  = TheSpecialists::strSOUND_PATH + "rifles/" + strNAME + "/" + TheSpecialists::strRIFLE__SOUND__FIRE_SILENCED;
-    const string            strSOUND_BOLTPULL       = TheSpecialists::strSOUND_PATH + "rifles/" + strNAME + "/" + TheSpecialists::strRIFLE__SOUND__SLIDEBACK    ;
+    const string            strSOUND_BOLTPULL       = TheSpecialists::strSOUND_PATH + "rifles/" + strNAME + "/" + TheSpecialists::strRIFLE__SOUND__BOLTPULL     ;
     const string            strSOUND_EMPTY          = TheSpecialists::strSOUND_PATH + TheSpecialists::strSMG__SOUND__EMPTY                                      ;
     
     // Create a list of animations to be played at random
@@ -72,21 +71,25 @@ namespace TS_M4A1
     
     const float             fHOLSTER_TIME           = TheSpecialists::fDEFAULT_HOSTER_TIME              ;
     const float             fNEXT_THINK             = TheSpecialists::fDEFAULT_NEXT_THINK               ;
-    const float             fPRIMARY_ATTACK_DELAY   = TheSpecialists::fWEAPON__M4A1__ATTACK_DELAY       ;
+    const float             fPRIMARY_ATTACK_DELAY   = TheSpecialists::fWEAPON__M16__ATTACK_DELAY        ;
     const float             fSWING_DISTANCE         = TheSpecialists::fSWING_DISTANCE                   ;
     const IGNORE_MONSTERS   eIGNORE_RULE            = TheSpecialists::eIGNORE_RULE                      ;
-    const int               iDAMAGE                 = TheSpecialists::iWEAPON__M4A1__DAMAGE             ;
-    const Vector            vecSPREAD               = TheSpecialists::vecWEAPON__M4A1__SPREAD           ;
-    const float             fRECOIL_MULTIPLIER      = TheSpecialists::fWEAPON__M4A1__RECOIL_MULTIPLIER  ;
+    const int               iDAMAGE                 = TheSpecialists::iWEAPON__M16__DAMAGE              ;
+    const Vector            vecSPREAD               = TheSpecialists::vecWEAPON__M16__SPREAD            ;
+    const float             fRECOIL_MULTIPLIER      = TheSpecialists::fWEAPON__M16__RECOIL_MULTIPLIER   ;
+    const float             fBURST_DELAY            = TheSpecialists::fWEAPON__M16__BURST_DELAY         ;
     
     /////////////////////////////////////
-    // M4A1 class
-    class weapon_ts_m4a1 : ScriptBasePlayerWeaponEntity
+    // M16 class
+    class weapon_ts_m16 : ScriptBasePlayerWeaponEntity
     {
         private CBasePlayer@ m_pPlayer          ; // Player reference pointer
         private int     m_iDamage               ; // Weapon damage
         private float   m_flAnimationCooldown   ; // Animation cooldown timer, helps prevent the weapon from going to idle animations while the weapon is being tilted
         private bool    m_bADS                  ; // Flag for aiming down site
+        private bool    m_bBurstFiring          ; // Flag for burst firing
+        
+        private int     m_iBurstFireBullets     ; // Keeps track of how many bullets are fired while burst firing
         
         private float   m_fInaccuracyFactor     ; // Negatively affects weapon spread
         private float   m_fInaccuracyDelta      ; // How much inaccuracy
@@ -94,10 +97,10 @@ namespace TS_M4A1
         
         Vector          m_vecAccuracy           ; // Current accuracy of the weapon
         
-        TraceResult     m_trHit                 ; // Keeps track of what is hit when the m4a1 is swung
+        TraceResult     m_trHit                 ; // Keeps track of what is hit when the m16 is swung
         
         //////////////////////////////////////////
-        // TS_M4A1::Spawn                       //
+        // TS_M16::Spawn                        //
         // Function:                            //
         //      Spawn function for the weapon   //
         // Parameters:                          //
@@ -111,6 +114,15 @@ namespace TS_M4A1
             
             m_iDamage = iDAMAGE;
             
+            // Initialize the aim down sight (ADS) flag
+            m_bADS = false;
+            
+            // Initialize the burst firing flag
+            m_bBurstFiring = false;
+            
+            // Initialize the burst fire bullet count
+            m_iBurstFireBullets = 0;
+            
             m_fInaccuracyFactor = 1.0                                               ; // Scale factor added to weapon spread cone, negatively affects weapon spread
             m_fInaccuracyDelta  = TheSpecialists::fWEAPON__PISTOL__INACCURACY_DELTA ; // How much inaccuracy increases per shot
             m_fInaccuracyDecay  = TheSpecialists::fWEAPON__PISTOL__INACCURACY_DECAY ; // How much inaccuracy decreases over time
@@ -122,7 +134,7 @@ namespace TS_M4A1
             g_EntityFuncs.SetModel(self, self.GetW_Model(strMODEL_W));
             
             // Set the clip size
-            self.m_iClip = TheSpecialists::iWEAPON__M4A1__CLIP;
+            self.m_iClip = TheSpecialists::iWEAPON__M16__CLIP;
             
             // Set the weapon damage
             self.m_flCustomDmg = m_iDamage;
@@ -132,7 +144,7 @@ namespace TS_M4A1
         } // End of Spawn()
 
         //////////////////////////////////////////////////
-        // TS_M4A1::Precache                            //
+        // TS_M16::Precache                             //
         // Function:                                    //
         //      Prechacing function for weapon assets   //
         // Parameters:                                  //
@@ -162,7 +174,7 @@ namespace TS_M4A1
         } // End of Precache()
 
         //////////////////////////////////////////////////////////////////////////////
-        // TS_M4A1::GetItemInfo                                                     //
+        // TS_M16::GetItemInfo                                                      //
         // Function:                                                                //
         //      Sets the weapon metadata                                            //
         // Parameters:                                                              //
@@ -172,18 +184,18 @@ namespace TS_M4A1
         //////////////////////////////////////////////////////////////////////////////
         bool GetItemInfo(ItemInfo& out info)
         {
-            info.iMaxClip		= TheSpecialists::iWEAPON__M4A1__CLIP       ;
-            info.iMaxAmmo1		= TheSpecialists::iWEAPON__M4A1__AMMO1      ;
-            info.iMaxAmmo2		= TheSpecialists::iWEAPON__M4A1__AMMO2      ;
-            info.iSlot			= TheSpecialists::iWEAPON__SLOT__RIFLE      ;
-            info.iPosition		= TheSpecialists::iWEAPON__POSITION__M4A1   ;
-            info.iWeight		= TheSpecialists::iDEFAULT_WEIGHT           ;
+            info.iMaxClip		= TheSpecialists::iWEAPON__M16__CLIP    ;
+            info.iMaxAmmo1		= TheSpecialists::iWEAPON__M16__AMMO1   ;
+            info.iMaxAmmo2		= TheSpecialists::iWEAPON__M16__AMMO2   ;
+            info.iSlot			= TheSpecialists::iWEAPON__SLOT__RIFLE  ;
+            info.iPosition		= TheSpecialists::iWEAPON__POSITION__M16;
+            info.iWeight		= TheSpecialists::iDEFAULT_WEIGHT       ;
             
             return true;
         } // End of GetItemInfo()
         
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_M4A1::AddToPlayer                                                                     //
+        // TS_M16::AddToPlayer                                                                      //
         // Function:                                                                                //
         //      Adds the weapon to the player if they exist                                         //
         //      If the player exists, save a reference to the player                                //
@@ -203,7 +215,7 @@ namespace TS_M4A1
                 @m_pPlayer = pPlayer;
                 
                 // Debug printing
-                // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "M4A1 m_iPrimaryAmmoType: " + self.m_iPrimaryAmmoType + "\n");
+                // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "M16 m_iPrimaryAmmoType: " + self.m_iPrimaryAmmoType + "\n");
                 
                 NetworkMessage message
                 (
@@ -225,7 +237,7 @@ namespace TS_M4A1
         } // End of AddToPlayer()
 
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_M4A1::Deploy                                                                          //
+        // TS_M16::Deploy                                                                           //
         // Function:                                                                                //
         //      Adds the weapon to the player if they exist                                         //
         //      If the player exists, save a reference to the player                                //
@@ -246,7 +258,7 @@ namespace TS_M4A1
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_M4A1::Holster                                                                         //
+        // TS_M16::Holster                                                                          //
         // Function:                                                                                //
         //      Hides the weapon from the player                                                    //
         // Parameters:                                                                              //
@@ -264,12 +276,70 @@ namespace TS_M4A1
             // Hide the player model by making the viewmodel path empty
             m_pPlayer.pev.viewmodel = "";
             
-            // Tell the game loop to stop calling any of our m4a1 functions
+            // Tell the game loop to stop calling any of our m16 functions
             SetThink(null);
         } // End of Holster()
         
+        //////////////////////////////////////////////////////////////
+        // TS_M16::BurstFire                                        //
+        // Function:                                                //
+        //      Handling function for the weapon's primary attack   //
+        // Parameters:                                              //
+        //      None                                                //
+        // Return value:                                            //
+        //      None                                                //
+        //////////////////////////////////////////////////////////////
+        void BurstFire()
+        {
+            // Determine if the weapon has been allowed to fire
+            if (m_bBurstFiring)
+            {
+                // Determine if it's time to fire a shot
+                if (self.m_flNextPrimaryAttack < g_Engine.time + fBURST_DELAY)
+                {
+                    // Reset the primary attack timer
+                    self.m_flNextPrimaryAttack = g_Engine.time + fBURST_DELAY;
+                    
+                    // Determine if the number of bullets fired so far are less than 3
+                    if (m_iBurstFireBullets < 3)
+                    {
+                        // Fire the weapon
+                        Shoot();
+                    
+                        // Increase the number of bullets fired
+                        m_iBurstFireBullets++;
+                        
+                        // Apply decay, if the player is holding the fire button, the weapon won't idle, and thus the spread won't decay
+                        m_fInaccuracyFactor = TheSpecialists::CommonFunctions::SpreadDecay(m_fInaccuracyFactor, m_fInaccuracyDecay);
+                        
+                        
+                    } // End of if (m_iBurstFireBullets < 3)
+                    else
+                    {
+                        // Enough bullets have been fired in burst mode to disable it
+                        
+                        // Set the burst flag to false
+                        m_bBurstFiring = false;
+                        
+                        // Reset the round counter
+                        m_iBurstFireBullets = 0;
+                        
+                        // Reset the timer to the primary attack delay (not burst fire delay)
+                        self.m_flNextPrimaryAttack = g_Engine.time + TheSpecialists::fWEAPON__M16__ATTACK_DELAY;
+                    } // End of else (of if (m_iBurstFireBullets < 3))
+                    
+                } // End of if (self.m_flNextPrimaryAttack < g_Engine.time + fBURST_DELAY)
+                    
+            } // End of if (m_bBurstFiring)
+            else
+            {
+                m_iBurstFireBullets = 0;
+            } // End of else (of if (m_bBurstFiring))
+            
+        } // End of BurstFire()
+        
         //////////////////////////////////////////////////
-        // TS_M4A1::PrimaryAttack                       //
+        // TS_M16::PrimaryAttack                        //
         // Function:                                    //
         //      Performs the weapon's primary attack    //
         // Parameters:                                  //
@@ -279,18 +349,19 @@ namespace TS_M4A1
         //////////////////////////////////////////////////
         void PrimaryAttack()
         {
-            // Fully automatic SMG so no need to check for any button presses
-            Shoot();
+            // Set the burst fire flag to true to begin firing the weapon
+            m_bBurstFiring = true;
             
-            // Apply decay, if the player is holding the fire button, the weapon won't idle, and thus the spread won't decay
-            m_fInaccuracyFactor = TheSpecialists::CommonFunctions::SpreadDecay(m_fInaccuracyFactor, m_fInaccuracyDecay);
+            // Perform the burst fire function (if possible)
+            BurstFire();
             
-            self.m_flNextPrimaryAttack  = g_Engine.time + fPRIMARY_ATTACK_DELAY;
-            m_flAnimationCooldown       = g_Engine.time + 1.0;
+            // Delay the idle animation
+            m_flAnimationCooldown = g_Engine.time + 1.0;
+            
         } // End of PrimaryAttack()
         
         //////////////////////////////////////////////////
-        // TS_M4A1::SecondaryAttack                     //
+        // TS_M16::SecondaryAttack                      //
         // Function:                                    //
         //      Performs the weapon's secondary attack  //
         // Parameters:                                  //
@@ -302,32 +373,41 @@ namespace TS_M4A1
         {
             int iAnimationIndex = 0;
             
-            // Toggle the flag
-            m_bADS = !m_bADS;
-            
-            if (m_bADS)
+            // Determine if the ewapon is NOT currently firing any rounds
+            if (!m_bBurstFiring)
             {
-                iAnimationIndex = Animations::ADS_IN;
-            }
+                // Toggle the flag
+                m_bADS = !m_bADS;
+                
+                if (m_bADS)
+                {
+                    iAnimationIndex = Animations::ADS_IN;
+                }
+                else
+                {
+                    iAnimationIndex = Animations::ADS_OUT;
+                }
+                
+                // Show the tilt animation
+                self.SendWeaponAnim(iAnimationIndex);
+                
+                // Delay the next fire
+                self.m_flNextPrimaryAttack  = g_Engine.time + 0.8;
+                self.m_flNextSecondaryAttack= g_Engine.time + 0.8;
+                
+                // Don't allow the weapon to go through any animation routines until we've finished going in our out of aim down sight (ADS)
+                m_flAnimationCooldown = g_Engine.time + 1.0;
+                
+            } // End of if (!m_bBurstFiring)
             else
             {
-                iAnimationIndex = Animations::ADS_OUT;
-            }
+                BurstFire();
+            } // End of else (of if (!m_bBurstFiring))
             
-            // Show the tilt animation
-            self.SendWeaponAnim(iAnimationIndex);
-            
-            // Delay the next fire
-            self.m_flNextPrimaryAttack  = g_Engine.time + 0.8;
-            self.m_flNextSecondaryAttack= g_Engine.time + 0.8;
-            self.m_flTimeWeaponIdle     = g_Engine.time + 2.0; // For some reason this doesn't work
-            
-            // Don't allow the weapon to go through any animation routines until we've finished tilting
-            m_flAnimationCooldown = g_Engine.time + 1.0;
         } // End of SecondaryAttack()
 
         //////////////////////////////
-        // TS_M4A1::Shoot           //
+        // TS_M16::Shoot            //
         // Function:                //
         //      Gun fire handling   //
         // Parameters:              //
@@ -431,7 +511,7 @@ namespace TS_M4A1
         } // End of Shoot()
 
         //////////////////////////
-        // TS_M4A1::Reload      //
+        // TS_M16::Reload       //
         // Function:            //
         //      Reload handler  //
         // Parameters:          //
@@ -441,32 +521,41 @@ namespace TS_M4A1
         //////////////////////////
         void Reload()
         {
-            // Determine if the gun does not need to reload
-            if (    (self.m_iClip == TheSpecialists::iWEAPON__M4A1__CLIP)
-                 || (m_pPlayer.m_rgAmmo(self.m_iPrimaryAmmoType) <= 0)    )
+            // Determine if the weapon is NOT currently firing rounds
+            if (!m_bBurstFiring)
             {
-                return;
-            }
-            
-            // Determine if the weapon is tilted sideways
-            if (m_bADS)                
-            {
-                self.DefaultReload(TheSpecialists::iWEAPON__M4A1__CLIP, Animations::ADS_RELOAD1, 1.5, 0);
-            }
+                // Determine if the gun does not need to reload
+                if (    (self.m_iClip == TheSpecialists::iWEAPON__M16__CLIP)
+                     || (m_pPlayer.m_rgAmmo(self.m_iPrimaryAmmoType) <= 0)    )
+                {
+                    return;
+                }
+                
+                // Determine if the weapon is tilted sideways
+                if (m_bADS)                
+                {
+                    self.DefaultReload(TheSpecialists::iWEAPON__M16__CLIP, Animations::ADS_RELOAD1, 1.5, 0);
+                }
+                else
+                {
+                    self.DefaultReload(TheSpecialists::iWEAPON__M16__CLIP, Animations::RELOAD1, 1.5, 0);
+                }
+                
+                // Prevent the weapon idle animation from overriding the reload animation
+                m_flAnimationCooldown = g_Engine.time + 3.5;
+
+                // Set 3rd person reloading animation -Sniper
+                BaseClass.Reload();
+            } // End of if (!m_bBurstFiring)
             else
             {
-                self.DefaultReload(TheSpecialists::iWEAPON__M4A1__CLIP, Animations::RELOAD1, 1.5, 0);
-            }
+                BurstFire();
+            } // End of else (of if (!m_bBurstFiring))
             
-            // Prevent the weapon idle animation from overriding the reload animation
-            m_flAnimationCooldown = g_Engine.time + 3.5;
-
-            // Set 3rd person reloading animation -Sniper
-            BaseClass.Reload();
         } // End of Reload()
         
         //////////////////////////
-        // TS_M4A1::WeaponIdle  //
+        // TS_M16::WeaponIdle   //
         // Function:            //
         //      Reload handler  //
         // Parameters:          //
@@ -478,27 +567,36 @@ namespace TS_M4A1
         {
             int iAnimationIndex = 0;
             
-            // Decrease the weapon spread while it is not being fired
-            m_fInaccuracyFactor = TheSpecialists::CommonFunctions::SpreadDecay(m_fInaccuracyFactor, m_fInaccuracyDecay);
-            
-            // Determine if the tilting animation has finished
-            if (m_flAnimationCooldown < g_Engine.time)
+            // Determine if the weapon is currently NOT firing any rounds
+            if (!m_bBurstFiring)
             {
-                if (m_bADS)
-                {
-                    iAnimationIndex = Animations::ADS_IDLE1;
-                }
-                else
-                {
-                    iAnimationIndex = Animations::IDLE1;
-                }
+                // Decrease the weapon spread while it is not being fired
+                m_fInaccuracyFactor = TheSpecialists::CommonFunctions::SpreadDecay(m_fInaccuracyFactor, m_fInaccuracyDecay);
                 
-                self.SendWeaponAnim(iAnimationIndex);
-            } // End of if (m_flAnimationCooldown < g_Engine.time)
+                // Determine if the tilting animation has finished
+                if (m_flAnimationCooldown < g_Engine.time)
+                {
+                    if (m_bADS)
+                    {
+                        iAnimationIndex = Animations::ADS_IDLE1;
+                    }
+                    else
+                    {
+                        iAnimationIndex = Animations::IDLE1;
+                    }
+                    
+                    self.SendWeaponAnim(iAnimationIndex);
+                } // End of if (m_flAnimationCooldown < g_Engine.time)
+                    
+            } // End of if (!m_bBurstFiring)
+            else
+            {
+                BurstFire();
+            } // End of else (of if (!m_bBurstFiring))
             
         } // End of WeaponIdle()
         
-    } // End of class weapon_ts_m4a1
+    } // End of class weapon_ts_m16
 
     void Register_Weapon()
     {
@@ -510,4 +608,4 @@ namespace TS_M4A1
             TheSpecialists::strWEAPON__RIFLE__AMMO_TYPE   // string - ammo type
         );
     }
-} // End of namespace TS_M4A1
+} // End of namespace TS_M16
