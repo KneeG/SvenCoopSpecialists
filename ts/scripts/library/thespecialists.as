@@ -105,6 +105,7 @@ namespace TheSpecialists
     const string strRIFLE__SOUND__CLIPIN        = "clipin.wav"                                  ; // Name of the magazine insert file
     const string strRIFLE__SOUND__CLIPOUT       = "clipout.wav"                                 ; // Name of the magazine eject file
     const string strRIFLE__SOUND__BOLTPULL      = "boltpull.wav"                                ; // Name of the bolt pull sound
+    const string strRIFLE__SOUND__BOLTSLAP      = "boltslap.wav"                                ; // Name of the bolt slap sound
     const string strRIFLE__SOUND__FIRE          = "fire.wav"                                    ; // Name of the gun fire file
     const string strRIFLE__SOUND__FIRE_SILENCED = "fire_silenced.wav"                           ; // Name of the gun fire silenced  file
     const string strRIFLE__SOUND__SLIDEBACK     = "slideback.wav"                               ; // Name of the slide pull file
@@ -186,6 +187,15 @@ namespace TheSpecialists
         const int iAUTOMATIC        = 2;
     } // End of namespace FireMode
     
+    ///////////////////////////////
+    // Zoom types
+    namespace ZoomType
+    {
+        const int iZOOM_NONE        = 0;
+        const int iZOOM_2X          = 1;
+        const int iZOOM_8X          = 2;
+    } // End of namespace ZoomType
+    
     const int           iDEFAULT_FIRE_MODE          = FireMode::iSEMI_AUTOMATIC ; // Default fire mode of a weapon
     const int           iDEFAULT_PITCH_VARIATION    = 15                        ; // Default pitch variation
     const float         iDEFAULT_PITCH              = 100                       ; // Default pitch
@@ -202,6 +212,7 @@ namespace TheSpecialists
     const float         fDEFAULT_FIRE_ON_EMPTY_DELAY= 0.25                      ; // [seconds] Time in seconds between trigger pulls while the gun is empty
     const float         fMAXIMUM_FIRE_DISTANCE      = 8192.0                    ; // Maximum distance a bullet will do damage to targets
     const float         fDEFAULT_SHELL_LOAD_TIME    = 0.5                       ; // [seconds] Time it takes to load a shell into a shotgun
+    const float         fDEFAULT_SCOPE_DELAY        = 0.2                       ; // [seconds] Cooldown time before zooming or unzooming (this will be used as a secondary attack delay, usually)
     
     // Weapon traceline rules
     // IGNORE_MONSTERS enum     Purpose
@@ -464,6 +475,17 @@ namespace TheSpecialists
     const float     fWEAPON__M16__ATTACK_DELAY              = (60.0 / 240.0)                    ; // [seconds] Time between trigger pulls
     const float     fWEAPON__M16__BURST_DELAY               = (60.0 / 1000.0)                   ; // [seconds] Time between round fires
     const float     fWEAPON__M16__RECOIL_MULTIPLIER         = 1.4                               ; // Severity of the recoil
+    
+    const int       iWEAPON__AUG__CLIP                      = 30                                ; // Size of the magazine
+    const int       iWEAPON__AUG__AMMO1                     = iWEAPON__RIFLE__AMMO1__MAX        ; // Primary ammo capacity
+    const int       iWEAPON__AUG__AMMO2                     = -1                                ; // Secondary ammo capacity
+    const Vector    vecWEAPON__AUG__SPREAD                  = VECTOR_CONE_3DEGREES              ; // Accuracy of the weapon
+    const int       iWEAPON__AUG__FIRE_MODE                 = FireMode::iAUTOMATIC              ; // Fire mode of the weapon
+    const int       iWEAPON__AUG__DAMAGE                    = 15                                ; // Weapon damage
+    const float     fWEAPON__AUG__ATTACK_DELAY              = (60.0 / 600.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
+    const float     fWEAPON__AUG__ATTACK_DELAY__ZOOM        = (60.0 / 500.0)                    ; // [seconds] RPM of the weapon while zooming
+    const float     fWEAPON__AUG__RECOIL_MULTIPLIER         = 0.9                               ; // Severity of the recoil
+    const float     iWEAPON__AUG__ZOOM_MULTIPLIER           = 2                                 ; // [percentage] How close the player zooms in when scoping
     
     ///////////////////////////////
     // Ammunitions (See https://baso88.github.io/SC_AngelScript/docs/Bullet.htm)
