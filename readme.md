@@ -66,7 +66,7 @@ Hopefully their functionality is also implemented as well.
 | 29 | weapon_ts_mossberg               | Functionally complete | Add laser, flashlight             |
 | 30 | weapon_ts_usas12                 | Functionally complete | Add laser, flashlight             |
 | 31 | weapon_ts_sawedoff               | Functionally complete | Need melee attack                 |
-| 32 | weapon_ts_ak47                   | Not started           | To do                             |
+| 32 | weapon_ts_ak47                   | Functionally complete | Add laser, flashlight             |
 | 33 | weapon_ts_m4a1                   | Not started           | To do                             |
 | 34 | weapon_ts_m16                    | Not started           | To do                             |
 | 35 | weapon_ts_aug                    | Not started           | To do                             |
