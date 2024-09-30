@@ -57,21 +57,22 @@ Hopefully their functionality is also implemented as well.
 | 20 | weapon_ts_ump45                  | Functionally complete | Add suppressor, laser, flashlight |
 | 21 | weapon_ts_mp7                    | Functionally complete | Add suppressor, laser, flashlight |
 | 22 | weapon_ts_tmp                    | Functionally complete | Figure out ammo types             |
-| 23 | weapon_ts_mac10                  | Not started           | Can't find files, might not do    |
-| 24 | weapon_ts_skorpion               | Complete              | Done                              |
-| 25 | weapon_ts_skorpion_akimbo        | Not started           | To do                             |
-| 26 | weapon_ts_benelli                | Functionally complete | Add laser, flashlight             |
-| 27 | weapon_ts_spas                   | Functionally complete | Add laser, flashlight             |
-| 28 | weapon_ts_mossberg               | Functionally complete | Add laser, flashlight             |
-| 29 | weapon_ts_usas12                 | Functionally complete | Add laser, flashlight             |
-| 30 | weapon_ts_sawedoff               | Functionally complete | Need melee attack                 |
-| 31 | weapon_ts_ak47                   | Not started           | To do                             |
-| 32 | weapon_ts_m4a1                   | Not started           | To do                             |
-| 33 | weapon_ts_m16                    | Not started           | To do                             |
-| 34 | weapon_ts_aug                    | Not started           | To do                             |
-| 35 | weapon_ts_barrett                | Not started           | To do                             |
-| 36 | weapon_ts_m60                    | Not started           | To do                             |
-| 37 | weapon_ts_grenade                | Not started           | To do                             |
+| 23 | weapon_ts_uzi                    | Functionally complete | Add suppressor, laser, flashlight |
+| 24 | weapon_ts_mac10                  | Not started           | Can't find files, might not do    |
+| 25 | weapon_ts_skorpion               | Complete              | Done                              |
+| 26 | weapon_ts_skorpion_akimbo        | Not started           | To do                             |
+| 27 | weapon_ts_benelli                | Functionally complete | Add laser, flashlight             |
+| 28 | weapon_ts_spas                   | Functionally complete | Add laser, flashlight             |
+| 29 | weapon_ts_mossberg               | Functionally complete | Add laser, flashlight             |
+| 30 | weapon_ts_usas12                 | Functionally complete | Add laser, flashlight             |
+| 31 | weapon_ts_sawedoff               | Functionally complete | Need melee attack                 |
+| 32 | weapon_ts_ak47                   | Not started           | To do                             |
+| 33 | weapon_ts_m4a1                   | Not started           | To do                             |
+| 34 | weapon_ts_m16                    | Not started           | To do                             |
+| 35 | weapon_ts_aug                    | Not started           | To do                             |
+| 36 | weapon_ts_barrett                | Not started           | To do                             |
+| 37 | weapon_ts_m60                    | Not started           | To do                             |
+| 38 | weapon_ts_grenade                | Not started           | To do                             |
 
 <a name="weaponfeatures"></a>
 ## 3. Weapon features:

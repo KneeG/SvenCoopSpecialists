@@ -143,6 +143,7 @@ namespace TheSpecialists
     const int iWEAPON__POSITION__MP7                = 9 ;
     const int iWEAPON__POSITION__SKORPION           = 10;
     const int iWEAPON__POSITION__SKORPION_AKIMBO    = 11;
+    const int iWEAPON__POSITION__UZI                = 12;
     
     // Rifles/Shotguns
     const int iWEAPON__POSITION__BENELLI            = 5 ;
@@ -362,6 +363,15 @@ namespace TheSpecialists
     const int       iWEAPON__SKORPION__DAMAGE               = 19                                ; // Weapon damage
     const float     fWEAPON__SKORPION__ATTACK_DELAY         = (60.0 / 700.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
     const float     fWEAPON__SKORPION__RECOIL_MULTIPLIER    = 0.6                               ; // Severity of the recoil
+    
+    const int       iWEAPON__UZI__CLIP                      = 32                                ; // Size of the magazine
+    const int       iWEAPON__UZI__AMMO1                     = iWEAPON__SMG__AMMO1__MAX          ; // Primary ammo capacity
+    const int       iWEAPON__UZI__AMMO2                     = -1                                ; // Secondary ammo capacity
+    const Vector    vecWEAPON__UZI__SPREAD                  = VECTOR_CONE_6DEGREES              ; // Accuracy of the weapon
+    const int       iWEAPON__UZI__FIRE_MODE                 = FireMode::iAUTOMATIC              ; // Fire mode of the weapon
+    const int       iWEAPON__UZI__DAMAGE                    = 12                                ; // Weapon damage
+    const float     fWEAPON__UZI__ATTACK_DELAY              = (60.0 / 850.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
+    const float     fWEAPON__UZI__RECOIL_MULTIPLIER         = 0.7                               ; // Severity of the recoil
     
     const int       iWEAPON__BENELLI__CLIP                  = 8                                 ; // Size of the magazine
     const int       iWEAPON__BENELLI__AMMO1                 = iWEAPON__SHOTGUN__AMMO1__MAX      ; // Primary ammo capacity
