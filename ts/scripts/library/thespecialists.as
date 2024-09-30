@@ -95,7 +95,7 @@ namespace TheSpecialists
     // Double barreled shotgun (sawed off) asset paths
     const string strSHOTGUN__SOUND__FIRE2       = "fire2.wav"                                   ; // Name of the second barrel firing noise (sawed off)
     const string strSHOTGUN__SOUND__CLOSE       = "close.wav"                                   ; // Name of the chamber close file
-    const string strSHOTGUN__SOUND__OPEN        = "close.wav"                                   ; // Name of the chamber open file
+    const string strSHOTGUN__SOUND__OPEN        = "open.wav"                                    ; // Name of the chamber open file
     const string strSHOTGUN__SOUND__INSERT_SHELL= "insert-shell.wav"                            ; // Name of the chambering shell file
     const string strSHOTGUN__SOUND__SHELL_DROP  = "shelldrop.wav"                               ; // Name of the shell drop file
     const string strSHOTGUN__SOUND__SHELL_OUT   = "shellout.wav"                                ; // Name of the unchambered shell file
@@ -109,6 +109,16 @@ namespace TheSpecialists
     const string strRIFLE__SOUND__FIRE          = "fire.wav"                                    ; // Name of the gun fire file
     const string strRIFLE__SOUND__FIRE_SILENCED = "fire_silenced.wav"                           ; // Name of the gun fire silenced  file
     const string strRIFLE__SOUND__SLIDEBACK     = "slideback.wav"                               ; // Name of the slide pull file
+    
+    // Heavy weapon paths
+    const string strHEAVY__SOUND__FIRE          = "fire.wav"                                    ; // Name of the gun fire file
+    const string strHEAVY__SOUND__CLIPIN        = "clipin.wav"                                  ; // Name of the magazine insert file
+    const string strHEAVY__SOUND__CLIPOUT       = "clipout.wav"                                 ; // Name of the magazine eject file
+    const string strHEAVY__SOUND__SLIDEBACK     = "slideback.wav"                               ; // Name of the slide pull file
+    const string strHEAVY__SOUND__CLOSE         = "close.wav"                                   ; // Name of the chamber close file
+    const string strHEAVY__SOUND__OPEN          = "open.wav"                                    ; // Name of the chamber open file
+    const string strHEAVY__SOUND__AMMO_BELT     = "ammo_belt.wav"                               ; // Name of the ammo belt noise file
+    const string strHEAVY__SOUND__BOLT_PULL     = "bolt_pull.wav"                               ; // Name of the ammo belt noise file
     
     const int iSPRITE__WEAPONS__WIDTH           = 128                                           ; // [pixels] Width of the weapon sprites
     const int iSPRITE__WEAPONS__HEIGHT          = 48                                            ; // [pixels] Height of the weapon sprites
@@ -485,7 +495,27 @@ namespace TheSpecialists
     const float     fWEAPON__AUG__ATTACK_DELAY              = (60.0 / 600.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
     const float     fWEAPON__AUG__ATTACK_DELAY__ZOOM        = (60.0 / 500.0)                    ; // [seconds] RPM of the weapon while zooming
     const float     fWEAPON__AUG__RECOIL_MULTIPLIER         = 0.9                               ; // Severity of the recoil
-    const float     iWEAPON__AUG__ZOOM_MULTIPLIER           = 2                                 ; // [percentage] How close the player zooms in when scoping
+    const float     iWEAPON__AUG__ZOOM_MULTIPLIER           = 1                                 ; // [percentage] How close the player zooms in when scoping
+    
+    const int       iWEAPON__BARRETT__CLIP                  = 5                                 ; // Size of the magazine
+    const int       iWEAPON__BARRETT__AMMO1                 = iWEAPON__SNIPER__AMMO1__MAX       ; // Primary ammo capacity
+    const int       iWEAPON__BARRETT__AMMO2                 = -1                                ; // Secondary ammo capacity
+    const Vector    vecWEAPON__BARRETT__SPREAD              = VECTOR_CONE_1DEGREES              ; // Accuracy of the weapon
+    const int       iWEAPON__BARRETT__FIRE_MODE             = FireMode::iSEMI_AUTOMATIC         ; // Fire mode of the weapon
+    const int       iWEAPON__BARRETT__DAMAGE                = 215                               ; // Weapon damage
+    const float     fWEAPON__BARRETT__ATTACK_DELAY          = (60.0 / 200.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
+    const float     fWEAPON__BARRETT__ATTACK_DELAY__ZOOM    = (60.0 / 200.0)                    ; // [seconds] RPM of the weapon while zooming
+    const float     fWEAPON__BARRETT__RECOIL_MULTIPLIER     = 3.0                               ; // Severity of the recoil
+    const float     iWEAPON__BARRETT__ZOOM_MULTIPLIER       = 2                                 ; // [percentage] How close the player zooms in when scoping
+    
+    const int       iWEAPON__M60__CLIP                      = 100                               ; // Size of the magazine
+    const int       iWEAPON__M60__AMMO1                     = iWEAPON__RIFLE__AMMO1__MAX        ; // Primary ammo capacity
+    const int       iWEAPON__M60__AMMO2                     = -1                                ; // Secondary ammo capacity
+    const Vector    vecWEAPON__M60__SPREAD                  = VECTOR_CONE_6DEGREES              ; // Accuracy of the weapon
+    const int       iWEAPON__M60__FIRE_MODE                 = FireMode::iAUTOMATIC              ; // Fire mode of the weapon
+    const int       iWEAPON__M60__DAMAGE                    = 13                                ; // Weapon damage
+    const float     fWEAPON__M60__ATTACK_DELAY              = (60.0 / 600.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
+    const float     fWEAPON__M60__RECOIL_MULTIPLIER         = 0.9                               ; // Severity of the recoil
     
     ///////////////////////////////
     // Ammunitions (See https://baso88.github.io/SC_AngelScript/docs/Bullet.htm)

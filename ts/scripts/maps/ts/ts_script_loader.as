@@ -39,6 +39,9 @@
 #include "weapon_ts_m16"
 #include "weapon_ts_aug"
 
+#include "weapon_ts_barrett"
+#include "weapon_ts_m60"
+
 void TS_LoadWeapons()
 {
     RegisterKungFu();
@@ -76,4 +79,7 @@ void TS_LoadWeapons()
     TS_M4A1         ::Register_Weapon();
     TS_M16          ::Register_Weapon();
     TS_AUG          ::Register_Weapon();
+    
+    TS_Barrett      ::Register_Weapon();
+    TS_M60          ::Register_Weapon();
 }

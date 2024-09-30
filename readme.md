@@ -70,8 +70,8 @@ Hopefully their functionality is also implemented as well.
 | 33 | weapon_ts_m4a1                   | Functionally complete | Add suppressor, laser, flashlight |
 | 34 | weapon_ts_m16                    | Functionally complete | Add suppressor, laser, flashlight |
 | 35 | weapon_ts_aug                    | Functionally complete | Add suppressor, laser, flashlight |
-| 36 | weapon_ts_barrett                | Not started           | To do                             |
-| 37 | weapon_ts_m60                    | Not started           | To do                             |
+| 36 | weapon_ts_barrett                | In progress           | Fix scope, add laser, flashlight  |
+| 37 | weapon_ts_m60                    | Functionally complete | Add laser, flashlight             |
 | 38 | weapon_ts_grenade                | Not started           | To do                             |
 
 <a name="weaponfeatures"></a>
