@@ -35,6 +35,7 @@
 #include "weapon_ts_sawedoff"
 
 #include "weapon_ts_ak47"
+#include "weapon_ts_m4a1"
 
 void TS_LoadWeapons()
 {
@@ -70,4 +71,5 @@ void TS_LoadWeapons()
     TS_Sawedoff     ::Register_Weapon();
 
     TS_AK47         ::Register_Weapon();
+    TS_M4A1         ::Register_Weapon();
 }

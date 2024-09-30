@@ -1,27 +1,34 @@
 //////////////////////////////////////////////////////////
-// File         : weapon_ts_ak47.as                     //
+// File         : weapon_ts_m4a1.as                     //
 // Author       : Knee                                  //
-// Description  : AK47 from The Specialists Mod 3.0    //
+// Description  : M4A1 from The Specialists Mod 3.0    //
 //////////////////////////////////////////////////////////
 #include "../../library/thespecialists"
 
 /////////////////////////////////////
-// TS_AK47 namespace
-namespace TS_AK47
+// TS_M4A1 namespace
+namespace TS_M4A1
 {
     /////////////////////////////////////
-    // AK47 animation enumeration
+    // M4A1 animation enumeration
     namespace Animations
     {
-        const int IDLE1         = 0;
-        const int RELOAD1       = 1;
-        const int DRAW1         = 2;
-        const int SHOOT1        = 3;
-        const int ADS_IDLE1     = 4;
-        const int ADS_IN        = 5;
-        const int ADS_OUT       = 6;
-        const int ADS_SHOOT1    = 7;
-        const int ADS_RELOAD1   = 8;
+        const int IDLE1         = 0 ;
+        const int RELOAD1       = 1 ;
+        const int DRAW1         = 2 ;
+        const int SHOOT1        = 3 ;
+        const int SHOOT2        = 4 ;
+        const int SHOOT3        = 5 ;
+        const int SHOOT4        = 6 ;
+        const int ADS_IDLE1     = 7 ;
+        const int ADS_IN        = 8 ;
+        const int ADS_OUT       = 9 ;
+        const int ADS_SHOOT1    = 10;
+        const int ADS_SHOOT2    = 11;
+        const int ADS_SHOOT3    = 12;
+        const int ADS_SHOOT4    = 13;
+        const int ADS_RELOAD1   = 14;
+        const int MELEE         = 15;
     }
     
     // Return constants
@@ -29,9 +36,9 @@ namespace TS_AK47
     const int               RETURN_ERROR_NULL_POINTER   = -1;
     
     // Meta data
-    const string            strNAME                 = "ak47"             ;
-    const string            strNAMESPACE            = "TS_AK47::"        ;
-    const string            strCLASSNAME            = "weapon_ts_ak47"   ;
+    const string            strNAME                 = "m4a1"             ;
+    const string            strNAMESPACE            = "TS_M4A1::"        ;
+    const string            strCLASSNAME            = "weapon_ts_m4a1"   ;
 
     // Asset paths
     const string            strMODEL_P              = TheSpecialists::strMODEL_PATH + "rifles/" + strNAME + "/p_" + strNAME + ".mdl";
@@ -45,30 +52,36 @@ namespace TS_AK47
     const string            strSOUND_CLIPOUT        = TheSpecialists::strSOUND_PATH + "rifles/" + strNAME + "/" + TheSpecialists::strRIFLE__SOUND__CLIPOUT      ;
     const string            strSOUND_FIRE           = TheSpecialists::strSOUND_PATH + "rifles/" + strNAME + "/" + TheSpecialists::strRIFLE__SOUND__FIRE         ;
     const string            strSOUND_FIRE_SILENCED  = TheSpecialists::strSOUND_PATH + "rifles/" + strNAME + "/" + TheSpecialists::strRIFLE__SOUND__FIRE_SILENCED;
-    const string            strSOUND_SLIDEBACK      = TheSpecialists::strSOUND_PATH + "rifles/" + strNAME + "/" + TheSpecialists::strRIFLE__SOUND__SLIDEBACK    ;
+    const string            strSOUND_BOLTPULL       = TheSpecialists::strSOUND_PATH + "rifles/" + strNAME + "/" + TheSpecialists::strRIFLE__SOUND__SLIDEBACK    ;
     const string            strSOUND_EMPTY          = TheSpecialists::strSOUND_PATH + TheSpecialists::strSMG__SOUND__EMPTY                                      ;
     
     // Create a list of animations to be played at random
     const array<int> arrAnimationList = {
-        Animations::SHOOT1
+        Animations::SHOOT1,
+        Animations::SHOOT2,
+        Animations::SHOOT3,
+        Animations::SHOOT4
     };
     
     const array<int> arrADSAnimationList = {
-        Animations::ADS_SHOOT1
+        Animations::ADS_SHOOT1,
+        Animations::ADS_SHOOT2,
+        Animations::ADS_SHOOT3,
+        Animations::ADS_SHOOT4
     };
     
     const float             fHOLSTER_TIME           = TheSpecialists::fDEFAULT_HOSTER_TIME              ;
     const float             fNEXT_THINK             = TheSpecialists::fDEFAULT_NEXT_THINK               ;
-    const float             fPRIMARY_ATTACK_DELAY   = TheSpecialists::fWEAPON__AK47__ATTACK_DELAY       ;
+    const float             fPRIMARY_ATTACK_DELAY   = TheSpecialists::fWEAPON__M4A1__ATTACK_DELAY       ;
     const float             fSWING_DISTANCE         = TheSpecialists::fSWING_DISTANCE                   ;
     const IGNORE_MONSTERS   eIGNORE_RULE            = TheSpecialists::eIGNORE_RULE                      ;
-    const int               iDAMAGE                 = TheSpecialists::iWEAPON__AK47__DAMAGE             ;
-    const Vector            vecSPREAD               = TheSpecialists::vecWEAPON__AK47__SPREAD           ;
-    const float             fRECOIL_MULTIPLIER      = TheSpecialists::fWEAPON__AK47__RECOIL_MULTIPLIER  ;
+    const int               iDAMAGE                 = TheSpecialists::iWEAPON__M4A1__DAMAGE             ;
+    const Vector            vecSPREAD               = TheSpecialists::vecWEAPON__M4A1__SPREAD           ;
+    const float             fRECOIL_MULTIPLIER      = TheSpecialists::fWEAPON__M4A1__RECOIL_MULTIPLIER  ;
     
     /////////////////////////////////////
-    // AK47 class
-    class weapon_ts_ak47 : ScriptBasePlayerWeaponEntity
+    // M4A1 class
+    class weapon_ts_m4a1 : ScriptBasePlayerWeaponEntity
     {
         private CBasePlayer@ m_pPlayer          ; // Player reference pointer
         private int     m_iDamage               ; // Weapon damage
@@ -81,10 +94,10 @@ namespace TS_AK47
         
         Vector          m_vecAccuracy           ; // Current accuracy of the weapon
         
-        TraceResult     m_trHit                 ; // Keeps track of what is hit when the ak47 is swung
+        TraceResult     m_trHit                 ; // Keeps track of what is hit when the m4a1 is swung
         
         //////////////////////////////////////////
-        // TS_AK47::Spawn                       //
+        // TS_M4A1::Spawn                       //
         // Function:                            //
         //      Spawn function for the weapon   //
         // Parameters:                          //
@@ -109,7 +122,7 @@ namespace TS_AK47
             g_EntityFuncs.SetModel(self, self.GetW_Model(strMODEL_W));
             
             // Set the clip size
-            self.m_iClip = TheSpecialists::iWEAPON__AK47__CLIP;
+            self.m_iClip = TheSpecialists::iWEAPON__M4A1__CLIP;
             
             // Set the weapon damage
             self.m_flCustomDmg = m_iDamage;
@@ -119,7 +132,7 @@ namespace TS_AK47
         } // End of Spawn()
 
         //////////////////////////////////////////////////
-        // TS_AK47::Precache                            //
+        // TS_M4A1::Precache                            //
         // Function:                                    //
         //      Prechacing function for weapon assets   //
         // Parameters:                                  //
@@ -137,19 +150,19 @@ namespace TS_AK47
             
             g_Game.PrecacheModel(TheSpecialists::strSPRITE_ROOT + strSPRITE_FILE);
             
-            g_SoundSystem.PrecacheSound(strSOUND_CLIPIN         );
-            g_SoundSystem.PrecacheSound(strSOUND_CLIPOUT        );
-            g_SoundSystem.PrecacheSound(strSOUND_FIRE           );
-            g_SoundSystem.PrecacheSound(strSOUND_SLIDEBACK      );
+            g_SoundSystem.PrecacheSound(strSOUND_CLIPIN     );
+            g_SoundSystem.PrecacheSound(strSOUND_CLIPOUT    );
+            g_SoundSystem.PrecacheSound(strSOUND_FIRE       );
+            g_SoundSystem.PrecacheSound(strSOUND_BOLTPULL   );
             
-            g_SoundSystem.PrecacheSound(strSOUND_EMPTY          );
+            g_SoundSystem.PrecacheSound(strSOUND_EMPTY      );
             
             g_Game.PrecacheGeneric(TheSpecialists::strSPRITE_ROOT + strSPRITE_FILE);
             g_Game.PrecacheGeneric(TheSpecialists::strSPRITE_ROOT + strSPRITE_TEXT_FILE);
         } // End of Precache()
 
         //////////////////////////////////////////////////////////////////////////////
-        // TS_AK47::GetItemInfo                                                     //
+        // TS_M4A1::GetItemInfo                                                     //
         // Function:                                                                //
         //      Sets the weapon metadata                                            //
         // Parameters:                                                              //
@@ -159,18 +172,18 @@ namespace TS_AK47
         //////////////////////////////////////////////////////////////////////////////
         bool GetItemInfo(ItemInfo& out info)
         {
-            info.iMaxClip		= TheSpecialists::iWEAPON__AK47__CLIP       ;
-            info.iMaxAmmo1		= TheSpecialists::iWEAPON__AK47__AMMO1      ;
-            info.iMaxAmmo2		= TheSpecialists::iWEAPON__AK47__AMMO2      ;
+            info.iMaxClip		= TheSpecialists::iWEAPON__M4A1__CLIP       ;
+            info.iMaxAmmo1		= TheSpecialists::iWEAPON__M4A1__AMMO1      ;
+            info.iMaxAmmo2		= TheSpecialists::iWEAPON__M4A1__AMMO2      ;
             info.iSlot			= TheSpecialists::iWEAPON__SLOT__RIFLE      ;
-            info.iPosition		= TheSpecialists::iWEAPON__POSITION__AK47   ;
+            info.iPosition		= TheSpecialists::iWEAPON__POSITION__M4A1   ;
             info.iWeight		= TheSpecialists::iDEFAULT_WEIGHT           ;
             
             return true;
         } // End of GetItemInfo()
         
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_AK47::AddToPlayer                                                                     //
+        // TS_M4A1::AddToPlayer                                                                     //
         // Function:                                                                                //
         //      Adds the weapon to the player if they exist                                         //
         //      If the player exists, save a reference to the player                                //
@@ -190,7 +203,7 @@ namespace TS_AK47
                 @m_pPlayer = pPlayer;
                 
                 // Debug printing
-                // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "AK47 m_iPrimaryAmmoType: " + self.m_iPrimaryAmmoType + "\n");
+                // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "M4A1 m_iPrimaryAmmoType: " + self.m_iPrimaryAmmoType + "\n");
                 
                 NetworkMessage message
                 (
@@ -212,7 +225,7 @@ namespace TS_AK47
         } // End of AddToPlayer()
 
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_AK47::Deploy                                                                          //
+        // TS_M4A1::Deploy                                                                          //
         // Function:                                                                                //
         //      Adds the weapon to the player if they exist                                         //
         //      If the player exists, save a reference to the player                                //
@@ -233,7 +246,7 @@ namespace TS_AK47
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_AK47::Holster                                                                         //
+        // TS_M4A1::Holster                                                                         //
         // Function:                                                                                //
         //      Hides the weapon from the player                                                    //
         // Parameters:                                                                              //
@@ -251,12 +264,12 @@ namespace TS_AK47
             // Hide the player model by making the viewmodel path empty
             m_pPlayer.pev.viewmodel = "";
             
-            // Tell the game loop to stop calling any of our ak47 functions
+            // Tell the game loop to stop calling any of our m4a1 functions
             SetThink(null);
         } // End of Holster()
         
         //////////////////////////////////////////////////
-        // TS_AK47::PrimaryAttack                       //
+        // TS_M4A1::PrimaryAttack                       //
         // Function:                                    //
         //      Performs the weapon's primary attack    //
         // Parameters:                                  //
@@ -277,7 +290,7 @@ namespace TS_AK47
         } // End of PrimaryAttack()
         
         //////////////////////////////////////////////////
-        // TS_AK47::SecondaryAttack                     //
+        // TS_M4A1::SecondaryAttack                     //
         // Function:                                    //
         //      Performs the weapon's secondary attack  //
         // Parameters:                                  //
@@ -314,7 +327,7 @@ namespace TS_AK47
         } // End of SecondaryAttack()
 
         //////////////////////////////
-        // TS_AK47::Shoot           //
+        // TS_M4A1::Shoot           //
         // Function:                //
         //      Gun fire handling   //
         // Parameters:              //
@@ -412,7 +425,7 @@ namespace TS_AK47
         } // End of Shoot()
 
         //////////////////////////
-        // TS_AK47::Reload      //
+        // TS_M4A1::Reload      //
         // Function:            //
         //      Reload handler  //
         // Parameters:          //
@@ -423,7 +436,7 @@ namespace TS_AK47
         void Reload()
         {
             // Determine if the gun does not need to reload
-            if (    (self.m_iClip == TheSpecialists::iWEAPON__AK47__CLIP)
+            if (    (self.m_iClip == TheSpecialists::iWEAPON__M4A1__CLIP)
                  || (m_pPlayer.m_rgAmmo(self.m_iPrimaryAmmoType) <= 0)    )
             {
                 return;
@@ -432,11 +445,11 @@ namespace TS_AK47
             // Determine if the weapon is tilted sideways
             if (m_bADS)                
             {
-                self.DefaultReload(TheSpecialists::iWEAPON__AK47__CLIP, Animations::ADS_RELOAD1, 1.5, 0);
+                self.DefaultReload(TheSpecialists::iWEAPON__M4A1__CLIP, Animations::ADS_RELOAD1, 1.5, 0);
             }
             else
             {
-                self.DefaultReload(TheSpecialists::iWEAPON__AK47__CLIP, Animations::RELOAD1, 1.5, 0);
+                self.DefaultReload(TheSpecialists::iWEAPON__M4A1__CLIP, Animations::RELOAD1, 1.5, 0);
             }
             
             // Prevent the weapon idle animation from overriding the reload animation
@@ -447,7 +460,7 @@ namespace TS_AK47
         } // End of Reload()
         
         //////////////////////////
-        // TS_AK47::WeaponIdle  //
+        // TS_M4A1::WeaponIdle  //
         // Function:            //
         //      Reload handler  //
         // Parameters:          //
@@ -479,7 +492,7 @@ namespace TS_AK47
             
         } // End of WeaponIdle()
         
-    } // End of class weapon_ts_ak47
+    } // End of class weapon_ts_m4a1
 
     void Register_Weapon()
     {
@@ -491,4 +504,4 @@ namespace TS_AK47
             TheSpecialists::strWEAPON__RIFLE__AMMO_TYPE   // string - ammo type
         );
     }
-} // End of namespace TS_AK47
+} // End of namespace TS_M4A1

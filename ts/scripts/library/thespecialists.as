@@ -104,6 +104,7 @@ namespace TheSpecialists
     // Rifle asset paths
     const string strRIFLE__SOUND__CLIPIN        = "clipin.wav"                                  ; // Name of the magazine insert file
     const string strRIFLE__SOUND__CLIPOUT       = "clipout.wav"                                 ; // Name of the magazine eject file
+    const string strRIFLE__SOUND__BOLTPULL      = "boltpull.wav"                                ; // Name of the bolt pull sound
     const string strRIFLE__SOUND__FIRE          = "fire.wav"                                    ; // Name of the gun fire file
     const string strRIFLE__SOUND__FIRE_SILENCED = "fire_silenced.wav"                           ; // Name of the gun fire silenced  file
     const string strRIFLE__SOUND__SLIDEBACK     = "slideback.wav"                               ; // Name of the slide pull file
@@ -434,6 +435,8 @@ namespace TheSpecialists
     const float     fWEAPON__SAWEDOFF__ATTACK_DELAY         = (60.0 / 400.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
     const float     fWEAPON__SAWEDOFF__RECOIL_MULTIPLIER    = 3.0                               ; // Severity of the recoil
     
+    const SOUND_CHANNEL scWEAPON__RIFLE__DEFAULT_CHANNEL    = CHAN_WEAPON                       ; // Default sound channel for rifles. Helps to preserve original sound quality.
+    
     const int       iWEAPON__AK47__CLIP                     = 30                                ; // Size of the magazine
     const int       iWEAPON__AK47__AMMO1                    = iWEAPON__RIFLE__AMMO1__MAX        ; // Primary ammo capacity
     const int       iWEAPON__AK47__AMMO2                    = -1                                ; // Secondary ammo capacity
@@ -442,6 +445,15 @@ namespace TheSpecialists
     const int       iWEAPON__AK47__DAMAGE                   = 17                                ; // Weapon damage
     const float     fWEAPON__AK47__ATTACK_DELAY             = (60.0 / 650.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
     const float     fWEAPON__AK47__RECOIL_MULTIPLIER        = 1.2                               ; // Severity of the recoil
+    
+    const int       iWEAPON__M4A1__CLIP                     = 30                                ; // Size of the magazine
+    const int       iWEAPON__M4A1__AMMO1                    = iWEAPON__RIFLE__AMMO1__MAX        ; // Primary ammo capacity
+    const int       iWEAPON__M4A1__AMMO2                    = -1                                ; // Secondary ammo capacity
+    const Vector    vecWEAPON__M4A1__SPREAD                 = VECTOR_CONE_2DEGREES              ; // Accuracy of the weapon
+    const int       iWEAPON__M4A1__FIRE_MODE                = FireMode::iAUTOMATIC              ; // Fire mode of the weapon
+    const int       iWEAPON__M4A1__DAMAGE                   = 13                                ; // Weapon damage
+    const float     fWEAPON__M4A1__ATTACK_DELAY             = (60.0 / 750.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
+    const float     fWEAPON__M4A1__RECOIL_MULTIPLIER        = 0.8                               ; // Severity of the recoil
     
     ///////////////////////////////
     // Ammunitions (See https://baso88.github.io/SC_AngelScript/docs/Bullet.htm)
