@@ -324,7 +324,7 @@ namespace TS_USAS12
                         vecAiming                                       , // Vector vecDirShooting  - Vector where the shot is going to go towards
                         m_vecAccuracy                                   , // Vector vecSpread       - Vector detailing how large the cone of randomness the bullets will randomly spread out
                         TheSpecialists::fMAXIMUM_FIRE_DISTANCE          , // float flDistance       - Maximum distance the bullet will scan for a hit
-                        TheSpecialists::iWEAPON__SMG__BULLET__TYPE      , // int iBulletType        - Bullet type, not sure what this means
+                        TheSpecialists::iWEAPON__SHOTGUN__BULLET__TYPE  , // int iBulletType        - Bullet type, not sure what this means
                         2                                               , // int iTracerFreq = 4    - How frequently there will be bullet tracers, not sure what the scale is
                         iDAMAGE                                           // int iDamage = 0        - How much damage the bullet will do
                     );

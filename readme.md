@@ -63,8 +63,8 @@ Hopefully their functionality is also implemented as well.
 | 26 | weapon_ts_benelli                | Functionally complete | Add laser, flashlight             |
 | 27 | weapon_ts_spas                   | Functionally complete | Add laser, flashlight             |
 | 28 | weapon_ts_mossberg               | Functionally complete | Add laser, flashlight             |
-| 29 | weapon_ts_usas12                 | Not started           | To do                             |
-| 30 | weapon_ts_double_barrel_shotgun  | Not started           | To do                             |
+| 29 | weapon_ts_usas12                 | Functionally complete | Add laser, flashlight             |
+| 30 | weapon_ts_sawedoff               | Functionally complete | Need melee attack                 |
 | 31 | weapon_ts_ak47                   | Not started           | To do                             |
 | 32 | weapon_ts_m4a1                   | Not started           | To do                             |
 | 33 | weapon_ts_m16                    | Not started           | To do                             |

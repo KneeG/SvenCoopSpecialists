@@ -1,31 +1,32 @@
 //////////////////////////////////////////////////////////
-// File         : weapon_ts_deagle.as                   //
+// File         : weapon_ts_sawedoff.as                 //
 // Author       : Knee                                  //
-// Description  : Deagle from The Specialists Mod 3.0   //
+// Description  : Sawedoff from The Specialists Mod 3.0 //
 //////////////////////////////////////////////////////////
 #include "../../library/thespecialists"
 
 /////////////////////////////////////
-// TS_Deagle namespace
-namespace TS_Deagle
+// TS_Sawedoff namespace
+namespace TS_Sawedoff
 {
     /////////////////////////////////////
-    // Deagle animation enumeration
+    // Sawedoff animation enumeration
     namespace Animations
     {
         const int IDLE1                 = 0 ;
-        const int RELOAD1               = 1 ;
-        const int DRAW1                 = 2 ;
+        const int DRAW1                 = 1 ;
+        const int RELOAD1               = 2 ;
         const int SHOOT1                = 3 ;
-        const int SHOOT2                = 4 ; // Haven't seen any meaningful difference between this and SHOOT1 based on my inspection
-        const int SHOOTEMPTY1           = 5 ;
-        const int IDLE_SIDEWAYS1        = 6 ;
-        const int SHOOT_SIDEWAYS1       = 7 ;
-        const int SHOOTEMPTY_SIDEWAYS1  = 8 ;
-        const int TILT_SIDEWAYS         = 9 ; 
-        const int TILT_UPRIGHT          = 10;
-        const int MELEE                 = 11;
-        const int RELOAD_SIDEWAYS1      = 12;
+        const int SHOOT2                = 4 ;
+        const int ADS_IDLE1             = 5 ;
+        const int ADS_RELOAD1           = 6 ;
+        const int ADS_SHOOT1            = 7 ;
+        const int ADS_SHOOT2            = 8 ;
+        const int RELOAD_1_SHELL        = 9 ;
+        const int ADS_RELOAD_1_SHELL    = 10;
+        const int ADS_IN                = 11;
+        const int ADS_OUT               = 12;
+        const int MELEE                 = 13;
     }
     
     // Return constants
@@ -33,23 +34,23 @@ namespace TS_Deagle
     const int               RETURN_ERROR_NULL_POINTER   = -1;
     
     // Meta data
-    const string            strNAME                 = "deagle"             ;
-    const string            strNAMESPACE            = "TS_Deagle::"        ;
-    const string            strCLASSNAME            = "weapon_ts_deagle"   ;
+    const string            strNAME                 = "sawedoff"             ;
+    const string            strNAMESPACE            = "TS_Sawedoff::"        ;
+    const string            strCLASSNAME            = "weapon_ts_sawedoff"   ;
 
     // Asset paths
-    const string            strMODEL_P              = TheSpecialists::strMODEL_PATH + "pistols/" + strNAME + "/p_" + strNAME + ".mdl";
-    const string            strMODEL_V              = TheSpecialists::strMODEL_PATH + "pistols/" + strNAME + "/v_" + strNAME + ".mdl";
-    const string            strMODEL_W              = TheSpecialists::strMODEL_PATH + "pistols/" + strNAME + "/w_" + strNAME + ".mdl";
+    const string            strMODEL_P              = TheSpecialists::strMODEL_PATH + "shotguns/" + strNAME + "/p_" + strNAME + ".mdl";
+    const string            strMODEL_V              = TheSpecialists::strMODEL_PATH + "shotguns/" + strNAME + "/v_" + strNAME + ".mdl";
+    const string            strMODEL_W              = TheSpecialists::strMODEL_PATH + "shotguns/" + strNAME + "/w_" + strNAME + ".mdl";
     
     const string            strSPRITE_FILE          = TheSpecialists::strSPRITE_TS_PATH       + strNAME      + ".spr";
     const string            strSPRITE_TEXT_FILE     = TheSpecialists::strSPRITE_METADATA_PATH + strCLASSNAME + ".txt";
     
-    const string            strSOUND_CLIPIN         = TheSpecialists::strSOUND_PATH + "pistols/" + strNAME + "/" + TheSpecialists::strPISTOL__SOUND__CLIPIN         ;
-    const string            strSOUND_CLIPOUT        = TheSpecialists::strSOUND_PATH + "pistols/" + strNAME + "/" + TheSpecialists::strPISTOL__SOUND__CLIPOUT        ;
-    const string            strSOUND_FIRE           = TheSpecialists::strSOUND_PATH + "pistols/" + strNAME + "/" + TheSpecialists::strPISTOL__SOUND__FIRE           ;
-    const string            strSOUND_FIRE_SILENCED  = TheSpecialists::strSOUND_PATH + "pistols/" + strNAME + "/" + TheSpecialists::strPISTOL__SOUND__FIRE_SILENCED  ;
-    const string            strSOUND_SLIDEBACK      = TheSpecialists::strSOUND_PATH + "pistols/" + strNAME + "/" + TheSpecialists::strPISTOL__SOUND__SLIDEBACK      ;
+    const string            strSOUND_CLIPIN         = TheSpecialists::strSOUND_PATH + "shotguns/" + strNAME + "/" + TheSpecialists::strPISTOL__SOUND__CLIPIN         ;
+    const string            strSOUND_CLIPOUT        = TheSpecialists::strSOUND_PATH + "shotguns/" + strNAME + "/" + TheSpecialists::strPISTOL__SOUND__CLIPOUT        ;
+    const string            strSOUND_FIRE           = TheSpecialists::strSOUND_PATH + "shotguns/" + strNAME + "/" + TheSpecialists::strPISTOL__SOUND__FIRE           ;
+    const string            strSOUND_FIRE_SILENCED  = TheSpecialists::strSOUND_PATH + "shotguns/" + strNAME + "/" + TheSpecialists::strPISTOL__SOUND__FIRE_SILENCED  ;
+    const string            strSOUND_SLIDEBACK      = TheSpecialists::strSOUND_PATH + "shotguns/" + strNAME + "/" + TheSpecialists::strPISTOL__SOUND__SLIDEBACK      ;
     const string            strSOUND_EMPTY          = TheSpecialists::strSOUND_PATH + TheSpecialists::strPISTOL__SOUND__EMPTY                                       ;
     
     // Create a list of animations to be played at random
@@ -58,27 +59,27 @@ namespace TS_Deagle
         Animations::SHOOT2
     };
     
-    const array<int> arrSidewaysAnimationList = {
-        Animations::SHOOT_SIDEWAYS1
+    const array<int> arrADSAnimationList = {
+        Animations::ADS_SHOOT1,
+        Animations::ADS_SHOOT2
     };
     
-    const float             fHOLSTER_TIME           = TheSpecialists::fDEFAULT_HOSTER_TIME          ;
-    const float             fNEXT_THINK             = TheSpecialists::fDEFAULT_NEXT_THINK           ;
-    const float             fPRIMARY_ATTACK_DELAY   = TheSpecialists::fWEAPON__DEAGLE__ATTACK_DELAY ;
-    const float             fSWING_DISTANCE         = TheSpecialists::fSWING_DISTANCE               ;
-    const IGNORE_MONSTERS   eIGNORE_RULE            = TheSpecialists::eIGNORE_RULE                  ;
-    const int               iDAMAGE                 = TheSpecialists::iWEAPON__DEAGLE__DAMAGE       ;
-    const Vector            vecSPREAD               = TheSpecialists::vecWEAPON__DEAGLE__SPREAD     ;
+    const float             fHOLSTER_TIME           = TheSpecialists::fDEFAULT_HOSTER_TIME              ;
+    const float             fNEXT_THINK             = TheSpecialists::fDEFAULT_NEXT_THINK               ;
+    const float             fPRIMARY_ATTACK_DELAY   = TheSpecialists::fWEAPON__SAWEDOFF__ATTACK_DELAY   ;
+    const float             fSWING_DISTANCE         = TheSpecialists::fSWING_DISTANCE                   ;
+    const IGNORE_MONSTERS   eIGNORE_RULE            = TheSpecialists::eIGNORE_RULE                      ;
+    const int               iDAMAGE                 = TheSpecialists::iWEAPON__SAWEDOFF__DAMAGE         ;
+    const Vector            vecSPREAD               = TheSpecialists::vecWEAPON__SAWEDOFF__SPREAD       ;
     
     /////////////////////////////////////
-    // Deagle class
-    class weapon_ts_deagle : ScriptBasePlayerWeaponEntity
+    // Sawedoff class
+    class weapon_ts_sawedoff : ScriptBasePlayerWeaponEntity
     {
         private CBasePlayer@ m_pPlayer          ; // Player reference pointer
         private int     m_iDamage               ; // Weapon damage
-        private bool    m_bSideways             ; // Sideways flag
+        private bool    m_bADS                  ; // ADS flag
         private float   m_fRecoilMultiplier     ; // Recoil multiplier flag
-        private int     m_bSilenced             ; // Silenced flag
         private float   m_flAnimationCooldown   ; // Animation cooldown timer, helps prevent the weapon from going to idle animations while the weapon is being tilted
 
         private float   m_fInaccuracyFactor     ; // Negatively affects weapon spread
@@ -87,10 +88,10 @@ namespace TS_Deagle
         
         Vector          m_vecAccuracy           ; // Current accuracy of the weapon
         
-        TraceResult m_trHit                     ; // Keeps track of what is hit when the deagle is swung
+        TraceResult m_trHit                     ; // Keeps track of what is hit when the sawedoff is swung
         
         //////////////////////////////////////////
-        // TS_Deagle::Spawn                     //
+        // TS_Sawedoff::Spawn                   //
         // Function:                            //
         //      Spawn function for the weapon   //
         // Parameters:                          //
@@ -104,6 +105,9 @@ namespace TS_Deagle
             
             m_iDamage = iDAMAGE;
             
+            // Initialize the aim down sights flag (ADS)
+            m_bADS = false;
+            
             // Set the world model
             g_EntityFuncs.SetModel(self, self.GetW_Model(strMODEL_W));
             
@@ -114,10 +118,10 @@ namespace TS_Deagle
             // Initialize accuracy
             m_vecAccuracy = vecSPREAD;
             
-            m_fRecoilMultiplier = TheSpecialists::fWEAPON__DEAGLE__RECOIL_MULTIPLIER;
+            m_fRecoilMultiplier = TheSpecialists::fWEAPON__SAWEDOFF__RECOIL_MULTIPLIER;
             
             // Set the clip size
-            self.m_iClip = TheSpecialists::iWEAPON__DEAGLE__CLIP;
+            self.m_iClip = TheSpecialists::iWEAPON__SAWEDOFF__CLIP;
             
             // Set the weapon damage
             self.m_flCustomDmg = m_iDamage;
@@ -127,7 +131,7 @@ namespace TS_Deagle
         } // End of Spawn()
 
         //////////////////////////////////////////////////
-        // TS_Deagle::Precache                          //
+        // TS_Sawedoff::Precache                        //
         // Function:                                    //
         //      Prechacing function for weapon assets   //
         // Parameters:                                  //
@@ -156,7 +160,7 @@ namespace TS_Deagle
         } // End of Precache()
 
         //////////////////////////////////////////////////////////////////////////////
-        // TS_Deagle::GetItemInfo                                                   //
+        // TS_Sawedoff::GetItemInfo                                                 //
         // Function:                                                                //
         //      Sets the weapon metadata                                            //
         // Parameters:                                                              //
@@ -166,18 +170,18 @@ namespace TS_Deagle
         //////////////////////////////////////////////////////////////////////////////
         bool GetItemInfo(ItemInfo& out info)
         {
-            info.iMaxClip		= TheSpecialists::iWEAPON__DEAGLE__CLIP     ;
-            info.iMaxAmmo1		= TheSpecialists::iWEAPON__DEAGLE__AMMO1    ;
-            info.iMaxAmmo2		= TheSpecialists::iWEAPON__DEAGLE__AMMO2    ;
-            info.iSlot			= TheSpecialists::iWEAPON__SLOT__PISTOL     ;
-            info.iPosition		= TheSpecialists::iWEAPON__POSITION__DEAGLE ;
-            info.iWeight		= TheSpecialists::iDEFAULT_WEIGHT           ;
+            info.iMaxClip		= TheSpecialists::iWEAPON__SAWEDOFF__CLIP       ;
+            info.iMaxAmmo1		= TheSpecialists::iWEAPON__SAWEDOFF__AMMO1      ;
+            info.iMaxAmmo2		= TheSpecialists::iWEAPON__SAWEDOFF__AMMO2      ;
+            info.iSlot			= TheSpecialists::iWEAPON__SLOT__RIFLE          ;
+            info.iPosition		= TheSpecialists::iWEAPON__POSITION__SAWEDOFF   ;
+            info.iWeight		= TheSpecialists::iDEFAULT_WEIGHT               ;
             
             return true;
         } // End of GetItemInfo()
         
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_Deagle::AddToPlayer                                                                    //
+        // TS_Sawedoff::AddToPlayer                                                                 //
         // Function:                                                                                //
         //      Adds the weapon to the player if they exist                                         //
         //      If the player exists, save a reference to the player                                //
@@ -197,7 +201,7 @@ namespace TS_Deagle
                 @m_pPlayer = pPlayer;
                 
                 // Debug printing
-                // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "Deagle m_iPrimaryAmmoType: " + self.m_iPrimaryAmmoType + "\n");
+                // g_EngineFuncs.ClientPrintf(m_pPlayer, print_console, "Sawedoff m_iPrimaryAmmoType: " + self.m_iPrimaryAmmoType + "\n");
                 
                 NetworkMessage message
                 (
@@ -219,7 +223,7 @@ namespace TS_Deagle
         } // End of AddToPlayer()
 
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_Deagle::Deploy                                                                        //
+        // TS_Sawedoff::Deploy                                                                      //
         // Function:                                                                                //
         //      Adds the weapon to the player if they exist                                         //
         //      If the player exists, save a reference to the player                                //
@@ -243,7 +247,7 @@ namespace TS_Deagle
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // TS_Deagle::Holster                                                                       //
+        // TS_Sawedoff::Holster                                                                     //
         // Function:                                                                                //
         //      Hides the weapon from the player                                                    //
         // Parameters:                                                                              //
@@ -261,12 +265,12 @@ namespace TS_Deagle
             // Hide the player model by making the viewmodel path empty
             m_pPlayer.pev.viewmodel = "";
             
-            // Tell the looping function to stop calling any of our deagle functions
+            // Tell the looping function to stop calling any of our sawedoff functions
             SetThink(null);
         } // End of Holster()
         
         //////////////////////////////////////////////////
-        // TS_Deagle::PrimaryAttack                     //
+        // TS_Sawedoff::PrimaryAttack                   //
         // Function:                                    //
         //      Performs the weapon's primary attack    //
         // Parameters:                                  //
@@ -290,7 +294,7 @@ namespace TS_Deagle
         } // End of PrimaryAttack()
         
         //////////////////////////////////////////////////
-        // TS_Deagle::SecondaryAttack                   //
+        // TS_Sawedoff::SecondaryAttack                 //
         // Function:                                    //
         //      Performs the weapon's secondary attack  //
         // Parameters:                                  //
@@ -303,15 +307,15 @@ namespace TS_Deagle
             int iAnimationIndex = 0;
             
             // Toggle the flag
-            m_bSideways = !m_bSideways;
+            m_bADS = !m_bADS;
             
-            if (m_bSideways)
+            if (m_bADS)
             {
-                iAnimationIndex = Animations::TILT_SIDEWAYS;
+                iAnimationIndex = Animations::ADS_IN;
             }
             else
             {
-                iAnimationIndex = Animations::TILT_UPRIGHT;
+                iAnimationIndex = Animations::ADS_OUT;
             }
             
             // Show the tilt animation
@@ -327,7 +331,7 @@ namespace TS_Deagle
         } // End of SecondaryAttack()
 
         //////////////////////////////
-        // TS_Deagle::Shoot         //
+        // TS_Sawedoff::Shoot       //
         // Function:                //
         //      Gun fire handling   //
         // Parameters:              //
@@ -351,9 +355,9 @@ namespace TS_Deagle
                 if (self.m_iClip > 0)
                 {
                     // Determine if a random animation can be picked
-                    if (m_bSideways)
+                    if (m_bADS)
                     {
-                        iRandomAnimation = TheSpecialists::CommonFunctions::PickRandomElementFromListInt(arrSidewaysAnimationList);
+                        iRandomAnimation = TheSpecialists::CommonFunctions::PickRandomElementFromListInt(arrADSAnimationList);
                     }
                     else
                     {
@@ -388,49 +392,28 @@ namespace TS_Deagle
                     // https://github.com/ValveSoftware/halflife/blob/e5815c34e2772a247a6843b67eab7c3395bdba66/dlls/cbase.h#L255
                     m_pPlayer.FireBullets
                     (
-                        1                                                   , // ULONG cShots           - Number of bullets fired, anything more than 1 is useful for shotguns
-                        vecSrc                                              , // Vector vecSrc          - Vector where the shot is originating from, but it's a vector so I don't know why this information isn't already stored in a single vector
-                        vecAiming                                           , // Vector vecDirShooting  - Vector where the shot is going to go towards
-                        m_vecAccuracy                                       , // Vector vecSpread       - Vector detailing how large the cone of randomness the bullets will randomly spread out
-                        TheSpecialists::fMAXIMUM_FIRE_DISTANCE              , // float flDistance       - Maximum distance the bullet will scan for a hit
-                        TheSpecialists::iWEAPON__PISTOL_MAGNUM__BULLET__TYPE, // int iBulletType        - Bullet type, not sure what this means
-                        2                                                   , // int iTracerFreq = 4    - How frequently there will be bullet tracers, not sure what the scale is
-                        m_iDamage                                             // int iDamage = 0        - How much damage the bullet will do
+                        TheSpecialists::iWEAPON__SHOTGUN__PELLET_COUNT  , // ULONG cShots           - Number of bullets fired, anything more than 1 is useful for shotguns
+                        vecSrc                                          , // Vector vecSrc          - Vector where the shot is originating from, but it's a vector so I don't know why this information isn't already stored in a single vector
+                        vecAiming                                       , // Vector vecDirShooting  - Vector where the shot is going to go towards
+                        m_vecAccuracy                                   , // Vector vecSpread       - Vector detailing how large the cone of randomness the bullets will randomly spread out
+                        TheSpecialists::fMAXIMUM_FIRE_DISTANCE          , // float flDistance       - Maximum distance the bullet will scan for a hit
+                        TheSpecialists::iWEAPON__SHOTGUN__BULLET__TYPE  , // int iBulletType        - Bullet type, not sure what this means
+                        2                                               , // int iTracerFreq = 4    - How frequently there will be bullet tracers, not sure what the scale is
+                        m_iDamage                                         // int iDamage = 0        - How much damage the bullet will do
                     );
                     
                     // Decrement the magazine by one
                     self.m_iClip--;
                     
-                    // Determine if the magazine is empty
-                    if (0 == self.m_iClip)
-                    {
-                        if (m_bSideways)
-                        {
-                            iAnimationIndex = Animations::SHOOTEMPTY_SIDEWAYS1;
-                        }
-                        else
-                        {
-                            iAnimationIndex = Animations::SHOOTEMPTY1;
-                        }
-                        
-                        // Indicate to the user that the magazine is empty
-                        self.SendWeaponAnim
-                        (
-                            iAnimationIndex , // Animation index
-                            0               , // skiplocal (Don't know what this means)
-                            0                 // body (probably model related 'body')
-                        );
-                    }
-                    
                     float fRecoilMultiplier = m_fRecoilMultiplier;
                     // This is an aim-down-sights weapon, so this should make it more accurate
-                    if (m_bSideways)
+                    if (m_bADS)
                     {
                         fRecoilMultiplier /= 2;
                     }
                     
                     TheSpecialists::CommonFunctions::WeaponRecoil(m_pPlayer, fRecoilMultiplier);
-                    TheSpecialists::CommonFunctions::ApplyBulletDecal(m_pPlayer, vecSrc, vecAiming, m_vecAccuracy);
+                    TheSpecialists::CommonFunctions::CreatePelletDecals(m_pPlayer, vecSrc, vecAiming, m_vecAccuracy, TheSpecialists::iWEAPON__SHOTGUN__PELLET_COUNT);
                     
                 } // End of if (self.m_iClip > 0)
                 else
@@ -453,7 +436,7 @@ namespace TS_Deagle
         } // End of Shoot()
 
         //////////////////////////
-        // TS_Deagle::Reload    //
+        // TS_Sawedoff::Reload  //
         // Function:            //
         //      Reload handler  //
         // Parameters:          //
@@ -463,22 +446,30 @@ namespace TS_Deagle
         //////////////////////////
         void Reload()
         {
+            int iAnimationIndex = 0;
+            
             // Determine if the gun does not need to reload
-            if (    (self.m_iClip == TheSpecialists::iWEAPON__DEAGLE__CLIP)
+            if (    (self.m_iClip == TheSpecialists::iWEAPON__SAWEDOFF__CLIP)
                  || (m_pPlayer.m_rgAmmo(self.m_iPrimaryAmmoType) <= 0)    )
             {
                 return;
             }
             
-            // Determine if the weapon is tilted sideways
-            if (m_bSideways)                
+            // Determine if the weapon is aiming down sight (ADS)
+            if (m_bADS)                
             {
-                self.DefaultReload(TheSpecialists::iWEAPON__DEAGLE__CLIP, Animations::RELOAD_SIDEWAYS1, 1.5, 0);
+                // Determine if both chambers are empty
+                if (0 == self.m_iClip)  { iAnimationIndex = Animations::ADS_RELOAD1          ; }
+                else                    { iAnimationIndex = Animations::ADS_RELOAD_1_SHELL   ; } // There is at least 1 shell in a chamber of the double barreled shotgun
             }
             else
             {
-                self.DefaultReload(TheSpecialists::iWEAPON__DEAGLE__CLIP, Animations::RELOAD1, 1.5, 0);
+                // Determine if both chambers are empty
+                if (0 == self.m_iClip)  { iAnimationIndex = Animations::RELOAD1              ; }
+                else                    { iAnimationIndex = Animations::RELOAD_1_SHELL       ; } // There is at least 1 shell in a chamber of the double barreled shotgun
             }
+            
+            self.DefaultReload(TheSpecialists::iWEAPON__SAWEDOFF__CLIP, iAnimationIndex, 1.5, 0);
 
             // Prevent the weapon idle animation from overriding the reload animation
             m_flAnimationCooldown = g_Engine.time + 2.5;
@@ -489,7 +480,7 @@ namespace TS_Deagle
         } // End of Reload()
         
         //////////////////////////////
-        // TS_Deagle::WeaponIdle    //
+        // TS_Sawedoff::WeaponIdle  //
         // Function:                //
         //      Weapon idle handler //
         // Parameters:              //
@@ -513,9 +504,9 @@ namespace TS_Deagle
             // Determine if the tilting animation has finished
             if (m_flAnimationCooldown < g_Engine.time)
             {            
-                if (m_bSideways)
+                if (m_bADS)
                 {
-                    iAnimationIndex = Animations::IDLE_SIDEWAYS1;
+                    iAnimationIndex = Animations::ADS_IDLE1;
                 }
                 else
                 {
@@ -527,16 +518,16 @@ namespace TS_Deagle
             
         } // End of WeaponIdle()
         
-    } // End of class weapon_ts_deagle
+    } // End of class weapon_ts_sawedoff
 
     void Register_Weapon()
     {
         g_CustomEntityFuncs.RegisterCustomEntity(strNAMESPACE + strCLASSNAME, strCLASSNAME);
         g_ItemRegistry.RegisterWeapon
         (
-            strCLASSNAME                                        , // string - weapon name
-            TheSpecialists::strSPRITE_METADATA_PATH             , // string - sprite metadata text file path
-            TheSpecialists::strWEAPON__PISTOL_MAGNUM__AMMO_TYPE   // string - ammo type
+            strCLASSNAME                                    , // string - weapon name
+            TheSpecialists::strSPRITE_METADATA_PATH         , // string - sprite metadata text file path
+            TheSpecialists::strWEAPON__SHOTGUN__AMMO_TYPE     // string - ammo type
         );
     }
-} // End of namespace TS_Deagle
+} // End of namespace TS_Sawedoff

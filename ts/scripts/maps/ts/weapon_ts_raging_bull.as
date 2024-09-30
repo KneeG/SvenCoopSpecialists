@@ -101,7 +101,7 @@ namespace TS_RagingBull
             // Initialize accuracy
             m_vecAccuracy = vecSPREAD;
             
-            m_fRecoilMultiplier = TheSpecialists::fWEAPON__RAGING_BULL__RECOIL_MULITPLIER;
+            m_fRecoilMultiplier = TheSpecialists::fWEAPON__RAGING_BULL__RECOIL_MULTIPLIER;
             
             // Set the clip size
             self.m_iClip = TheSpecialists::iWEAPON__RAGING_BULL__CLIP;

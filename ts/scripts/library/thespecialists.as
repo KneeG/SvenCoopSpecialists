@@ -89,6 +89,15 @@ namespace TheSpecialists
     const string strSHOTGUN__SOUND__FIRE        = "fire.wav"                                    ; // Name of the gun fire file
     const string strSHOTGUN__SOUND__PUMP        = "pump.wav"                                    ; // Name of the pump sound file
     
+    // Double barreled shotgun (sawed off) asset paths
+    const string strSHOTGUN__SOUND__FIRE2       = "fire2.wav"                                   ; // Name of the second barrel firing noise (sawed off)
+    const string strSHOTGUN__SOUND__CLOSE       = "close.wav"                                   ; // Name of the chamber close file
+    const string strSHOTGUN__SOUND__OPEN        = "close.wav"                                   ; // Name of the chamber open file
+    const string strSHOTGUN__SOUND__INSERT_SHELL= "insert-shell.wav"                            ; // Name of the chambering shell file
+    const string strSHOTGUN__SOUND__SHELL_DROP  = "shelldrop.wav"                               ; // Name of the shell drop file
+    const string strSHOTGUN__SOUND__SHELL_OUT   = "shellout.wav"                                ; // Name of the unchambered shell file
+    const string strSHOTGUN__SOUND__TAPSPAN     = "tapspan.wav"                                 ; // Name of the chamber unlock file
+    
     const int iSPRITE__WEAPONS__WIDTH           = 128                                           ; // [pixels] Width of the weapon sprites
     const int iSPRITE__WEAPONS__HEIGHT          = 48                                            ; // [pixels] Height of the weapon sprites
     
@@ -140,7 +149,7 @@ namespace TheSpecialists
     const int iWEAPON__POSITION__SPAS               = 6 ;
     const int iWEAPON__POSITION__MOSSBERG           = 7 ;
     const int iWEAPON__POSITION__USAS12             = 8 ;
-    const int iWEAPON__POSITION__DOUBLE_BARREL      = 9 ;
+    const int iWEAPON__POSITION__SAWEDOFF           = 9 ;
     const int iWEAPON__POSITION__AK47               = 10;
     const int iWEAPON__POSITION__M4A1               = 11;
     const int iWEAPON__POSITION__M16                = 12;
@@ -271,7 +280,7 @@ namespace TheSpecialists
     const int       iWEAPON__DEAGLE__FIRE_MODE              = FireMode::iSEMI_AUTOMATIC         ; // Fire mode of the weapon
     const int       iWEAPON__DEAGLE__DAMAGE                 = 35                                ; // Weapon damage
     const float     fWEAPON__DEAGLE__ATTACK_DELAY           = (60.0 / 500.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
-    const float     fWEAPON__DEAGLE__RECOIL_MULITPLIER      = 4.0                               ; // Severity of the recoil
+    const float     fWEAPON__DEAGLE__RECOIL_MULTIPLIER      = 4.0                               ; // Severity of the recoil
     
     const int       iWEAPON__RAGING_BULL__CLIP              = 5                                 ; // Size of the magazine
     const int       iWEAPON__RAGING_BULL__AMMO1             = iWEAPON__PISTOL_MAGNUM__AMMO1__MAX; // Primary ammo capacity
@@ -280,7 +289,7 @@ namespace TheSpecialists
     const int       iWEAPON__RAGING_BULL__FIRE_MODE         = FireMode::iSEMI_AUTOMATIC         ; // Fire mode of the weapon
     const int       iWEAPON__RAGING_BULL__DAMAGE            = 45                                ; // Weapon damage
     const float     fWEAPON__RAGING_BULL__ATTACK_DELAY      = (60.0 / 300.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
-    const float     fWEAPON__RAGING_BULL__RECOIL_MULITPLIER = 6.0                               ; // Severity of the recoil
+    const float     fWEAPON__RAGING_BULL__RECOIL_MULTIPLIER = 6.0                               ; // Severity of the recoil
     
     const int       iWEAPON__CONTENDER__CLIP                = 1                                 ; // Size of the magazine
     const int       iWEAPON__CONTENDER__AMMO1               = iWEAPON__PISTOL_MAGNUM__AMMO1__MAX; // Primary ammo capacity
@@ -289,7 +298,7 @@ namespace TheSpecialists
     const int       iWEAPON__CONTENDER__FIRE_MODE           = FireMode::iSEMI_AUTOMATIC         ; // Fire mode of the weapon
     const int       iWEAPON__CONTENDER__DAMAGE              = 120                               ; // Weapon damage
     const float     fWEAPON__CONTENDER__ATTACK_DELAY        = (60.0 / 60.0)                     ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
-    const float     fWEAPON__CONTENDER__RECOIL_MULITPLIER   = 10.0                              ; // Severity of the recoil
+    const float     fWEAPON__CONTENDER__RECOIL_MULTIPLIER   = 10.0                              ; // Severity of the recoil
     
     const int       iWEAPON__GOLD_COLTS__CLIP               = 15                                ; // Size of the magazine
     const int       iWEAPON__GOLD_COLTS__AMMO1              = iWEAPON__PISTOL__AMMO1__MAX       ; // Primary ammo capacity
@@ -395,6 +404,15 @@ namespace TheSpecialists
     const int       iWEAPON__USAS12__DAMAGE                 = 6                                 ; // Weapon damage
     const float     fWEAPON__USAS12__ATTACK_DELAY           = (60.0 / 350.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
     const float     fWEAPON__USAS12__RECOIL_MULTIPLIER      = 0.9                               ; // Severity of the recoil
+    
+    const int       iWEAPON__SAWEDOFF__CLIP                 = 2                                 ; // Size of the magazine
+    const int       iWEAPON__SAWEDOFF__AMMO1                = iWEAPON__SHOTGUN__AMMO1__MAX      ; // Primary ammo capacity
+    const int       iWEAPON__SAWEDOFF__AMMO2                = -1                                ; // Secondary ammo capacity
+    const Vector    vecWEAPON__SAWEDOFF__SPREAD             = VECTOR_CONE_6DEGREES * 1          ; // Accuracy of the weapon
+    const int       iWEAPON__SAWEDOFF__FIRE_MODE            = FireMode::iSEMI_AUTOMATIC         ; // Fire mode of the weapon
+    const int       iWEAPON__SAWEDOFF__DAMAGE               = 15                                ; // Weapon damage
+    const float     fWEAPON__SAWEDOFF__ATTACK_DELAY         = (60.0 / 400.0)                    ; // [seconds] Rounds per second = (Minute / Rounds Per Minute)
+    const float     fWEAPON__SAWEDOFF__RECOIL_MULTIPLIER    = 3.0                               ; // Severity of the recoil
     
     ///////////////////////////////
     // Ammunitions (See https://baso88.github.io/SC_AngelScript/docs/Bullet.htm)

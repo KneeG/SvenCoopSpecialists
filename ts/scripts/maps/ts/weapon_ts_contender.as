@@ -102,7 +102,7 @@ namespace TS_Contender
             // Initialize accuracy
             m_vecAccuracy = vecSPREAD;
             
-            m_fRecoilMultiplier = TheSpecialists::fWEAPON__CONTENDER__RECOIL_MULITPLIER;
+            m_fRecoilMultiplier = TheSpecialists::fWEAPON__CONTENDER__RECOIL_MULTIPLIER;
             
             // Set the clip size
             self.m_iClip = TheSpecialists::iWEAPON__CONTENDER__CLIP;
