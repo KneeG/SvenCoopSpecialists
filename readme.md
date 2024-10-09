@@ -23,6 +23,7 @@ Hopefully their functionality is also implemented as well.
 - Need to figure out how to add weapon attachments
 
 <a name="installation"></a>
+## 1. Installation
 1. Download this repository
 2. Open the downloaded repository
 3. Go into the ts/ folder
