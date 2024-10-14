@@ -562,6 +562,13 @@ namespace TheSpecialists
     const string    strWEAPON__GRENADE__AMMO_TYPE           = "Hand Grenade";
     const int       iWEAPON__GRENADE__AMMO1__MAX            = 10;
     
+    ///////////////////////////////
+    // Entites section
+    
+    // TS Model
+    const int iTS_MODEL__DEFAULT__FLAG_SOLID    = SOLID_NOT     ; // Default solidity of the ts_model entity
+    const int iTS_MODEL__DEFAULT__FLAG_MOVETYPE = MOVETYPE_NONE ; // Default movetype of the ts_model entity
+    
     namespace CommonFunctions
     {
         //////////////////////////////////////////////////////////////////////////////////

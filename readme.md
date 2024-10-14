@@ -98,7 +98,7 @@ Hopefully their functionality is also implemented as well.
 | 7  | ts_groundammo                    | Yes   | Not started                                                   |
 | 8  | ts_hack                          | No    | Not doing                                                     |
 | 9  | ts_mapgoals                      | No    | Not doing                                                     |
-| 10 | ts_model                         | Yes   | Not started                                                   |
+| 10 | ts_model                         | Yes   | Started, struggling to generalize map based model precaching  |
 | 11 | ts_objective_manager             | No    | Not doing                                                     |
 | 12 | ts_objective_ptr                 | No    | Not doing                                                     |
 | 13 | ts_particle                      | Yes   | Not started                                                   |
@@ -119,7 +119,7 @@ Hopefully their functionality is also implemented as well.
 
 <a name="miscellaneousentitylist"></a>
 ## 5. Miscellaneous entity list:
-| \# | Entity Name                      | To do | Progress                                                      |
+| \# | Entity Name                      | To do | Progress      |
 | -- | -------------------------------- | ----- | ------------- |
 | 1  | entity_ts_blood_particle         | Yes   | Not started   |
 

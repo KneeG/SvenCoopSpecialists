@@ -1,8 +1,8 @@
-//////////////////////////////////////////////////////////
-// File         : weapon_ts_m60.as                    //
-// Author       : Knee                                  //
-// Description  : M60 from The Specialists Mod 3.0    //
-//////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////
+// File         : weapon_ts_m60.as                  //
+// Author       : Knee                              //
+// Description  : M60 from The Specialists Mod 3.0  //
+//////////////////////////////////////////////////////
 #include "../../library/thespecialists"
 
 /////////////////////////////////////
@@ -39,9 +39,6 @@ namespace TS_M60
     const string            strSPRITE_TEXT_FILE     = TheSpecialists::strSPRITE_METADATA_PATH + strCLASSNAME + ".txt";
     
     const string            strSOUND_FIRE          = TheSpecialists::strSOUND_PATH + "heavy/" + strNAME + "/" + TheSpecialists::strHEAVY__SOUND__FIRE      ; // Name of the gun fire file
-    const string            strSOUND_CLIPIN        = TheSpecialists::strSOUND_PATH + "heavy/" + strNAME + "/" + TheSpecialists::strHEAVY__SOUND__CLIPIN    ; // Name of the magazine insert file
-    const string            strSOUND_CLIPOUT       = TheSpecialists::strSOUND_PATH + "heavy/" + strNAME + "/" + TheSpecialists::strHEAVY__SOUND__CLIPOUT   ; // Name of the magazine eject file
-    const string            strSOUND_SLIDEBACK     = TheSpecialists::strSOUND_PATH + "heavy/" + strNAME + "/" + TheSpecialists::strHEAVY__SOUND__SLIDEBACK ; // Name of the slide pull file
     const string            strSOUND_CLOSE         = TheSpecialists::strSOUND_PATH + "heavy/" + strNAME + "/" + TheSpecialists::strHEAVY__SOUND__CLOSE     ; // Name of the chamber close file
     const string            strSOUND_OPEN          = TheSpecialists::strSOUND_PATH + "heavy/" + strNAME + "/" + TheSpecialists::strHEAVY__SOUND__OPEN      ; // Name of the chamber open file
     const string            strSOUND_AMMO_BELT     = TheSpecialists::strSOUND_PATH + "heavy/" + strNAME + "/" + TheSpecialists::strHEAVY__SOUND__AMMO_BELT ; // Name of the ammo belt noise file
@@ -136,9 +133,6 @@ namespace TS_M60
             g_Game.PrecacheModel(TheSpecialists::strSPRITE_ROOT + strSPRITE_FILE);
             
             g_SoundSystem.PrecacheSound(strSOUND_FIRE       );
-            g_SoundSystem.PrecacheSound(strSOUND_CLIPIN     );
-            g_SoundSystem.PrecacheSound(strSOUND_CLIPOUT    );
-            g_SoundSystem.PrecacheSound(strSOUND_SLIDEBACK  );
             g_SoundSystem.PrecacheSound(strSOUND_CLOSE      );
             g_SoundSystem.PrecacheSound(strSOUND_OPEN       );
             g_SoundSystem.PrecacheSound(strSOUND_AMMO_BELT  );

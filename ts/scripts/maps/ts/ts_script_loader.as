@@ -42,14 +42,17 @@
 #include "weapon_ts_barrett"
 #include "weapon_ts_m60"
 
+#include "ts_model"
+
 void TS_LoadWeapons()
 {
+    // Melee weapons
     RegisterKungFu();
-    
     TS_Katana       ::Register_Weapon();
     TS_SealKnife    ::Register_Weapon();
     TS_CombatKnife  ::Register_Weapon();
     
+    // Pistols
     TS_Glock18      ::Register_Weapon();
     TS_Glock22      ::Register_Weapon();
     TS_Fiveseven    ::Register_Weapon();
@@ -61,6 +64,7 @@ void TS_LoadWeapons()
     TS_Contender    ::Register_Weapon();
     TS_GoldColts    ::Register_Weapon();
     
+    // SMGs
     TS_TMP          ::Register_Weapon();
     TS_MP5SD        ::Register_Weapon();
     TS_MP5K         ::Register_Weapon();
@@ -69,17 +73,23 @@ void TS_LoadWeapons()
     TS_Skorpion     ::Register_Weapon();
     TS_Uzi          ::Register_Weapon();
     
+    // Shotguns
     TS_Benelli      ::Register_Weapon();
     TS_Spas         ::Register_Weapon();
     TS_Mossberg     ::Register_Weapon();
     TS_USAS12       ::Register_Weapon();
     TS_Sawedoff     ::Register_Weapon();
 
+    // Rifles
     TS_AK47         ::Register_Weapon();
     TS_M4A1         ::Register_Weapon();
     TS_M16          ::Register_Weapon();
     TS_AUG          ::Register_Weapon();
     
+    // Heavy weapons
     TS_Barrett      ::Register_Weapon();
     TS_M60          ::Register_Weapon();
+    
+    // Entities
+    TS_Model        ::Register_Entity();
 }
