@@ -6,12 +6,13 @@ This project is eventually going to become full of The Specialists Mod 3.0 asset
 Hopefully their functionality is also implemented as well.
 
 # Table of Contents
-1. [Progress Legend](#progresslegend)
-2. [Weapon list](#weaponlist)
-3. [Weapon Features](#weaponfeatures)
-4. [Entity list](#entitylist)
-5. [Miscellaneous entity list](#miscellaneousentitylist)
-6. [Quick useful links](#quickusefullinks)
+1. [Installation](#installation)
+2. [Progress Legend](#progresslegend)
+3. [Weapon list](#weaponlist)
+4. [Weapon Features](#weaponfeatures)
+5. [Entity list](#entitylist)
+6. [Miscellaneous entity list](#miscellaneousentitylist)
+7. [Quick useful links](#quickusefullinks)
 
 #### Current problems
 - Crosshair sprite is missing and or incomplete
@@ -21,8 +22,19 @@ Hopefully their functionality is also implemented as well.
 - Need to add a "useitems" command to toggle laser sight and flashlight
 - Need to figure out how to add weapon attachments
 
+<a name="installation"></a>
+## 1. Installation
+1. Download this repository
+2. Open the downloaded repository
+3. Go into the ts/ folder
+4. Place the models, scripts, sound, and sprites folders into your DRIVE:/STEAM-DIRECTORY/Sven Co-op/svencoop/ folder
+5. Some maps have different map scripts to load by default, so you may have to go into the svencoop/maps/ folder and edit the map's config file
+   The line to add to the .cfg is "map_script server_default"
+   For example, if you are on c1a0.bsp, you edit the c1a0.cfg (located in the same spot as the .bsp)
+   You can optionally go to the root directory for svencoop and edit the default_map_settings.cfg and put the "map_script server_default" line in there
+
 <a name="progresslegend"></a>
-## 1. Progress Legend
+## 2. Progress Legend
 | Item                  | Description                                                   |
 | --------------------- | ------------------------------------------------------------- |
 | Not started           | Expected to be done but I have not started progress yet       |
@@ -32,7 +44,7 @@ Hopefully their functionality is also implemented as well.
 | Not doing             | Item will not be implemented                                  |
 
 <a name="weaponlist"></a>
-## 2. Weapon list:
+## 3. Weapon list:
 | \# | Entity Name                      | Progress              | To do notes                       |
 | -- | -------------------------------- | --------------------- | --------------------------------- |
 | 1  | weapon_ts_kungfu                 | Functionally complete | Refactor this mess of code        |
@@ -75,7 +87,7 @@ Hopefully their functionality is also implemented as well.
 | 38 | weapon_ts_grenade                | Not started           | To do                             |
 
 <a name="weaponfeatures"></a>
-## 3. Weapon features:
+## 4. Weapon features:
 | \# | Item Description                 | Progress              | To do notes                       |
 | -- | -------------------------------- | --------------------- | --------------------------------- |
 | 1  | Lasersight attachments           | Not started           | To do: might be tricky            |
@@ -86,7 +98,7 @@ Hopefully their functionality is also implemented as well.
 | 6  | Akimbo alternating fire          | In progress           | Figure how to fire independently  |
 
 <a name="entitylist"></a>
-## 4. Entity list:
+## 5. Entity list:
 | \# | Entity Name                      | To do | Progress                                                      |
 | -- | -------------------------------- | ----- | ------------------------------------------------------------- |
 | 1  | ts_bomb                          | No    | Not doing, no plans of implementation                         |
@@ -118,13 +130,13 @@ Hopefully their functionality is also implemented as well.
 | 27 | tswinnerteamlist                 | No    | Not doing                                                     |
 
 <a name="miscellaneousentitylist"></a>
-## 5. Miscellaneous entity list:
+## 6. Miscellaneous entity list:
 | \# | Entity Name                      | To do | Progress      |
 | -- | -------------------------------- | ----- | ------------- |
 | 1  | entity_ts_blood_particle         | Yes   | Not started   |
 
 <a name="quickusefullinks"></a>
-## 6. Quick useful links:
+## 7. Quick useful links:
 - To help with understanding of the underlying implementation of most things are
     - https://github.com/ValveSoftware/halflife/blob/master/dlls/
 - Helpful existing sample scripts
